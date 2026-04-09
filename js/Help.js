@@ -428,8 +428,9 @@ async function buildEvidenceFileEntries() {
       ownerUserName: currentUser.name,
       type: "photo",
       name: file.name,
+      size: file.size,
       date,
-      url: await fileToDataUrl(file),
+      url: "",
       attackerId: payload.attackerId,
       profileLink: payload.profileLink,
       evidenceMemo: payload.evidenceMemo
@@ -443,8 +444,9 @@ async function buildEvidenceFileEntries() {
       ownerUserName: currentUser.name,
       type: "video",
       name: file.name,
+      size: file.size,
       date,
-      url: await fileToDataUrl(file),
+      url: "",
       attackerId: payload.attackerId,
       profileLink: payload.profileLink,
       evidenceMemo: payload.evidenceMemo
@@ -458,8 +460,9 @@ async function buildEvidenceFileEntries() {
       ownerUserName: currentUser.name,
       type: "doc",
       name: file.name,
+      size: file.size,
       date,
-      url: await fileToDataUrl(file),
+      url: "",
       attackerId: payload.attackerId,
       profileLink: payload.profileLink,
       evidenceMemo: payload.evidenceMemo
@@ -579,7 +582,7 @@ function initEvidenceForm() {
 
     try {
       const requestPayload = buildSaveRequestPayload();
-      const newEntries = await buildEvidenceFileEntries();
+      const newEntries = buildEvidenceFileEntries();
 
       //현재 로컬 스토리 저장 나중에 fetch API 수정
       const savedEvidence = getStoredArray(EVIDENCE_KEY);
