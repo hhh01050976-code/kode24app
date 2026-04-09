@@ -24,7 +24,7 @@ window.onload = function () {
   const isAdminLogin = localStorage.getItem("isAdminLogin");
 
   if (isAdminLogin !== "true") {
-    location.replace("../Home.html");
+    location.replace("../../index.html");
     return;
   }
 
@@ -45,7 +45,7 @@ window.onload = function () {
 
 function adminLogout() {
   localStorage.removeItem("isAdminLogin");
-  location.replace("../Home.html");
+  location.replace("../../index.html");
 }
 
 
