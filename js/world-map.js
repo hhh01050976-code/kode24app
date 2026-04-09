@@ -152,7 +152,7 @@ function setCurrentLocation() {
 
 //뒤로가기 함수
 function goBack() {
-  window.location.href = "../html/Home.html";
+  window.location.href = "../index.html";
 }
 
 

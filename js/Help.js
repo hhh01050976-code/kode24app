@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 뒤로가기
 function goBack() {
-  window.location.href = "../html/Home.html";
+  window.location.href = "../index.html";
 }
 
 /* =========================

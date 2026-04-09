@@ -15,7 +15,7 @@ GET/api
 import { rawThreatData } from "./threatData.js";
 
 function goBack() {
-  window.location.href = "../html/Home.html";
+  window.location.href = "../index.html";
 }
 window.goBack = goBack;
 

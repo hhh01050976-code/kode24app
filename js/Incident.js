@@ -13,7 +13,7 @@
 
 //뒤로가기 함수
 function goBack() {
-  window.location.href = "../html/Home.html";
+  window.location.href = "../index.html";
 }
 
 //통계 가짜 데이터 => 나중에 실제 데이터를 삽입
