@@ -10,11 +10,11 @@
     
 <div class="hero">
 
-    <img src="../img/mainwold.jpg" class="earth">
+    <img src="./img/mainwold.jpg" class="earth">
 
 
         <div>
-            <img src="../img/logo.png" alt="logo" class="logo">
+            <img src="./img/logo.png" alt="logo" class="logo">
         </div>
 
         <div id="userArea"></div><!--로그인-->
@@ -27,37 +27,37 @@
 
                 <!-- 카테고리 넣는 div 배경 -->
                 <div class="back">
-                        <a href="World_Map.html" class="categort-item" >
+                        <a href="./html/World_Map.html" class="categort-item" >
                                 <div class="card">
                                     <img src="../img/card1.png" alt="글로벌 피해 현황">
                                 </div>
                                 <div class="label">글로벌 피해 현황</div>
                         </a>
-                        <a href="Incident_Types.html" class="categort-item" >
+                        <a href="./html/Incident_Types.html" class="categort-item" >
                                 <div class="card">
                                     <img src="../img/card2.png" alt="피해 유형 분석">
                                 </div>
                                 <div class="label">피해 유형 분석</div>
                         </a>                        
-                        <a href="Threat_Patterns.html" class="categort-item" >
+                        <a href="./html/Threat_Patterns.html" class="categort-item" >
                                 <div class="card">
                                     <img src="../img/card3.png" alt="가해 조직/패턴">
                                 </div>
                                 <div class="label">가해 조직/패턴</div>
                         </a>                        
-                        <a href="./diagnosis/Self_Assessment.html" class="categort-item" >
+                        <a href="./html/diagnosis/Self_Assessment.html" class="categort-item" >
                                 <div class="card">
                                     <img src="../img/card4.png" alt="자가 진단 테스트">
                                 </div>
                                 <div class="label">자가 진단 테스트</div>
                         </a>                        
-                        <a href="Support_Center.html" class="categort-item" >
+                        <a href="./html/Support_Center.html" class="categort-item" >
                                 <div class="card">
                                     <img src="../img/card5.png" alt="예방 교육 신청">
                                 </div>
                                 <div class="label">예방 교육 신청</div>
                         </a>                        
-                        <a href="Help.html" class="categort-item" >
+                        <a href="./html/Help.html" class="categort-item" >
                                 <div class="card">
                                     <img src="../img/card6.png" alt="상담 및 해결 후기">
                                 </div>
@@ -85,12 +85,12 @@
 
     // 👉 클릭하면 마이페이지 이동
     document.getElementById("goMyPage").addEventListener("click", () => {
-      location.href = "profile/MyPage.html";
+      location.href = "./html/profile/MyPage.html";
     });
 
   } else {
     userArea.innerHTML = `
-      <a href="Login.html" class="login-btn">
+      <a href="./html/Login.html" class="login-btn">
         <img src="../img/login.png" alt="login">
         <span>로그인</span>
       </a>
