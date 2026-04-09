@@ -67,6 +67,6 @@ logoutBtn.addEventListener("click", () => {
     showToast("로그아웃 되었습니다.");
 
     setTimeout(() => {
-        location.href = "./index.html";
+        location.href = "../../index.html";
     }, 700);
 });
