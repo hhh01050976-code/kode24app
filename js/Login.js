@@ -353,7 +353,7 @@ loginForm.addEventListener("submit", (event) => {
     showToast("로그인 되었습니다.")
 
     setTimeout(() => {
-        window.location.href="./index.html";
+        window.location.href="../../index.html";
     }, 700);
 });
 
