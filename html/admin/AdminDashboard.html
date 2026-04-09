@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/admin/admin-dashboard.css">
+    <title>관리자 대시보드</title>
+</head>
+<body>
+    <div class="admin-app">
+    <header class="admin-header">
+      <div class="header-top">
+        <div class="header-title-wrap">
+          <span class="header-label">ADMIN PANEL</span>
+          <h1>관리자 대시보드</h1>
+          <p class="header-desc">
+            운영 KPI와 사용자 현황, 저장된 가해자 제보 정보를 한 번에 확인할 수 있습니다.
+          </p>
+        </div>
+
+        <button class="logout-btn" type="button" onclick="adminLogout()">로그아웃</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <section class="dashboard-section">
+        <div class="section-head">
+          <h2>운영 KPI</h2>
+          <p class="section-sub">해결률 / 상담 전환율 / 채널별 유입 / 국가별 유입</p>
+        </div>
+
+        <div class="kpi-grid two-col">
+          <article class="kpi-card" onclick="openKpiModal('solveRate')">
+            <div class="kpi-title">해결률</div>
+            <div class="kpi-value">92%</div>
+            <div class="kpi-desc">전체 접수 대비 해결 완료 비율</div>
+          </article>
+
+          <article class="kpi-card" onclick="openKpiModal('consultRate')">
+            <div class="kpi-title">상담 전환율</div>
+            <div class="kpi-value">68%</div>
+            <div class="kpi-desc">자가진단 후 상담 연결 비율</div>
+          </article>
+
+          <article class="kpi-card" onclick="openKpiModal('channelFlow')">
+            <div class="kpi-title">채널별 유입</div>
+            <div class="kpi-value">44%</div>
+            <div class="kpi-desc">광고 채널 비중이 가장 높음</div>
+          </article>
+
+          <article class="kpi-card" onclick="openKpiModal('countryFlow')">
+            <div class="kpi-title">국가별 유입</div>
+            <div class="kpi-value">57%</div>
+            <div class="kpi-desc">한국 유입 비중이 가장 높음</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <div class="section-head">
+          <h2>사용자 KPI</h2>
+          <p class="section-sub">전체 사용자 / 오늘 신규 가입 / 자가진단 완료 / 상담 신청 수</p>
+        </div>
+
+        <div class="kpi-grid two-col">
+          <article class="kpi-card" onclick="openKpiModal('totalUsers')">
+            <div class="kpi-title">전체 사용자 수</div>
+            <div class="kpi-value">128명</div>
+            <div class="kpi-desc">현재 가입 상태 유지 사용자</div>
+          </article>
+
+          <article class="kpi-card" onclick="openKpiModal('todayJoin')">
+            <div class="kpi-title">오늘 신규 가입</div>
+            <div class="kpi-value">12명</div>
+            <div class="kpi-desc">오늘 새롭게 가입한 사용자</div>
+          </article>
+
+          <article class="kpi-card" onclick="openKpiModal('diagnosisDone')">
+            <div class="kpi-title">자가진단 완료</div>
+            <div class="kpi-value">84건</div>
+            <div class="kpi-desc">결과 저장까지 완료된 사용자</div>
+          </article>
+
+          <article class="kpi-card" onclick="openKpiModal('consultCount')">
+            <div class="kpi-title">상담 신청 수</div>
+            <div class="kpi-value">39건</div>
+            <div class="kpi-desc">실제 상담 신청 총 건수</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <div class="section-head">
+          <h2>회원 관리</h2>
+          <p class="section-sub">사용자 검색 및 최근 진단/상담 여부 확인</p>
+        </div>
+
+        <div class="search-box">
+          <input
+            id="userSearchInput"
+            type="text"
+            placeholder="이름 / 아이디 / 연락처 검색"
+            oninput="filterUsers()"
+          />
+        </div>
+
+        <div id="userList" class="user-list"></div>
+      </section>
+
+      <section class="dashboard-section">
+        <div class="section-head">
+          <h2>회원 가해자 제보</h2>
+          <p class="section-sub">증거 저장 시 자동 기록되는 가해자 이름 / 프로필 링크 / 추가 메모</p>
+        </div>
+
+        <!--이요자가 제보한 가해자 정보 확인할 수 있도록-->
+        <div class="search-box">
+            <input
+                id="attackerSearchInput"
+                type="text"
+                placeholder="가해자 ID / 제보자 / 링크 / 메모 검색"
+                oninput="filterAttackerReports()"
+            />
+        </div>
+        <div id="attackerReportList" class="user-list"></div>
+        </section>
+
+
+        <!-- 사용자가 예방 교육 신청 내역 섹션 -->
+        <section class="dashboard-section">
+          <div class="section-head">
+            <h2>교육 신청 내역</h2>
+            <p class="section-sub">사용자가 접수한 예방 교육 신청 폼을 확인합니다.</p>
+          </div>
+
+          <div class="search-box">
+            <input
+              id="consultSearchInput"
+              type="text"
+              placeholder="기관명 / 담당자 / 연락처 / 이메일 검색"
+              oninput="filterConsultations()"
+              />
+          </div>
+
+          <div id="consultList" class="user-list"></div>
+        </section>
+
+
+
+
+
+        <div id="attackerReportList" class="user-list"></div>
+      </section>
+    </main>
+  </div>
+
+    <div id="kpiModal" class="hidden" onclick="closeKpiModal(event)">
+        <div class="kpi-modal-panel">
+        <button type="button" onclick="forceCloseKpiModal()">닫기</button>
+        <h3 id="modalTitle">상세 정보</h3>
+        <div id="modalMainValue"></div>
+        <p id="modalDesc"></p>
+        <div id="donutChart"></div>
+        <div id="donutCenterText"></div>
+        <div id="legendList"></div>
+        <div id="barChart"></div>
+        <div id="barLabels"></div>
+        </div>
+    </div>
+
+    <!--추가 메모 모달-->
+    <div id="memoModal" class="hidden admin-overlay" onclick="closeMemoModal(event)">
+        <div class="admin-modal-box">
+            <div class="admin-modal-head">
+                <h3>추가 메모</h3>
+                <button type="button" class="admin-modal-close-btn" onclick="forceCloseMemoModal()">닫기</button>
+            </div>
+            <div id="memoModalContent" class="admin-modal-content"></div>
+        </div>
+    </div>
+
+    <!--첨부 파일 모달-->
+    <div id="attachmentModal" class="hidden admin-overlay" onclick="closeAttachmentModal(event)">
+        <div class="admin-modal-box">
+            <div class="admin-modal-head">
+                <h3>첨부 파일</h3>
+                <button type="button" class="admin-modal-close-btn" onclick="forceCloseAttachmentModal()">닫기</button>
+            </div>
+            <div id="attachmentModalContent" class="admin-modal-content"></div>
+        </div>
+    </div>
+
+
+
+  <script src="../../js/admin/admin-dashboard.js"></script>
+
+</body>
+</html>

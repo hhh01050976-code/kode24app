@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Leaflet CSS : 지도 라이브러리 스타일 -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <!-- 내 css -->
+    <link rel="stylesheet" href="../css/world.css">
+
+    <!-- Chart.js : 막대 / 도넛 / 상세 팝업 차트용 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>전 세계지도 대시보드</title>
+</head>
+
+<body>
+
+  <!-- 뒤로가기 버튼 -->
+  <button class="back-btn" onclick="goBack()">⬅</button>
+
+  <div class="app">
+
+    <!-- 햄버거 버튼 -->
+    <button id="menuBtn" class="menu-btn">☰</button>
+
+    <!-- 사이드바 -->
+    <aside id="sidebar" class="sidebar closed">
+      <div class="sidebar-header">
+        <h2>통계 카테고리</h2>
+        <button id="closeBtn" class="close-btn">✕</button>
+      </div>
+
+      <div class="sidebar-menu">
+        <button class="category-btn active" data-category="countryTotal">
+          국가별 전체 피해 발생
+        </button>
+
+        <button class="category-btn" data-category="cityDensity">
+          도시 단위 발생 밀도
+        </button>
+
+        <button class="category-btn" data-category="yearlyChange">
+          전년 대비 증감률
+        </button>
+
+        <button class="category-btn" data-category="monthlyChange">
+          달 별 피해 증감률
+        </button>
+
+        <button class="category-btn" data-category="timeDayRate">
+          시간대 / 요일별 발생률
+        </button>
+
+        <button class="category-btn" data-category="platformRate">
+          플랫폼별 발생률
+        </button>
+
+        <button class="category-btn" data-category="typeRate">
+          유형별 발생 비중
+        </button>
+      </div>
+    </aside>
+
+    <!--
+      mainContent:
+      - 나라 클릭 전: 지도 + 전체 차트가 같이 보이는 메인 영역
+      - 나라 클릭 후: JS에서 expanded-map 클래스가 붙으면
+        차트 영역은 숨기고, 지도 영역을 더 크게 보여주기 위한 부모 컨테이너
+    -->
+    <main id="mainContent" class="main-content">
+
+      <!-- 지도 영역 -->
+      <section class="map-section">
+
+        <div class="top-info">
+          <h1>Global Sextortion Dashboard</h1>
+          <!--
+            현재 선택된 카테고리 문구를 JS에서 갱신함
+            예: 현재 선택: 국가별 전체 피해 발생
+          -->
+          <p id="currentCategoryLabel">현재 선택: 국가별 전체 피해 발생</p>
+        </div>
+
+        <!-- 실제 Leaflet 지도가 들어가는 영역 -->
+        <div id="map"></div>
+
+      </section>
+
+      <!-- 차트 영역 -->
+      <section class="chart-section">
+
+        <!-- 막대 차트 -->
+        <div class="chart-card">
+          <h3 id="barChartTitle">국가별 피해 발생 TOP</h3>
+          <canvas id="barChart"></canvas>
+        </div>
+
+        <!-- 도넛 차트 -->
+        <div class="chart-card">
+          <h3 id="donutChartTitle">카테고리 비중</h3>
+          <canvas id="donutChart"></canvas>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!--
+      나라별 상세 데이터 팝업
+      - 마커 클릭 시 JS에서 hidden 제거
+      - 닫기 버튼 클릭 시 다시 hidden 추가
+      - 제목은 클릭한 나라 이름으로 동적으로 바뀜
+      - 상세 차트는 countryDetailChart 하나로 통합해서 표시
+    -->
+    <div id="countryDetailModal" class="country-detail-modal hidden">
+      <div class="country-detail-panel">
+
+        <div class="detail-header">
+          <!--
+            JS에서 예:
+            일본 상세 데이터
+            미국 상세 데이터
+            대한민국 상세 데이터
+            로 바꿔줌
+          -->
+          <h2 id="detailTitle">국가 상세 데이터</h2>
+
+          <button id="closeDetailBtn" class="close-detail-btn">X</button>
+        </div>
+
+        <!-- 선택한 나라의 카테고리별 데이터를 한 개 막대차트로 보여주는 영역 -->
+        <div class="detail-chart-wrap">
+          <canvas id="countryDetailChart"></canvas>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- 내 기본 JS -->
+  <script src="../js/world-map.js"></script>
+
+  <!-- 차트 JS -->
+  <script src="../js/world-chart.js"></script>
+
+  <!-- 카테고리 JS -->
+  <script src="../js/world-category.js"></script>
+
+</body>
+</html>

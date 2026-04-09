@@ -1,0 +1,321 @@
+/*자가진단 CSS*/
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: Arial, "Noto Sans KR", sans-serif;
+  background: linear-gradient(180deg, #130f3a 0%, #07112b 100%);
+  color: #fff;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.button{
+    -webkit-tap-highlight-color: transparent;
+}
+
+.app-page {
+  min-height: 100vh;
+  padding: 20px 16px 32px;
+}
+
+.page-shell {
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.top-bar h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.back-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.result-card {
+  background: rgba(8, 18, 48, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.summary-title {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.summary-box,
+.answer-box,
+.final-box {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.answer-item {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  color: #d2daf0;
+}
+
+.final-text {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.final-box{
+    margin-top: 22px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 12px;
+  color: #bfc8e6;
+}
+
+.hidden {
+  display: none;
+}
+
+.risk-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.risk-high {
+  background: rgba(255, 77, 87, 0.18);
+  color: #ff8a92;
+}
+
+.risk-mid {
+  background: rgba(255, 184, 77, 0.18);
+  color: #ffd27a;
+}
+
+.risk-low {
+  background: rgba(92, 214, 155, 0.18);
+  color: #8df0bd;
+}
+
+.risk-default {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d6def5;
+}
+
+.result-date {
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  color: #c8d0ea;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.section-desc {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #d6def5;
+}
+
+.result-date {
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #dce5ff;
+}
+
+.answer-item {
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.answer-question-label,
+.answer-choice-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #8ea2ff;
+    margin-bottom: 4px;
+}
+.answer-question,
+.answer-choice{
+    font-size: 15px;
+    line-height: 1.6;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.answer-item:last-child {
+  margin-bottom: 0;
+}
+
+.answer-question {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.answer-ai {
+  font-size: 14px;
+  color: #b9c7ee;
+  margin-bottom: 6px;
+}
+
+.answer-choice {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/*모바일 공통*/
+/* 모바일 공통 */
+@media (max-width: 480px) {
+  .app-page {
+    padding: 16px 12px 28px;
+  }
+
+  .page-shell {
+    max-width: 100%;
+  }
+
+  .top-bar {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .top-bar h1 {
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  .back-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  .result-card {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .summary-title {
+    font-size: 19px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .summary-box,
+  .answer-box,
+  .final-box {
+    padding: 12px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+  }
+
+  .answer-item {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .final-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .empty-state {
+    padding: 28px 10px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .risk-badge {
+    font-size: 12px;
+    padding: 7px 11px;
+  }
+}
+
+/* 더 작은 화면 */
+@media (max-width: 360px) {
+  .app-page {
+    padding: 14px 10px 24px;
+  }
+
+  .top-bar h1 {
+    font-size: 20px;
+  }
+
+  .result-card {
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .summary-title {
+    font-size: 15px;
+  }
+
+  .summary-box,
+  .answer-box,
+  .final-box {
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .answer-item {
+    font-size: 13px;
+  }
+
+  .final-text {
+    font-size: 13px;
+  }
+
+  .risk-badge {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
+
+/* 아이폰 하단 안전영역 대응 */
+@supports (padding: max(0px)) {
+  .app-page {
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+  }
+}

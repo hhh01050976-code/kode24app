@@ -1,0 +1,81 @@
+/*프로필 관련 공통 스타일*/
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Pretendard", sans-serif;
+  background: #0b1020;
+  color: #fff;
+}
+
+.app-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(124,58,237,0.25), transparent 30%),
+    linear-gradient(#11162a, #0b1020);
+}
+
+.page-shell {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* 헤더 */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 18px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* 프로필 */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: #8b5cf6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 메뉴 */
+.menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+}

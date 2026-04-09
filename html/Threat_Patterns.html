@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/../css/Threat.css"/><!-- Threat.css 경로 코드-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <title>가해자 조직 / 패턴 분석 대시보드</title>
+</head>
+<body>
+<div class="app">
+
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="top-buttons">
+          <button class="back-btn" onclick="goBack()">⬅</button>
+          <button class="menu-btn" id="menuBtn">☰</button>
+        </div>
+
+        <button class="close-btn" id="closeBtn">✕</button>
+      </div>
+
+        <h2 class="sidebar-title">카테고리</h1>
+
+        <ul class="category-list">
+            <li><button class="category-btn active" data-category="region">가해자 발생 밀집 지역</button></li>
+            <li><button class="category-btn" data-category="money">국가별 평균 협박 금액</button></li>
+            <li><button class="category-btn" data-category="bot">자동화 봇 사용 비율</button></li>
+            <li><button class="category-btn" data-category="method">국가별 협박 방식</button></li>
+        </ul>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!--메인-->
+    <main class="main">
+        <!--지도 영역-->
+        <section class="map-section">
+
+            <div class="page-header-card">
+            <h1>가해자 활동 분석 대시보드</h1>
+            <p id="categoryTitle">전 세계 마커 현황</p>
+            </div>
+
+
+            <!-- 실제 지도 들어갈 자리 -->      
+             
+            <!--지도 안에 위험도 div-->
+            <div class="map-container" id="mapContainer">
+            <div class="map-legend">
+                <div class="map-legend-title">위험도</div>
+
+                <div class="legend-item red">
+                <span class="dot"></span>
+                <span>매우 위험</span>
+                </div>
+
+                <div class="legend-item orange">
+                <span class="dot"></span>
+                <span>높음</span>
+                </div>
+
+                <div class="legend-item yellow">
+                <span class="dot"></span>
+                <span>중간</span>
+                </div>
+
+                <div class="legend-item green">
+                <span class="dot"></span>
+                <span>약함</span>
+                </div>
+            </div>
+            </div>
+
+           
+        </section>
+
+        <!--통계 영역-->
+        <section class="stats-section hidden" id="statsSection">
+            <h2 id="statsTitle">가해자 밀집 지역 통계 </h2>
+            <div class="stats-circle-wrap" id="statsCircleWrap"></div>
+            <!--js 원형 통계 삽입 자리-->
+            <div class="stats-desc" id="statsdesc"></div>
+        </section>
+    </main>
+</div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="../js/Threat.js"></script> <!-- 가해자 조직 js 파일 경로-->
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/Login.css"><!-- 로그인 CSS -->
+    <title>로그인</title>
+</head>
+<body>
+<div class="app-page">
+        <div class="login-shell">
+
+            <!-- 상단 -->
+            <header class="login-header">
+                <button class="back-btn" onclick="history.back()">⬅</button>
+                <div class="brand-box">
+                    <img src="../img/logo.png" alt="Kode24" class="brand-logo">
+                </div>
+            </header>
+
+            <!-- 인트로 -->
+            <section class="intro-section">
+                <div class="intro-badge">SECURE ACCESS</div>
+                <h1>Kode24 시작하기</h1>
+                <p>
+                    로그인 또는 회원가입 후<br>
+                    상담 신청, 기록 저장, 맞춤 기능을 이용할 수 있습니다.
+                </p>
+            </section>
+
+            <!-- 메인 카드 -->
+            <main class="auth-card">
+                <!-- 탭 -->
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">로그인</button>
+                    <button class="tab-btn" data-tab="signup">회원가입</button>
+                </div>
+
+                <!-- 로그인 폼 -->
+                <section class="form-panel active" id="loginPanel">
+                    <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+                        <label>
+                            아이디
+                            <input type="text" id="loginId" placeholder="아이디를 입력해주세요">
+                        </label>
+
+                        <label>
+                            비밀번호
+                            <div class="password-wrap">
+                            <input type="password" id="loginPassword" placeholder="비밀번호를 입력해주세요">
+                            <img src="../img/rock.png" class="toggle-password" data-target="loginPassword">
+                            </div>
+                        </label>
+
+                        <div class="form-row">
+                            <label class="check-wrap">
+                                <input type="checkbox" id="keepLogin">
+                                <span>로그인 상태 유지</span>
+                            </label>
+                            <button type="button" class="text-btn">비밀번호 찾기</button>
+                        </div>
+
+                        <button type="submit" class="primary-btn">로그인</button>
+                    </form>
+                </section>
+
+                <!-- 회원가입 폼 -->
+                <section class="form-panel" id="signupPanel">
+                    <form id="signupForm" class="auth-form">
+                        <label>
+                            이름
+                            <input type="text" id="signupName" placeholder="이름을 입력해주세요.">
+                            <small class="input-msg" id="nameMsg"></small>
+                        </label>
+
+                        <label>
+                            이메일
+                            <div class="input-inline">
+                                <input type="email" id="signupEmail" placeholder="이메일을 입력해주세요.">
+                                <button type="button" class="mini-btn" id="sendCodeBtn">인증요청</button>
+                            </div>
+                            <small class="input-msg" id="emailMsg"></small>
+                        </label>
+
+                        <label>
+                            비밀번호
+                            <div class="password-wrap">
+                                <input type="password" id="signupPassword" placeholder="비밀번호를 입력해주세요">
+                                <img src="../img/rock.png" class="toggle-password" data-target="signupPassword">
+                            </div>
+                            <small class="input-msg error" id="passwordMsg">비밀번호는 7~10자 / 특수문자 포함으로 입력해주세요.</small>
+                        
+                        </label>
+
+                        <label>
+                            비밀번호 확인
+                            <div class="password-wrap">
+                            <input type="password" id="signupPasswordConfirm" placeholder="비밀번호를 다시 입력해주세요">
+                            <img src="../img/rock.png" class="toggle-password" data-target="signupPasswordConfirm">
+                            </div>
+                            <small class="input-msg" id="passwordConfirmMsg"></small>
+                        </label>
+
+                        <label class="check-wrap agree-wrap">
+                            <input type="checkbox" id="agreeTerms">
+                            <span>개인정보 수집 및 이용에 동의합니다.</span>
+                        </label>
+
+                        <button type="submit" class="primary-btn">회원가입</button>
+                    </form>
+                </section>
+
+                <!-- 구분 -->
+                <div class="divider">
+                    <span>또는 간편하게 시작하기</span>
+                </div>
+
+                <!-- 간편 로그인 -->
+                <section class="social-login">
+                    <button class="social-btn kakao-btn" type="button" data-social="kakao">
+                        <span class="social-icon"><img src="../img/kakao.png" alt="카카오"></span>
+                        <span>카카오로 계속하기</span>
+                    </button>
+
+                    <button class="social-btn google-btn" type="button" data-social="google">
+                        <span class="social-icon">G</span>
+                        <span>Google로 계속하기</span>
+                    </button>
+
+                    <button class="social-btn apple-btn" type="button" data-social="apple">
+                        <span class="social-icon"></span>
+                        <span>Apple로 계속하기</span>
+                    </button>
+                </section>
+            </main>
+
+            <div class="bottom-space"></div>
+        </div>
+    </div>
+
+    <!-- 이메일 인증 팝업 -->
+    <div class="modal-overlay" id="codeModal">
+        <div class="modal-box small-modal">
+            <div class="modal-header">
+                <h3>이메일 인증</h3>
+                <button type="button" class="close-btn" id="closeCodeModal">✕</button>
+            </div>
+
+            <p class="modal-desc">
+                입력한 이메일로 인증코드를 보냈다고 가정한 테스트 화면입니다.<br>
+                인증코드를 입력해주세요.
+            </p>
+
+            <input type="text" id="emailCodeInput" placeholder="인증코드 입력">
+            <button type="button" class="primary-btn" id="verifyCodeBtn">인증 확인</button>
+        </div>
+    </div>
+
+    <div class="app-toast" id="appToast"></div>
+
+    <script src="../js/Login.js"></script><!-- 로그인 js-->
+</body>
+</html>

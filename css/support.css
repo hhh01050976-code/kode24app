@@ -1,0 +1,710 @@
+/*예약 교육 신청 페이지 CSS*/
+
+/* =========================
+   1. 기본 공통 설정
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  background: #0b1020;
+  color: #ffffff;
+}
+
+/* 모달 열릴 때 스크롤 잠금 */
+body.modal-open {
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* =========================
+   2. 페이지 전체 배경
+========================= */
+.app-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(124, 58, 237, 0.35), transparent 30%),
+    linear-gradient(180deg, #11162a 0%, #0b1020 100%);
+}
+
+/* =========================
+   3. 상단 히어로 영역
+========================= */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 260px;
+  padding: 18px 18px 46px;
+  border-bottom: none;
+}
+
+/* 히어로 배경 영역 */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* 히어로 배경 이미지 */
+.hero-img {
+  position: absolute;
+  inset: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+  object-fit: cover;
+  filter: blur(4px) brightness(0.72);
+  transform: scale(1.04);
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* 활성 이미지 */
+.hero-img.active {
+  opacity: 1;
+}
+
+/* 히어로 오버레이 */
+.hero-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 12, 45, 0.18) 0%,
+    rgba(16, 18, 42, 0.28) 28%,
+    rgba(12, 16, 32, 0.72) 68%,
+    rgba(11, 16, 32, 1) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 히어로 상단 바 */
+/*kode24 마크*/
+.hero-top {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+
+/* 히어로 텍스트 */
+.hero-content {
+  position: relative;
+  z-index: 3;
+  padding: 10px 4px 0;
+}
+
+/* 브랜드명 */
+.brand {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* 뱃지 텍스트 */
+.hero-badge {
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 700;
+  color: #c4b5fd;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+}
+
+/* 메인 제목 */
+.hero-content h1 {
+  margin: 0 0 10px;
+  font-size: 40px;
+  font-weight: 750;
+}
+
+/* 설명 문구 */
+.hero-desc {
+  margin: 0;
+  color: #d1d5db;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* 뒤로가기 버튼 */
+.back-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 9999;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+
+/* =========================
+   4. 본문 공통 영역
+========================= */
+.content-section {
+  position: relative;
+  z-index: 3;
+  margin-top: 10px;
+  padding: 0 18px 120px;
+}
+
+/* 공통 카드 박스 */
+.info-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* 카드 제목 */
+.info-card h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* 카드 본문 */
+.info-card p {
+  margin: 0;
+  line-height: 1.6;
+  color: #dbe2f0;
+  font-size: 15px;
+}
+
+/* =========================
+ 모든 카드 떠 있는 카드 느낌 
+========================= */
+.info-card,
+.mini-card,
+.review-item {
+    position: relative;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.20),
+    0 1px 0 rgba(255, 255, 255, 0.05) inset;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.info-card::before,
+.mini-card::before,
+.review-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+}
+
+.info-card::after,
+.mini-card::after,
+.review-item::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -10px;
+  height: 18px;
+  background: rgba(0, 0, 0, 0.22);
+  filter: blur(14px);
+  border-radius: 999px;
+  opacity: 0.65;
+  z-index: -1;
+}
+
+.info-card:hover,
+.mini-card:hover,
+.review-item:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.24),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+/* 하단 여백 */
+.bottom-space {
+  height: 12px;
+}
+
+/* =========================
+   5. 칩 리스트 영역
+========================= */
+.chip-list {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 10px 12px;
+  justify-content: center;
+}
+
+/* 칩 스타일 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #f5f3ff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================
+   6. 대상별 카드 영역
+========================= */
+.grid-card-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* 작은 카드 */
+.mini-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* 작은 카드 제목 */
+.mini-title {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+/* 작은 카드 본문 */
+.mini-card p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* =========================
+   7. 타임라인 영역
+========================= */
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 타임라인 한 줄 */
+.timeline-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* 타임라인 점 */
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #8b5cf6;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+/* 타임라인 제목 */
+.timeline-item strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+/* 타임라인 설명 */
+.timeline-item p {
+  font-size: 13px;
+}
+
+/* =========================
+   8. 포인트 리스트 영역
+========================= */
+.point-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #e5e7eb;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+/* =========================
+   9. 후기 스크롤 영역
+========================= */
+.review-card {
+  overflow: hidden;
+}
+
+/* 후기 보여지는 박스 */
+.review-scroll-wrap {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+/* 위/아래 그라데이션 */
+.review-scroll-wrap::before,
+.review-scroll-wrap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 42px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* 위쪽 페이드 */
+.review-scroll-wrap::before {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 24, 39, 1) 0%,
+    rgba(17, 24, 39, 0) 100%
+  );
+}
+
+/* 아래쪽 페이드 */
+.review-scroll-wrap::after {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(17, 24, 39, 1) 0%,
+    rgba(17, 24, 39, 0) 100%
+  );
+}
+
+/* 후기 트랙 */
+.review-scroll-track {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  will-change: transform;
+}
+
+/* 후기 카드 */
+.review-item {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* 후기 텍스트 */
+.review-text {
+  margin: 0 0 10px;
+  color: #e5e7eb;
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+/* 후기 하단 메타 */
+.review-meta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 후기 태그 */
+.review-meta span {
+  color: #a78bfa;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================
+   10. 하단 고정 CTA 영역
+========================= */
+.fixed-cta-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(10, 14, 28, 0.96);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1000;
+}
+
+/* CTA 공통 버튼 */
+.cta-btn {
+  height: 52px;
+  border: none;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* 전화 버튼 */
+.call-btn {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* 카카오 버튼 */
+.kakao-btn {
+  background: #facc15;
+  color: #111827;
+}
+
+/* 신청 버튼 */
+.apply-btn {
+  background: #22c55e;
+  color: #fff;
+}
+
+/* =========================
+   11. 신청 모달 영역
+========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+/* 모달 열림 */
+.modal-overlay.show {
+  display: flex;
+}
+
+/* 모달 페이드인 */
+.modal-overlay.visible {
+  opacity: 1;
+}
+
+/* 모달 본체 */
+.modal-box {
+  width: 100%;
+  max-width: 520px;
+  background: #111827;
+  border-radius: 24px 24px 0 0;
+  padding: 20px 18px 28px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform 0.28s ease;
+}
+
+/* 모달 슬라이드업 */
+.modal-overlay.visible .modal-box {
+  transform: translateY(0);
+}
+
+/* 모달 헤더 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+/* 모달 제목 */
+.modal-header h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+/* 닫기 버튼 */
+.close-btn {
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* =========================
+   12. 신청 폼 영역
+========================= */
+.apply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 라벨 묶음 */
+.apply-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+/* 인풋 공통 */
+.apply-form input,
+.apply-form select,
+.apply-form textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 14px;
+  outline: none;
+}
+
+/* 셀렉트 */
+.apply-form select {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* 셀렉트 옵션 */
+.apply-form select option {
+  color: #111827;
+  background: #ffffff;
+}
+
+/* 플레이스홀더 */
+.apply-form input::placeholder,
+.apply-form textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* 제출 버튼 */
+.submit-btn {
+  margin-top: 6px;
+  height: 52px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* =========================
+   13. 버튼 인터랙션
+========================= */
+.pressed {
+  transform: scale(0.97);
+  transition: transform 0.12s ease;
+}
+
+/* =========================
+   14. 토스트 메시지
+========================= */
+.app-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 94px;
+  transform: translateX(-50%) translateY(16px);
+  background: rgba(17, 24, 39, 0.92);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 3000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+}
+
+/* 토스트 표시 */
+.app-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: rgba(20, 20, 30, 0.95);
+  color: #fff;
+  padding: 14px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.25s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0px);
+}
+
+.input-error{
+  border: 1px solid #ff4d4f !important;
+  box-shadow:  0 0 0 2px rgba(255,77,79,0.15) !important;
+}
+
+
+/* =========================
+   15. 모바일 대응
+========================= */
+@media (max-width: 420px) {
+  /* 카드 1열 변경 */
+  .grid-card-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  /* 제목 크기 축소 */
+  .hero-content h1 {
+    font-size: 33px;
+  }
+
+  /* 하단 CTA 여백 조정 */
+  .fixed-cta-bar {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  /* 버튼 크기 조정 */
+  .cta-btn {
+    font-size: 13px;
+    height: 50px;
+  }
+}

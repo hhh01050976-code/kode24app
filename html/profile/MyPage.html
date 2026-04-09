@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/MyPage.css"> <!--마이 페이지 CSS 경로-->
+    <title>마이 페이지</title>
+</head>
+<body>
+    <div class="app-page">
+        <div class="mypage-shell">
+
+
+            <!--나중에 실제 데이터 갖고 오셈-->
+            <!--상담 부분-->
+            <header class="mypage-header">
+                <button class="back-btn" onclick="goHome()">⬅</button>
+                <div class="brand-box">내 계정</div>
+            </header>
+
+
+            <!--프로필 부분-->
+            <section class="profile-card">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-info">
+                    <h1 id="profileName">사용자님</h1>
+                    <p id="profileEmail">user@example.com</p>
+                </div>
+            </section>
+
+            <!--계정 메뉴 부분-->
+            <main class="menu-section">
+                
+
+                <button class="menu-card" data-link="Personal_Info.html">
+                    <div class="menu-left">
+                        <div class="menu-icon">👤</div>
+                        <div>
+                            <strong>내 개인 정보</strong>
+                            <p>기본 정보 및 계정 정보 관리</p>
+                        </div>
+                    </div>
+                    <span class="menu-arrow">›</span>
+                </button>
+
+                <button class="menu-card" data-link="EvidenceFiles.html">
+                    <div class="menu-left">
+                        <div class="menu-icon">📁</div>
+                        <div>
+                            <strong>증거 보존 파일</strong>
+                            <p>사진, 영상, 문서 보관 내역 확인</p>
+                        </div>
+                    </div>
+                    <span class="menu-arrow">›</span>
+                </button>
+
+                <button class="menu-card" data-link="Consultation.html">
+                <div class="menu-left">
+                    <div class="menu-icon">🧾</div>
+                    <div>
+                    <strong>상담 신청 내역</strong>
+                    <p>상담 접수 및 진행 상태 확인</p>
+                    </div>
+                </div>
+                <span class="menu-arrow">›</span>
+                </button>
+
+                <button class="menu-card" data-link="Result.html">
+                <div class="menu-left">
+                    <div class="menu-icon">📊</div>
+                    <div>
+                    <strong>자가진단 테스트 결과</strong>
+                    <p>최근 진단 결과 및 기록 확인</p>
+                    </div>
+                </div>
+                <span class="menu-arrow">›</span>
+                </button>
+            </main>
+
+            <!--하단 액션-->
+            <section class="bottom-section">
+                <button class="logout-btn" id="logoutBtn">로그아웃</button>
+            </section>
+
+        </div>
+    </div>
+    
+    <div class="app-toast" id="appToast"></div>
+
+    <script src="../../js/profile.js"></script>
+    
+<script>
+    function goHome() {
+  location.href = "../Home.html";
+}
+</script>
+
+
+</body>
+</html>

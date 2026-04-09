@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/consultation.css">
+    <link rel="stylesheet" href="../../css/profile.css">
+    <title>상단 신청 내역 페이지</title>
+</head>
+<body>
+    
+    <div class="app-page">
+        <div class="page-shell">
+            <header class="top-bar">
+                <button class="back-btn" onclick="goBack()">⬅</button>
+                <h1>상담 신청 내역</h1>
+            </header>
+
+
+
+            <section class="history-card">
+                <div id="consultList" class="consult-list"></div>
+                <div id="emptyState" class="empty-state hidden">상담 신청 내역이 없습니다.</div>
+            </section>
+        </div>
+    </div>
+
+
+    <script src="../../js/Consultation.js"></script>
+</body>
+</html>

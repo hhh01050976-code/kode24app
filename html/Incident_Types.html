@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/../css/Incident.css"/><!-- Incident.css 경로 코드-->
+    <script src="http://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>피해 유형 현황 대시보드</title>
+</head>
+<body>
+
+            <!-- 뒤로가기 버튼 -->
+        <button class="back-btn" onclick="goBack()">⬅</button>
+
+
+
+    <div class="Incident-app">
+
+            <section class="incident-hero">
+                <h1> 피해 유형 분석 대시보드</h1>
+                <p>전 세계 몸캠 피싱/ 섹스토션 피해 유형을 한눈에 분석</p>
+            </section>
+
+            <!-- 요약 카드 -->
+            <!-- 이것도 나중에 실제 데이터 끌고 와서 사용하기-->
+            <section class="summary-grid">
+            <div class="summary-card">
+                <span class="summary-label">전체 신고 건수</span>
+                <strong id="totalCount" class="summary-value">18,420건</strong>
+            </div>
+            <div class="summary-card">
+                <span class="summary-label">가장 많은 유형</span>
+                <strong id="topType" class="summary-value">랜덤 채팅 유도형</strong>
+            </div>
+            <div class="summary-card">
+                <span class="summary-label">증가율</span>
+                <strong id="growthRate" class="summary-value danger">+12.8%</strong>
+            </div>
+            </section>
+
+            <!-- 랜덤 채팅 유도형 -->
+            <section class="dashboard-card">
+            <div class="card-header">
+                <h2>유형별 전체 집계</h2>
+                <span>최근 집계 기준</span>
+            </div>
+            <div class="chart-wrap medium">
+                <canvas id="typeDonutChart"></canvas>
+            </div>
+            </section>
+
+            <!-- 영상 통화 녹화형 -->
+            <section class="dashboard-card">
+            <div class="card-header">
+                <h2>영상 통화 녹화형</h2>
+                <span>최근 집계 기준</span>
+            </div>
+            <div class="chart-wrap tall">
+                <canvas id="videoLineChart"></canvas>
+            </div>
+            </section>
+
+            <!-- 딥 페이크 형 -->
+            <section class="dashboard-card">
+            <div class="card-header">
+                <h2>딥 페이크 형</h2>
+                <span>최근 집계 기준</span>
+            </div>
+            <div class="chart-wrap tall">
+                <canvas id="deepfakeRadarChart"></canvas>
+            </div>
+            </section>
+
+            <!-- 나이별 -->
+            <section class="dashboard-card">
+            <div class="card-header">
+                <h2>나이별 </h2>
+                <span>최근 집계 기준</span>
+            </div>
+            <div class="chart-wrap medium">
+                <canvas id="naivenPolarChart"></canvas>
+            </div>
+            </section>
+
+            <!-- 연애 사기 결합형 -->
+            <section class="dashboard-card">
+            <div class="card-header">
+                <h2>연애 사기 결합형</h2>
+                <span>최근 집계 기준</span>
+            </div>
+            <div class="chart-wrap tall">
+                <canvas id="romanceStackedChart"></canvas>
+            </div>
+            </section>
+
+            <!-- 플랫폼 별 유형 -->
+            <section class="dashboard-card">
+            <div class="card-header">
+                <h2>플랫폼 별 유형</h2>
+                <span>최근 집계 기준</span>
+            </div>
+            <div class="chart-wrap tall">
+                <canvas id="platformHorizontalChart"></canvas>
+            </div>
+            </section>
+
+
+
+
+
+
+
+            <!-- 6개 유형 상세 카드 -->
+            <section class="type-list-section">
+                <div class="section-title">
+                    <h2>유형별 상세 요약</h2>
+                </div>
+
+            <div id="typeList" class="type-list">
+                <div class="type-card">
+                    <div class="type-card-top">
+                            <h3>랜덤 채팅 유도형</h3>
+                            <span class="badge">비중 24%</span>
+                        </div>
+                            <p>랜덤채팅 앱/사이트를 통해 접근 후 외부 플랫폼으로 유도하는 전형적인 형태</p>
+                        <div class="type-meta">
+                            <span>발생률 4,280건</span>
+                            <span>위험도 높음 🔴</span>
+                    </div>
+                </div>
+
+                <div class="type-card">
+                <div class="type-card-top">
+                        <h3>영상 통화 녹화형</h3>
+                            <span class="badge">비중 18%</span>
+                        </div>
+                            <p>영상 통화 장면을 녹화한 뒤 지인 유포 협박으로 이어지는 유형</p>
+                        <div class="type-meta">
+                            <span>발생률 3,120건</span>
+                            <span>위험도 높음 🔴</span>
+                        </div>
+                </div>
+
+                <div class="type-card">
+                    <div class="type-card-top">
+                        <h3>딥페이크 형</h3>
+                        <span class="badge">비중 14%</span>
+                    </div>
+                        <p>기존 사진/영상 자료를 합성하여 허위 유포 협박을 진행하는 유형</p>
+                    <div class="type-meta">
+                        <span>발생률 2,480건</span>
+                        <span>위험도 중상 🟡</span>
+                    </div>
+                </div>
+
+                <div class="type-card">
+                <div class="type-card-top">
+                    <h3>나이별</h3>
+                        <span class="badge">비중 11%</span>
+                    </div>
+                        <p>단순 대화 접근 이후 빠른 영상/개인정보 확보를 통해 협박하는 단기형 유형</p>
+                    <div class="type-meta">
+                        <span>발생률 1,960건</span>
+                        <span>위험도 중간 🟢 </span>
+                    </div>
+                </div>
+
+                <div class="type-card">
+                    <div class="type-card-top">
+                        <h3>연애사기 결합형</h3>
+                        <span class="badge">비중 16%</span>
+                    </div>
+                        <p>감정 형성을 먼저 유도한 뒤 금전 요구와 영상 협박이 결합되는 복합형 유형</p>
+                    <div class="type-meta">
+                        <span>발생률 2,850건</span>
+                        <span>위험도 매우 높음 🔴</span>
+                    </div>
+                </div>
+
+                <div class="type-card">
+                    <div class="type-card-top">
+                        <h3>플랫폼별 유형</h3>
+                        <span class="badge">비중 17%</span>
+                    </div>
+                        <p>SNS, 메신저, 랜덤채팅, 영상앱 등 플랫폼 특성에 따라 변형되는 유형군</p>
+                    <div class="type-meta">
+                        <span>발생률 3,010건</span>
+                        <span>위험도 중상 🟡</span>
+                    </div>
+                </div>
+            </div>
+            </section>
+
+
+  </div>
+
+
+
+  
+  <script src="../js/Incident.js"></script>
+</body>
+</html>

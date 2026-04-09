@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/home.css">
+    <title>Kode24</title>
+</head>
+<body>
+    
+<div class="hero">
+
+    <img src="../img/mainwold.jpg" class="earth">
+
+
+        <div>
+            <img src="../img/logo.png" alt="logo" class="logo">
+        </div>
+
+        <div id="userArea"></div><!--로그인-->
+
+            <!--여기에 카테고리를 선택하세요-->
+        <div Class="title-text">카테고리를 선택하세요.</div>
+
+        <div class="category-wrap">
+                <div class="category-bg"></div>
+
+                <!-- 카테고리 넣는 div 배경 -->
+                <div class="back">
+                        <a href="World_Map.html" class="categort-item" >
+                                <div class="card">
+                                    <img src="../img/card1.png" alt="글로벌 피해 현황">
+                                </div>
+                                <div class="label">글로벌 피해 현황</div>
+                        </a>
+                        <a href="Incident_Types.html" class="categort-item" >
+                                <div class="card">
+                                    <img src="../img/card2.png" alt="피해 유형 분석">
+                                </div>
+                                <div class="label">피해 유형 분석</div>
+                        </a>                        
+                        <a href="Threat_Patterns.html" class="categort-item" >
+                                <div class="card">
+                                    <img src="../img/card3.png" alt="가해 조직/패턴">
+                                </div>
+                                <div class="label">가해 조직/패턴</div>
+                        </a>                        
+                        <a href="./diagnosis/Self_Assessment.html" class="categort-item" >
+                                <div class="card">
+                                    <img src="../img/card4.png" alt="자가 진단 테스트">
+                                </div>
+                                <div class="label">자가 진단 테스트</div>
+                        </a>                        
+                        <a href="Support_Center.html" class="categort-item" >
+                                <div class="card">
+                                    <img src="../img/card5.png" alt="예방 교육 신청">
+                                </div>
+                                <div class="label">예방 교육 신청</div>
+                        </a>                        
+                        <a href="Help.html" class="categort-item" >
+                                <div class="card">
+                                    <img src="../img/card6.png" alt="상담 및 해결 후기">
+                                </div>
+                                <div class="label">즉시 대응 & 증거 분석</div>
+                        </a>
+                </div>
+
+        </div>
+
+</div>
+
+
+<script>
+
+// 로그인 정보 가져오기
+  const userArea = document.getElementById("userArea");
+  const loginUser = JSON.parse(localStorage.getItem("kode24_login_user") || "null");
+
+  if (loginUser && loginUser.isLoggedIn) {
+    userArea.innerHTML = `
+      <div class="user-box">
+        <span class="user-name" id="goMyPage">${loginUser.name}님</span>
+      </div>
+    `;
+
+    // 👉 클릭하면 마이페이지 이동
+    document.getElementById("goMyPage").addEventListener("click", () => {
+      location.href = "profile/MyPage.html";
+    });
+
+  } else {
+    userArea.innerHTML = `
+      <a href="Login.html" class="login-btn">
+        <img src="../img/login.png" alt="login">
+        <span>로그인</span>
+      </a>
+    `;
+  }
+</script>
+
+</body>
+</html>

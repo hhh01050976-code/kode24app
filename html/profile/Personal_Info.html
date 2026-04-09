@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/personal_info.css">
+    <link rel="stylesheet" href="../../css/profile.css">
+    <title>개인정보 페이지</title>
+</head>
+<body>
+    <div class="app-page">
+        <div class="page-shell">
+            <header class="top-bar">
+                <button class="back-btn" onclick="goBack()">⬅</button>
+                <h1>개인 정보</h1>
+            </header>
+
+            <section class="info-card">
+                <div class="card-header">
+                    <h2> 회원 정보</h2>
+                    <button id="editBtn" class="edit-btn">수정하기</button>
+                </div>
+                
+                <div class="field-group">
+                    <label>이름</label>
+                    <input type="text" id="userName" disabled />
+                </div>
+
+                <div class="field-group">
+                    <label>이메일</label>
+                    <input type="email" id="userEmail" disabled />
+                </div>
+                 <div class="field-group">
+                    <label>연락처</label>
+                    <input type="text" id="userPhone" disabled placeholder="010-0000-0000" />
+                </div>
+
+                <div class="field-group">
+                    <label>가입 목적</label>
+                    <input type="text" id="userPurpose" disabled placeholder="상담 / 자가진단 / 증거보존" />
+                </div>
+
+                <div class="action-row hidden" id="saveRow">
+                    <button id="cancelBtn" class="sub-btn">취소</button>
+                    <button id="saveBtn" class="main-btn">저장하기</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="app-toast" id="appToast"></div>
+
+
+
+    <script src="../../js/personal_info.js"></script>
+</body>
+</html>
