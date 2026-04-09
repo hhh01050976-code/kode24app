@@ -409,7 +409,7 @@ function renderPreview(type) {
 1. 파일 업로드 API로 먼저 업로드
 2. 서버가 돌려준 fileId / fileUrl을 받아서 저장 API에 함께 전달 
 */
-async function buildEvidenceFileEntries() {
+function buildEvidenceFileEntries() {
   const currentUser = getCurrentUser();
   if (!currentUser) {
     throw new Error("로그인 사용자 정보가 없습니다.");
@@ -418,56 +418,47 @@ async function buildEvidenceFileEntries() {
   const payload = buildEvidencePayload();
   const date = payload.savedAt.slice(0, 10);
 
-  //현재 로컬 저장용 객체 생성
-  // 나중에 upload API 응답값 기반으로 변경 
+  const photoEntries = selectedPhotoFiles.map((file) => ({
+    id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    ownerUserId: currentUser.userId,
+    ownerUserName: currentUser.name,
+    type: "photo",
+    name: file.name,
+    size: file.size,
+    date,
+    url: "",
+    attackerId: payload.attackerId,
+    profileLink: payload.profileLink,
+    evidenceMemo: payload.evidenceMemo
+  }));
 
-  const photoEntries = await Promise.all(
-    selectedPhotoFiles.map(async (file) => ({
-      id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-      ownerUserId: currentUser.userId,
-      ownerUserName: currentUser.name,
-      type: "photo",
-      name: file.name,
-      size: file.size,
-      date,
-      url: "",
-      attackerId: payload.attackerId,
-      profileLink: payload.profileLink,
-      evidenceMemo: payload.evidenceMemo
-    }))
-  );
+  const videoEntries = selectedVideoFiles.map((file) => ({
+    id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    ownerUserId: currentUser.userId,
+    ownerUserName: currentUser.name,
+    type: "video",
+    name: file.name,
+    size: file.size,
+    date,
+    url: "",
+    attackerId: payload.attackerId,
+    profileLink: payload.profileLink,
+    evidenceMemo: payload.evidenceMemo
+  }));
 
-  const videoEntries = await Promise.all(
-    selectedVideoFiles.map(async (file) => ({
-      id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-      ownerUserId: currentUser.userId,
-      ownerUserName: currentUser.name,
-      type: "video",
-      name: file.name,
-      size: file.size,
-      date,
-      url: "",
-      attackerId: payload.attackerId,
-      profileLink: payload.profileLink,
-      evidenceMemo: payload.evidenceMemo
-    }))
-  );
-
-  const docEntries = await Promise.all(
-    selectedDocFiles.map(async (file) => ({
-      id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-      ownerUserId: currentUser.userId,
-      ownerUserName: currentUser.name,
-      type: "doc",
-      name: file.name,
-      size: file.size,
-      date,
-      url: "",
-      attackerId: payload.attackerId,
-      profileLink: payload.profileLink,
-      evidenceMemo: payload.evidenceMemo
-    }))
-  );
+  const docEntries = selectedDocFiles.map((file) => ({
+    id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    ownerUserId: currentUser.userId,
+    ownerUserName: currentUser.name,
+    type: "doc",
+    name: file.name,
+    size: file.size,
+    date,
+    url: "",
+    attackerId: payload.attackerId,
+    profileLink: payload.profileLink,
+    evidenceMemo: payload.evidenceMemo
+  }));
 
   return [...photoEntries, ...videoEntries, ...docEntries];
 }
