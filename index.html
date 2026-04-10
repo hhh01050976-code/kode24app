@@ -7,17 +7,73 @@
     <title>Kode24</title>
 </head>
 <body>
-    
-<div class="hero">
+    <!--앱 로딩 오버레이-->
+  <div id="appLoader" class="app-loader">
+      <div class="loader-bg-grid"></div>
+      <div class="loader-bg-glow loader-glow-1"></div>
+      <div class="loader-bg-glow loader-glow-2"></div>
 
-    <img src="./img/mainwold.jpg" class="earth">
+      <div class="loader-wrap">
+        <div class="loader-lock-circle">
+          <div class="lock-ring"></div>
+          <div class="lock-core">
+            <div class="lock-icon">🔒</div>
+          </div>
+        </div>
+
+        <h1 class="loader-title">KODE24 Protection</h1>
+        <p class="loader-subtitle">보호 시스템을  확인하고 있습니다.</p>
+
+        <div class="loader-panel">
+          <div class="loader-panel-top">
+            <span id="loaderStepText">Installing security module...</span>
+            <span id="loaderPercentText">0%</span>
+          </div>
+
+
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+            <div class="progress-scan"></div>
+          </div>
+
+          <div class="loader-status-list">
+            <div class="status-row">
+              <span class="status-label">Firewall</span>
+              <span id="statusFirewall" class="status-value waiting">대기중</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">Threat Scan</span>
+              <span id="statusScan" class="status-value waiting">대기중</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">Safe Mode</span>
+              <span id="statusSafeMode" class="status-value waiting">대기중</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="loader-binary">
+          01001011 01001111 01000100 01000101 00110010 00110100
+        </div>
+      </div>
+  </div>
+
+
+
+
+
+
+
+
+<div class="hero" id="mainContent">
+    <img src="./img/mainwold.jpg" class="earth" alt="main earth">
 
 
         <div>
             <img src="./img/logo.png" alt="logo" class="logo">
         </div>
 
-        <div id="userArea"></div><!--로그인-->
+        <div id="userArea"></div>
 
             <!--여기에 카테고리를 선택하세요-->
         <div Class="title-text">카테고리를 선택하세요.</div>
@@ -96,6 +152,89 @@
       </a>
     `;
   }
+
+  //로딩 오버레이
+  const appLoader = document.getElementById("appLoader");
+  const progressFill = document.getElementById("progressFill");
+  const loaderPercentText = document.getElementById("loaderPercentText");
+  const loaderStepText = document.getElementById("loaderStepText");
+
+  const statusFirewall = document.getElementById("statusFirewall");
+  const statusScan = document.getElementById("statusScan");
+  const statusSafeMode = document.getElementById("statusSafeMode");
+
+  const loadingSteps = [
+    { percent: 12, text: "Installing security module..."},
+    { percent: 28, text: "Checking firewall status..."},
+    { percent: 47, text: "Scanning threat patterns..."},
+    { percent: 69, text: "Loading protextion engine..."},
+    { percent: 86, text: "Applying secure shield..."},
+    { percent: 100, text: "System ready."}
+  ];
+
+  let currentPercent = 0;
+  let stepIndex = 0;
+
+  function updateStatus(){
+    if (currentPercent >= 20) {
+      statusFirewall.textContent ="작동중";
+      statusFirewall.className = "status-value active";
+    }
+
+    if (currentPercent >= 50){
+      statusScan.textContent = "분석중";
+      statusScan.className = "status-value active";
+    }
+
+    if (currentPercent >= 85) {
+    statusSafeMode.textContent = "활성화";
+    statusSafeMode.className = "status-value active";
+    }
+
+    if (currentPercent >= 100) {
+      statusFirewall.textContent = "완료";
+      statusFirewall.className = "status-value done";
+
+      statusScan.textContent = "완료";
+      statusScan.className = "status-value done";
+
+      statusSafeMode.textContent = "완료";
+      statusSafeMode.className = "status-value done";
+    }
+  }
+
+  function runLoader() {
+    const interval = setInterval(() => {
+      if (stepIndex < loadingSteps.length){
+        const target = loadingSteps[stepIndex];
+
+        if(currentPercent < target.percent) {
+          currentPercent++;
+          progressFill.style.width = `$[currentPercent]%`;
+          loaderPercentText.textContent = `${currentPercent}%`;
+          updateStatus();
+        }else {
+          loaderStepText.textContent = target.text;
+          stepIndex++;
+        }
+      } else {
+        clearInterval(interval);
+
+        setTimeout(() => {
+          appLoader.classList.add("hide");
+
+          setTimeout(() => {
+            appLoader.style.display = 'none';
+          }, 700);
+        }, 500);
+      }
+    }, 35);
+  }
+
+window.addEventListener("load", () => {
+  runLoader();
+})
+
 </script>
 
 </body>
