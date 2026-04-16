@@ -202,6 +202,155 @@ body {
   font-weight: 700;
 }
 
+.hero-result-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border: 1px solid rgba(139, 92, 246, 0.18);
+}
+
+.hero-left {
+  flex: 1;
+}
+
+.hero-main-title {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+
+.hero-main-title span {
+  color: #8B5CF6;
+}
+
+.hero-quote-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.hero-quote-mark {
+  font-size: 90px;
+  line-height: 0.9;
+  color: rgba(255,255,255,0.14);
+  font-weight: 900;
+}
+
+.hero-quote-text {
+  flex: 1;
+  padding-top: 8px;
+}
+
+.hero-summary {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.hero-final {
+  font-size: 18px;
+  font-weight: 700;
+  color: #bfa7ff;
+  line-height: 1.5;
+}
+
+.hero-right {
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.hero-brand {
+  font-size: 24px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.hero-risk-line,
+.hero-prob-line {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: right;
+  line-height: 1.5;
+}
+
+.leak-value {
+  color: #ff8a92;
+  font-weight: 900;
+  margin-left: 6px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.stat-chart-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.stat-chart-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.donut {
+  --value: 0;
+  width: 108px;
+  height: 108px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: conic-gradient(
+    #8B5CF6 calc(var(--value) * 1%),
+    rgba(255,255,255,0.10) 0
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-inner {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #111a35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.checklist-list {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.checklist-list li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+  color: #d6def5;
+}
+
+
 /*모바일 공통*/
 /* 모바일 공통 */
 @media (max-width: 480px) {
@@ -270,6 +419,46 @@ body {
   .risk-badge {
     font-size: 12px;
     padding: 7px 11px;
+  }
+
+  .hero-result-box {
+    flex-direction: column;
+  }
+
+  .hero-main-title {
+    font-size: 28px;
+  }
+
+  .hero-summary {
+    font-size: 18px;
+  }
+
+  .hero-final {
+    font-size: 15px;
+  }
+
+  .hero-right {
+    align-items: flex-start;
+  }
+
+  .hero-risk-line,
+  .hero-prob-line {
+    text-align: left;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .donut {
+    width: 100px;
+    height: 100px;
+  }
+
+  .donut-inner {
+    width: 62px;
+    height: 62px;
+    font-size: 14px;
   }
 }
 

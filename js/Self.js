@@ -17,6 +17,23 @@
 */
 
 const RESULT_KEY = "kode24_diagnosis_result";
+const LOGIN_USER_KEY = "kode24_login_user";
+
+function getLoginUser(){
+  const savedUser = localStorage.getItem(LOGIN_USER_KEY);
+  if (!savedUser) return null;
+
+  try{
+    return JSON.parse(savedUser);
+  } catch (error){
+    console.error("로그인 사용자 데이터 파싱 실패: ", error);
+    return null;
+  }
+}
+
+function isLoggedIn() {
+  return !!getLoginUser();
+}
 
 // 결과 저장용 상태값
 let diagnosisAnswers = {
@@ -44,10 +61,86 @@ function getTodayString() {
 
 // ---------------------------------------
 // 진단 결과 저장
-function saveDiagnosisResult({ riskLevel, summary, finalText }) {
+function calculateDiagnosisMetrics(){
+  const first = diagnosisAnswers.firstQuestion;
+  const second = diagnosisAnswers.secondQuestion;
+
+  let score = 0;
+
+  //1번 질문 점수
+  if(first.includes("협박/금전 요구")) score += 55;
+  else if (first.includes("의심")) score += 35;
+  else score += 10;
+
+  //2번 질문 점수
+  if(second.includes("보낸 적 있습니다.")) score+= 35;
+  else if (second.includes("일부 노출")) score += 20;
+  else score += 5;
+
+  score = Math.min(score, 95);
+
+  let riskLevel = "저위험";
+  if(score >= 75) riskLevel = "고위험";
+  else if(score >= 45) riskLevel = "주의";
+
+  const leakProbability = Number((score / 100 * 8.5).toFixed(2));
+
+  const blockRate = Math.max(60,100 - Math.round(score * 0.45));
+  const preventionRate = Math.max(55,100 - Math.round(score * 0.38));
+  const responseRate = Math.max(50,100 - Math.round(score * 0.50));
+
+  return {
+    score,
+    riskLevel,
+    leakProbability,
+    chartData: {
+      blockRate,
+      preventionRate,
+      responseRate
+    }
+  };
+}
+
+function buildChecklist(riskLevel) {
+  const common = [
+    "KODE24 담당자에게 작업 완료 내용을 전달 받았는가?",
+    "수상한 번호로 연락 시 KODe24로 먼저 문의 아내를 받았는가?",
+    "작업 완료 후 2주 동안 SNS 사용 시 주의사항을 지키기로 했는가?",
+    "가족 또는 지인에게 해킹 사실과 대응 원칙을 공유했는가?",
+    "앞으로 어떠한 몸캠피싱 요구에도 응하지 않기로 했는가?"
+  ];
+
+  if(riskLevel === "고위험"){
+    return [
+      "현재 계정/대화/통화 기록을 즉시 보존했는가?",
+      "추가 송금 및 추가 자료 전송을 중단했는가?",
+      ...common
+    ];
+  }
+
+  if(riskLevel === "주의") {
+    return [
+      "대화 내역과 상대방 계정 정보를 저장했는가?",
+      "외부 메신저 이동 및 파일 전송을 중단했는가?",
+      ...common
+    ];
+  }
+
+  return[
+    "직접 협박 정황은 낮지만 대화를 캡처해두었는가?",
+    "이후 저장/유포/송급 언급이 나오면 즉시 다시 점검할 준비가 되었는가?",
+    ...common
+  ];
+}
+
+function saveDiagnosisResult({ summary, finalText }) {
+  const metrics = calculateDiagnosisMetrics();
+
   const resultData = {
     date: getTodayString(),
-    riskLevel,
+    score: metrics.score,
+    riskLevel: metrics.riskLevel,
+    leakProbability: metrics.leakProbability,
     summary,
     answers: [
       {
@@ -59,11 +152,84 @@ function saveDiagnosisResult({ riskLevel, summary, finalText }) {
         answer: diagnosisAnswers.secondQuestion || "-"
       }
     ],
-    finalText
+    finalText,
+    chartData: metrics.chartData,
+    checklist: buildChecklist(metrics.riskLevel)
   };
 
   localStorage.setItem(RESULT_KEY, JSON.stringify(resultData));
 }
+
+function completeDiagnosis({ summary, finalText}){
+  saveDiagnosisResult({ summary, finalText});
+  updateStatus("진단 완료");
+
+  if (isLoggedIn()){
+    setTimeout(() => {
+      location.href = "../profile/Result.html";
+    }, 900);
+    return;
+  }
+
+  showUndoButton();
+  appendContactButtons();
+  appendLoginGuide();
+}
+// function saveDiagnosisResult({ riskLevel, summary, finalText }) {
+//   const resultData = {
+//     date: getTodayString(),
+//     riskLevel,
+//     summary,
+//     answers: [
+//       {
+//         question: "상대방이 금전 요구나 유포 협박을 한 적이 있나요?",
+//         answer: diagnosisAnswers.firstQuestion || "-"
+//       },
+//       {
+//         question: "상대방에게 얼굴이 포함된 사진이나 영상을 보낸 적이 있나요?",
+//         answer: diagnosisAnswers.secondQuestion || "-"
+//       }
+//     ],
+//     finalText
+//   };
+
+//   localStorage.setItem(RESULT_KEY, JSON.stringify(resultData));
+// }
+
+function appendLoginGuide() {
+  const chatBody = document.getElementById("chatBody");
+  if(!chatBody) return;
+
+  const existing = document.getElementById("loginGuideBox");
+  if(existing) existing.remove();
+
+  const wrapper = document.createElement("div");
+  wrapper.id = "loginGuideBox";
+  wrapper.className = "login-guide-box";
+
+  wrapper.innerHTML = `
+    <div class="login-guide-text">
+      로그인 하고 자세하게 확인하시겠습니까?
+    </div>
+    <button type="button" class="login-guide-btn" onclick="goToLoginPage()">
+      로그인창으로 이동
+    </button>
+  `;
+
+  chatBody.appendChild(wrapper);
+  chatBody.scrollTop =  chatBody.scrollHeight;
+}
+
+function removeLoginGuide(){
+  const guide = document.getElementById("loginGuideBox");
+  if(guide) guide.remove();
+}
+
+function goToLoginPage() {
+  location.href= "../Login.html";
+}
+
+
 
 // ---------------------------------------
 // 상태 표시 함수
@@ -230,6 +396,7 @@ function undoLastChoice() {
 
   removeTypingMessage();
   hideUndoButton();
+  removeLoginGuide();
 
   if (chatHistory.length === 0) {
     alert("되돌릴 선택이 없습니다.");
@@ -332,6 +499,7 @@ function removeSecondChoices() {
 function renderInitialQuestion() {
   removeTypingMessage();
   hideUndoButton();
+  removeLoginGuide();
 
   const chatBody = document.getElementById("chatBody");
   chatBody.innerHTML = "";
@@ -589,14 +757,11 @@ function selectSecondFromFirstYes_Yes() {
     appendMessage("ai", "민감한 자료가 전달된 상태로 보입니다. 유포 협박으로 이어질 가능성이 높습니다.");
     appendMessage("ai", "현재는 고위험 단계로 판단됩니다. 증거 확보와 빠른 대응이 필요합니다.");
 
-    saveDiagnosisResult({
-      riskLevel: "고위험",
-      summary: "협박 정황과 민감한 자료 전달이 함께 확인되어 고위험 상태로 판단됩니다.",
+    completeDiagnosis({
+      summary:"협박 정황과 민감한 자료 전달이 함께 확인되어 고위험 상태로 판단됩니다.",
       finalText
     });
 
-    showUndoButton();
-    appendContactButtons();
   }, 1200, "진단 완료");
 }
 
@@ -618,14 +783,11 @@ function selectSecondFromFirstYes_Maybe() {
     appendMessage("ai", "주의가 필요한 상황입니다. 상대방이 자료를 확보했을 가능성을 배제하기 어렵습니다.");
     appendMessage("ai", "현재는 주의 단계로 보입니다. 대화 내용과 계정 정보를 보관해주세요.");
 
-    saveDiagnosisResult({
-      riskLevel: "주의",
-      summary: "협박 정황은 확인되지만 자료 노출 범위가 불명확하여 주의 단계로 판단됩니다.",
+    completeDiagnosis({
+      summary: "현재는 주의 단계로 판단되며 대화 내용과 계정 정보를 보관할 필요가 있습니다.",
       finalText
     });
 
-    showUndoButton();
-    appendContactButtons();
   }, 1200, "진단 완료");
 }
 
@@ -647,15 +809,12 @@ function selectSecondFromFirstYes_No() {
     appendMessage("ai", "일부 위험 요소는 있으나 자료 전달은 없는 상태입니다.");
     appendMessage("ai", "현재는 주의 단계로 보고, 대화 내용 보관과 추가 대응 중단이 필요합니다.");
 
-    saveDiagnosisResult({
-      riskLevel: "주의",
-      summary: "협박 정황은 있으나 자료 전달은 확인되지 않아 주의 단계로 판단됩니다.",
+    completeDiagnosis({
+      summary: "직접 협박과 자료 전달 정황이 없어 현재는 비교적 안정 단계로 판단됩니다.",
       finalText
     });
 
-    showUndoButton();
-    appendContactButtons();
-  }, 1200, "진단 완료");
+}, 1200, "진단 완료");
 }
 
 // ---------------------------------------

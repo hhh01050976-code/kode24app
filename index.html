@@ -53,16 +53,10 @@
         </div>
 
         <div class="loader-binary">
-          01001011 01001111 01000100 01000101 00110010 00110100
+          01001011 01001111 01000100 01000101 00110010 
         </div>
       </div>
   </div>
-
-
-
-
-
-
 
 
 <div class="hero" id="mainContent">
@@ -232,8 +226,21 @@
   }
 
 window.addEventListener("load", () => {
+  const hasSeenLoader = sessionStorage.getItem("kode24_loader_seen");
+
+  if (hasSeenLoader === "true") {
+    appLoader.classList.add("hide");
+
+    setTimeout(() => {
+      appLoader.style.display = "none";
+    }, 100);
+
+    return;
+  }
+
+  sessionStorage.setItem("kode24_loader_seen", "true");
   runLoader();
-})
+});
 
 </script>
 
