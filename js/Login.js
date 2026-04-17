@@ -25,12 +25,14 @@ const socialButtons = document.querySelectorAll(".social-btn");
 //회원가입 관련 요소들 가져오기
 const signupName = document.getElementById("signupName");
 const signupEmail = document.getElementById("signupEmail");
+const signupId = document.getElementById("signupId");
 const signupPassword = document.getElementById("signupPassword");
 const signupPasswordConfirm = document.getElementById("signupPasswordConfirm");
 const agreeTerms = document.getElementById("agreeTerms");
 
 const nameMsg = document.getElementById("nameMsg");
 const emailMsg = document.getElementById("emailMsg");
+const idMsg = document.getElementById("idMsg");
 const passwordMsg = document.getElementById("passwordMsg");
 const passwordConfirmMsg = document.getElementById("passwordConfirmMsg");
 
@@ -42,7 +44,11 @@ const emailCodeInput = document.getElementById("emailCodeInput");
 
 //상태값
 let generatedEmailCode = "";
+let isEmailVerified = false;
+
 const LOGIN_USER_KEY = "kode24_login_user";
+const LOGIN_REDIRECT_KEY = "kode24_login_redirect_after";
+const USERS_KEY = "kode24_users";
 
 /*======================
 토스트 메세지 출력 함수 
@@ -104,6 +110,21 @@ function handleLogin(event){
     showToast("아이디 또는 비밀번호가 올바르지 않습니다.");
 }
 
+//회원가입 로그인 정보
+function handleLoginSuccess(loginUser) {
+    localStorage.setItem(LOGIN_USER_KEY, JSON.stringify(loginUser));
+
+    const redirectPath = localStorage.getItem(LOGIN_REDIRECT_KEY);
+
+    if (redirectPath) {
+        localStorage.removeItem(LOGIN_REDIRECT_KEY);
+        location.replace(redirectPath);
+        return;
+    }
+
+    location.replace("/index.html");
+}
+
 /*=============================
 유틸 ( 문구 )
 ===============================*/
@@ -127,6 +148,11 @@ function findUserByEmail(email) {
   return users.find((user) => user.email === email);
 }
 
+function findUserById(userId){
+    const users = getUsers();
+    return users.find((user) => user.userId === userId);
+}
+
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -136,9 +162,14 @@ function isValidName(name) {
   return /^[가-힣a-zA-Z]{2,4}$/.test(name);
 }
 
+//아이디
+function isValidUserId(userId){
+    return /^[a-zA-Z0-9_]{4,12}$/.test(userId);
+}
+
 // 비밀번호: 7~10자 + 특수문자 포함
 function isValidPassword(password) {
-  const lengthOk = /^.{7,10}$/.test(password);
+  const lengthOk = /^.{7,14}$/.test(password);
   const specialOk = /[!@#$%^&*(),.?":{}|<>_\-\\/\[\]=+~`]/.test(password);
   return lengthOk && specialOk;
 }
@@ -148,10 +179,17 @@ function openCodeModal() {
 }
 
 function closeCodeModalFn() {
-  codeModal.classList.remove("show");
-  emailCodeInput.value = "";
-}
+  const modal = document.getElementById("codeModal");
+  const codeInput = document.getElementById("emailCodeInput");
 
+  if (!modal) return;
+
+  modal.classList.remove("show");
+
+  if (codeInput) {
+    codeInput.value = "";
+  }
+}
 function generateCode() {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
@@ -190,29 +228,52 @@ signupEmail.addEventListener("input", () => {
     setMessage(emailMsg, "이메일 형식이 확인되었습니다. 인증요청을 진행해주세요.","success");
 });
 
+signupId.addEventListener("input", () => {
+    const userId = signupId.value.trim();
+
+    if (!userId) {
+        setMessage(idMsg, "");
+        return;
+    }
+
+    if (!isValidUserId(userId)) {
+        setMessage(idMsg, "아이디는 4~12자 영문, 숫자, _만 사용 가능합니다.", "error");
+        return;
+    }
+
+    if (findUserById(userId)) {
+        setMessage(idMsg, "이미 사용 중인 아이디입니다.", "error");
+        return;
+    }
+
+    setMessage(idMsg, "사용 가능한 아이디입니다.", "success");
+});
+
 signupPassword.addEventListener("input", () => {
     const password = signupPassword.value.trim();
 
-    if(!password) {
-        setMessage(passwordMsg, "비밀번호는 7-10자 / 특수문자 포함으로 입력해주세요.", "error");
+    if (!password) {
+        setMessage(passwordMsg, "비밀번호는 7~14자 / 특수문자 포함으로 입력해주세요.", "error");
         return;
     }
+
     if (!isValidPassword(password)) {
-    setMessage(passwordMsg, "형식에 맞게 작성해주세요. (7~10자 / 특수문자 포함)", "error");
-    return;
+        setMessage(passwordMsg, "형식에 맞게 작성해주세요. (7~14자 / 특수문자 포함)", "error");
+        return;
     }
 
-  setMessage(passwordMsg, "확인되었습니다.", "success");
+    setMessage(passwordMsg, "확인되었습니다.", "success");
 
-  const confirmValue = signupPasswordConfirm.value.trim();
-  if(confirmValue) {
-    if(password === confirmValue ){
-        setMessage(passwordConfirmMsg, "확인되었습니다." , "success");
-    } else {
-        setMessage(passwordConfirmMsg, "비밀번호가 서로 다릅니다.","error");
+    const confirmValue = signupPasswordConfirm.value.trim();
+    if (confirmValue) {
+        if (password === confirmValue) {
+            setMessage(passwordConfirmMsg, "확인되었습니다.", "success");
+        } else {
+            setMessage(passwordConfirmMsg, "비밀번호가 서로 다릅니다.", "error");
+        }
     }
-  }
 });
+
 signupPasswordConfirm.addEventListener("input", () => {
     const password = signupPassword.value.trim();
     const confirmValue = signupPasswordConfirm.value.trim();
@@ -233,7 +294,7 @@ signupPasswordConfirm.addEventListener("input", () => {
 // ================================
 // 이메일 인증 요청 => 나중에 실제 API로 이메일 인증요청 보내기! 지금은 프론트로만 테스트 
 // ================================
-sendCodeBtn.addEventListener("click", () => {
+sendCodeBtn.addEventListener("click", async () => {
   const email = signupEmail.value.trim();
 
   if (!email) {
@@ -251,19 +312,35 @@ sendCodeBtn.addEventListener("click", () => {
     return;
   }
 
-  //나중에 POST/api 코드 생성해서 이메일로 보내기 
-  generatedEmailCode = generateCode();
-  isEmailVerified = false;
+  try {
+    const response = await fetch("http://127.0.0.1:8000/send-verification-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
 
-  // 실제 메일 발송 대신 테스트용 콘솔 출력
-  console.log(`[테스트 인증코드] ${email} / 코드: ${generatedEmailCode}`);
+    const result = await response.json();
 
-  showToast("인증코드를 보냈습니다.");
-  openCodeModal();
+    if (!response.ok) {
+      showToast(result.detail || "인증코드 발송에 실패했습니다.");
+      return;
+    }
+
+    isEmailVerified = false;
+    showToast("인증코드를 보냈습니다.");
+    openCodeModal();
+  } catch (error) {
+    console.error("인증코드 발송 오류:", error);
+    showToast("서버 연결에 실패했습니다.");
+  }
 });
 
+
 /* 이메일 인증 확인 ( API ) */
-verifyCodeBtn.addEventListener("click", () => {
+verifyCodeBtn.addEventListener("click", async () => {
+  const email = signupEmail.value.trim();
   const inputCode = emailCodeInput.value.trim();
 
   if (!inputCode) {
@@ -271,24 +348,45 @@ verifyCodeBtn.addEventListener("click", () => {
     return;
   }
 
-  if (inputCode !== generatedEmailCode) {
-    showToast("인증코드가 일치하지 않습니다.");
-    return;
-  }
+  try {
+    const response = await fetch("http://127.0.0.1:8000/verify-verification-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        code: inputCode
+      })
+    });
 
-  isEmailVerified = true;
-  setMessage(emailMsg, "인증되었습니다.", "success");
-  closeCodeModalFn();
-  showToast("이메일 인증이 완료되었습니다.");
-});
+    const result = await response.json();
 
-closeCodeModal.addEventListener("click", closeCodeModalFn);
+    if (!response.ok) {
+      showToast(result.detail || "인증코드가 일치하지 않습니다.");
+      return;
+    }
 
-codeModal.addEventListener("click", (event) => {
-  if (event.target === codeModal) {
+    isEmailVerified = true;
+    setMessage(emailMsg, "인증되었습니다.", "success");
     closeCodeModalFn();
+    showToast("이메일 인증이 완료되었습니다.");
+  } catch (error) {
+    showToast("서버 연결에 실패했습니다.");
   }
 });
+
+if(closeCodeModal){
+    closeCodeModal.addEventListener("click", closeCodeModalFn)
+}
+
+if(codeModal){
+    codeModal.addEventListener("click", (event) => {
+        if(event.target === codeModal){
+            closeCodeModalFn();
+        }
+    })
+}
 
 
 /*======================
@@ -318,87 +416,151 @@ toggleButtons.forEach((btn) => {
 로그인 처리하는 함수 ( API )
 ================*/
 loginForm.addEventListener("submit", (event) => {
-    //기본 submit 막기 ( 페이지 새로고침 )
-    event.preventDefault();
+        event.preventDefault();
 
-    //입력값 가져오고
-    const email = document.getElementById("loginId").value.trim();
-    const password = document.getElementById("loginPassword").value.trim();
-    //맞는지 검사
-    if (!email || !password){
-        showToast("이메일과 비밀번호를 입력해주세요.");
-        return;
-    }
+        const userId = document.getElementById("loginId").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
 
-    //현재 테스트 계정
-    const testEmail = "test";
-    const testPassword = "1234!";
-    const testNam = "코드24";
+        if (!userId || !password) {
+            showToast("아이디와 비밀번호를 입력해주세요.");
+            return;
+        }
 
+        // 기본 테스트 계정
+        const testUserId = "test";
+        const testPassword = "1234!";
 
-    if (email !== testEmail || password !== testPassword) {
-        showToast("이메일 또는 비밀번호가 올바르지 않습니다.");
-        return;
-    }
+        if (userId === testUserId && password === testPassword) {
+            const loginUser = {
+                userId: testUserId,
+                name: "코드24",
+                email: "test@kode24.com",
+                isLoggedIn: true
+            };
 
-    //현재 localStorage 저장
-    //나중에 accessToken 저장 
-    localStorage.setItem("kode24_login_user", JSON.stringify({
-        name: "코드24",
-        email: testEmail,
-        isLoggedIn: true
-    }));
+            showToast("로그인 되었습니다.");
 
-    //로그인 처리
-    showToast("로그인 되었습니다.")
+            setTimeout(() => {
+                handleLoginSuccess(loginUser);
+            }, 700);
+            return;
+        }
 
-    setTimeout(() => {
-        window.location.href="../../index.html";
-    }, 700);
+        // 회원가입 사용자 로그인
+        const users = getUsers();
+        const foundUser = users.find(
+            (user) => user.userId === userId && user.password === password
+        );
+
+        if (!foundUser) {
+            showToast("아이디 또는 비밀번호가 올바르지 않습니다.");
+            return;
+        }
+
+        const loginUser = {
+            userId: foundUser.userId,
+            name: foundUser.name,
+            email: foundUser.email,
+            isLoggedIn: true
+        };
+
+        showToast("로그인 되었습니다.");
+
+        setTimeout(() => {
+            handleLoginSuccess(loginUser);
+        }, 700);
 });
 
 /*======================
 회원가입 함수 ( API )
 ================*/
 signupForm.addEventListener("submit", (event) => {
-        
-        //기본 수비드 막기
-        event.preventDefault();
+    event.preventDefault();
 
+    const userId = document.getElementById("signupId").value.trim();
+    const name = document.getElementById("signupName").value.trim();
+    const email = document.getElementById("signupEmail").value.trim();
+    const password = document.getElementById("signupPassword").value.trim();
+    const passwordConfirm = document.getElementById("signupPasswordConfirm").value.trim();
+    const agreeTerms = document.getElementById("agreeTerms").checked;
 
-        //입력값 가져오고 
-        const name = document.getElementById("signupName").value.trim();
-        const email = document.getElementById("signupEmail").value.trim();
-        const password = document.getElementById("signupPassword").value.trim();
-        const passwordConfirm = document.getElementById("signupPasswordConfirm").value.trim();
-        const agreeTerms = document.getElementById("agreeTerms").checked;
+    if (!userId || !name || !email || !password || !passwordConfirm) {
+        showToast("회원가입 정보를 모두 입력해주세요.");
+        return;
+    }
 
-        //유효성 검사를 통해 입력 체크
-        if (!name || !email || !password || !passwordConfirm) {
-            showToast("회원가입 정보를 모두 입력해주세요.");
-            return;
-        }
+    if (!isValidUserId(userId)) {
+        showToast("아이디는 4~12자 영문, 숫자, _만 사용 가능합니다.");
+        return;
+    }
 
-        if (password.length < 6) {
-            showToast("비밀번호는 6자 이상으로 입력해주세요.");
-            return;
-        }
+    if (findUserById(userId)) {
+        showToast("이미 사용 중인 아이디입니다.");
+        return;
+    }
 
-        if (password !== passwordConfirm) {
-            showToast("비밀번호가 서로 다릅니다.");
-            return;
-        }
+    if (!isValidName(name)) {
+        showToast("이름은 2~4글자로 입력해주세요.");
+        return;
+    }
 
-        if (!agreeTerms) {
-            showToast("개인정보 동의가 필요합니다.");
-            return;
-        }
-    //위에 유효성 검사 다 통과되서 마지막으로 통과 완료 
-    //나중에 POST/api 
-    showToast("회원가입이 완료 되었습니다.");
+    if (!isValidEmail(email)) {
+        showToast("올바른 이메일 형식으로 입력해주세요.");
+        return;
+    }
+
+    if (findUserByEmail(email)) {
+        showToast("이미 가입된 이메일입니다.");
+        return;
+    }
+
+    if (!isValidPassword(password)) {
+        showToast("비밀번호는 7~14자 / 특수문자 포함으로 입력해주세요.");
+        return;
+    }
+
+    if (password !== passwordConfirm) {
+        showToast("비밀번호가 서로 다릅니다.");
+        return;
+    }
+
+    if (!agreeTerms) {
+        showToast("개인정보 동의가 필요합니다.");
+        return;
+    }
+
+    if (!isEmailVerified) {
+        showToast("이메일 인증을 완료해주세요.");
+        return;
+    }
+
+    const users = getUsers();
+
+    users.push({
+        userId,
+        name,
+        email,
+        password
+    });
+
+    saveUsers(users);
+
+    showToast("회원가입이 완료되었습니다. 로그인해주세요.");
+
+    switchTab("login");
+    document.getElementById("loginId").value = userId;
+    document.getElementById("loginPassword").value = "";
+
+    signupForm.reset();
+    generatedEmailCode = "";
+    isEmailVerified = false;
+
+    setMessage(idMsg, "");
+    setMessage(nameMsg, "");
+    setMessage(emailMsg, "");
+    setMessage(passwordMsg, "");
+    setMessage(passwordConfirmMsg, "");
 });
-
-
 
 /*======================
 소셜 로그인 함수 

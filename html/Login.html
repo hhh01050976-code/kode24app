@@ -38,7 +38,7 @@
 
                 <!-- 로그인 폼 -->
                 <section class="form-panel active" id="loginPanel">
-                    <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+                    <form id="loginForm" class="auth-form">
                         <label>
                             아이디
                             <input type="text" id="loginId" placeholder="아이디를 입력해주세요">
@@ -80,6 +80,12 @@
                                 <button type="button" class="mini-btn" id="sendCodeBtn">인증요청</button>
                             </div>
                             <small class="input-msg" id="emailMsg"></small>
+                        </label>
+
+                        <label>
+                            아이디
+                            <input type="text" id="signupId" placeholder="아이디를 입력해주세요.">
+                            <small class="input-msg" id="idMsg"></small>
                         </label>
 
                         <label>

@@ -34,16 +34,11 @@ function isLoggedIn() {
 
 // 뒤로가기
 function goBack() {
-    if (document.referrer && window.history.length > 1) {
-        history.back();
-        return;
-    }
-
-    if (isLoggedIn()) {
-        location.href = "./MyPage.html";
-    } else {
-        location.href = "../diagnosis/Self.html";
-    }
+        if (isLoggedIn()) {
+            location.href = "./MyPage.html";
+        } else {
+            location.href = "../diagnosis/Self_Assessment.html";
+        }
 }
 
 // 저장된 결과 데이터 가져오기
@@ -134,7 +129,7 @@ function renderResult() {
 
         <div class="hero-result-box">
             <div class="hero-left">
-                <div class="hero-main-title">작업 완료<br><span>최종 결과</span></div>
+                <div class="hero-main-title">자가진단 완료<br><span>최종 결과</span></div>
                 <div class="hero-quote-row">
                     <div class="hero-quote-mark">“</div>
                     <div class="hero-quote-text">
