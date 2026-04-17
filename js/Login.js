@@ -313,7 +313,7 @@ sendCodeBtn.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/send-verification-code", {
+    const response = await fetch("/api/send-verification-code", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -349,7 +349,7 @@ verifyCodeBtn.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/verify-verification-code", {
+    const response = await fetch("/api/verify-verification-code", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
