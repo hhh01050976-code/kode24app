@@ -38,7 +38,9 @@ function isLoggedIn() {
 // 결과 저장용 상태값
 let diagnosisAnswers = {
   firstQuestion: "",
-  secondQuestion: ""
+  secondQuestion: "",
+  thirdQuestion: "",
+  fourthQuestion:""
 };
 
 let chatHistory = [];
@@ -62,22 +64,30 @@ function getTodayString() {
 // ---------------------------------------
 // 진단 결과 저장
 function calculateDiagnosisMetrics(){
-  const first = diagnosisAnswers.firstQuestion;
-  const second = diagnosisAnswers.secondQuestion;
-
+  const a = diagnosisAnswers;
   let score = 0;
 
-  //1번 질문 점수
-  if(first.includes("협박/금전 요구")) score += 55;
-  else if (first.includes("의심")) score += 35;
-  else score += 10;
-
-  //2번 질문 점수
-  if(second.includes("보낸 적 있습니다.")) score+= 35;
-  else if (second.includes("일부 노출")) score += 20;
+  //1번 질문 
+  if (a.firstQuestion.includes("협박/금전 요구")) score += 35;
+  else if (a.firstQuestion.includes("의심")) score+= 22;
   else score += 5;
 
-  score = Math.min(score, 95);
+  //2번 질문
+  if (a.secondQuestion.includes("보낸 적 있습니다.")) score += 28;
+  else if(a.secondQuestion.includes("일부 노출")) score+= 18;
+  else score += 5;
+
+  //3번 질문
+  if (a.thirdQuestion.includes("외부 메신저")) score += 15;
+  else if(a.thirdQuestion.includes("파일/앱")) score += 25;
+  else if (a.thirdQuestion.includes("계속 대화")) score += 8;
+  
+  //4번 질문
+  if (a.fourthQuestion.includes("이미 돈")) score += 22;
+  else if (a.fourthQuestion.includes("불안")) score += 12;
+  else if (a.fourthQuestion.includes("대화만")) score += 5;
+
+  score = Math.min(score, 98);
 
   let riskLevel = "저위험";
   if(score >= 75) riskLevel = "고위험";
@@ -86,8 +96,8 @@ function calculateDiagnosisMetrics(){
   const leakProbability = Number((score / 100 * 8.5).toFixed(2));
 
   const blockRate = Math.max(60,100 - Math.round(score * 0.45));
-  const preventionRate = Math.max(55,100 - Math.round(score * 0.38));
-  const responseRate = Math.max(50,100 - Math.round(score * 0.50));
+  const preventionRate = Math.max(55, 100 - Math.round(score * 0.38));
+  const responseRate = Math.max(50, 100 - Math.round(score * 0.50));
 
   return {
     score,
@@ -150,6 +160,14 @@ function saveDiagnosisResult({ summary, finalText }) {
       {
         question: "상대방에게 얼굴이 포함된 사진이나 영상을 보낸 적이 있나요?",
         answer: diagnosisAnswers.secondQuestion || "-"
+      },
+      {
+        question: "상대방이 외부 메신저 이동, 파일 설치, 앱 설치 등을 요구했나요?",
+        answer: diagnosisAnswers.thirdQuestion || "-"
+      },
+      {
+        question: "현재 상황은 어디까지 진행되었나요?",
+        answer: diagnosisAnswers.fourthQuestion || "-"
       }
     ],
     finalText,
@@ -751,18 +769,11 @@ function selectSecondFromFirstYes_Yes() {
   appendMessage("user", "예, 보낸 적 있습니다.");
 
   showDelayedResponse(() => {
-    const finalText =
-      "민감한 자료가 전달된 상태로 보입니다. 유포 협박으로 이어질 가능성이 높습니다. 현재는 고위험 단계로 판단됩니다. 증거 확보와 빠른 대응이 필요합니다.";
+    appendMessage("ai", "민감한 자료가 전달된 상태로 보입니다.");
+    appendMessage("ai", "조금 더 구체적인 상황을 확인해볼게요.");
 
-    appendMessage("ai", "민감한 자료가 전달된 상태로 보입니다. 유포 협박으로 이어질 가능성이 높습니다.");
-    appendMessage("ai", "현재는 고위험 단계로 판단됩니다. 증거 확보와 빠른 대응이 필요합니다.");
-
-    completeDiagnosis({
-      summary:"협박 정황과 민감한 자료 전달이 함께 확인되어 고위험 상태로 판단됩니다.",
-      finalText
-    });
-
-  }, 1200, "진단 완료");
+    renderThirdStep();
+  }, 1200, "진단 진행 중");
 }
 
 function selectSecondFromFirstYes_Maybe() {
@@ -777,18 +788,11 @@ function selectSecondFromFirstYes_Maybe() {
   appendMessage("user", "애매하지만 일부 노출이 있었습니다.");
 
   showDelayedResponse(() => {
-    const finalText =
-      "주의가 필요한 상황입니다. 상대방이 자료를 확보했을 가능성을 배제하기 어렵습니다. 현재는 주의 단계로 보입니다. 대화 내용과 계정 정보를 보관해주세요.";
+    appendMessage("ai", "상대방이 자료를 일부 확보했을 가능성을 배제하기 어렵습니다.");
+    appendMessage("ai", "조금 더 구체적인 상황을 확인해볼게요.");
 
-    appendMessage("ai", "주의가 필요한 상황입니다. 상대방이 자료를 확보했을 가능성을 배제하기 어렵습니다.");
-    appendMessage("ai", "현재는 주의 단계로 보입니다. 대화 내용과 계정 정보를 보관해주세요.");
-
-    completeDiagnosis({
-      summary: "현재는 주의 단계로 판단되며 대화 내용과 계정 정보를 보관할 필요가 있습니다.",
-      finalText
-    });
-
-  }, 1200, "진단 완료");
+    renderThirdStep();
+  }, 1200, "진단 진행 중");
 }
 
 function selectSecondFromFirstYes_No() {
@@ -803,21 +807,14 @@ function selectSecondFromFirstYes_No() {
   appendMessage("user", "아니요, 보내지 않았습니다.");
 
   showDelayedResponse(() => {
-    const finalText =
-      "일부 위험 요소는 있으나 자료 전달은 없는 상태입니다. 현재는 주의 단계로 보고, 대화 내용 보관과 추가 대응 중단이 필요합니다.";
+    appendMessage("ai", "자료 전달은 없지만 위험 신호는 남아 있습니다.");
+    appendMessage("ai", "현재 상황을 조금 더 확인해볼게요.");
 
-    appendMessage("ai", "일부 위험 요소는 있으나 자료 전달은 없는 상태입니다.");
-    appendMessage("ai", "현재는 주의 단계로 보고, 대화 내용 보관과 추가 대응 중단이 필요합니다.");
-
-    completeDiagnosis({
-      summary: "직접 협박과 자료 전달 정황이 없어 현재는 비교적 안정 단계로 판단됩니다.",
-      finalText
-    });
-
-}, 1200, "진단 완료");
+    renderThirdStep();
+  }, 1200, "진단 진행 중");
 }
 
-// ---------------------------------------
+/// ---------------------------------------
 // 2단계 질문 - first maybe 경로
 function selectSecondFromFirstMaybe_Yes() {
   if (isAnswering) return;
@@ -831,21 +828,11 @@ function selectSecondFromFirstMaybe_Yes() {
   appendMessage("user", "예, 보낸 적 있습니다.");
 
   showDelayedResponse(() => {
-    const finalText =
-      "의심 상황에 자료 전달까지 있었다면 위험도가 올라갑니다. 현재는 고위험 가능성이 있어 빠른 점검과 대응 준비가 필요합니다.";
-
     appendMessage("ai", "의심 상황에 자료 전달까지 있었다면 위험도가 올라갑니다.");
-    appendMessage("ai", "현재는 고위험 가능성이 있어 빠른 점검과 대응 준비가 필요합니다.");
+    appendMessage("ai", "조금 더 구체적인 상황을 확인해볼게요.");
 
-    saveDiagnosisResult({
-      riskLevel: "고위험",
-      summary: "의심 정황과 자료 전달이 함께 확인되어 고위험 가능성이 높습니다.",
-      finalText
-    });
-
-    showUndoButton();
-    appendContactButtons();
-  }, 1200, "진단 완료");
+    renderThirdStep();
+  }, 1200, "진단 진행 중");
 }
 
 function selectSecondFromFirstMaybe_Maybe() {
@@ -860,21 +847,11 @@ function selectSecondFromFirstMaybe_Maybe() {
   appendMessage("user", "애매하지만 일부 노출이 있었습니다.");
 
   showDelayedResponse(() => {
-    const finalText =
-      "조심이 필요한 상황입니다. 상대방이 자료를 일부 확보했을 가능성이 있습니다. 현재는 주의 단계입니다. 대화 내용과 계정 정보를 보관해주세요.";
+    appendMessage("ai", "상대방이 자료를 일부 확보했을 가능성이 있습니다.");
+    appendMessage("ai", "현재 상황을 조금 더 확인해볼게요.");
 
-    appendMessage("ai", "조심이 필요한 상황입니다. 상대방이 자료를 일부 확보했을 가능성이 있습니다.");
-    appendMessage("ai", "현재는 주의 단계입니다. 대화 내용과 계정 정보를 보관해주세요.");
-
-    saveDiagnosisResult({
-      riskLevel: "주의",
-      summary: "의심 정황과 일부 노출 가능성이 있어 주의 단계로 판단됩니다.",
-      finalText
-    });
-
-    showUndoButton();
-    appendContactButtons();
-  }, 1200, "진단 완료");
+    renderThirdStep();
+  }, 1200, "진단 진행 중");
 }
 
 function selectSecondFromFirstMaybe_No() {
@@ -889,21 +866,11 @@ function selectSecondFromFirstMaybe_No() {
   appendMessage("user", "아니요, 보내지 않았습니다.");
 
   showDelayedResponse(() => {
-    const finalText =
-      "현재는 직접 피해로 이어질 가능성이 상대적으로 낮아 보입니다. 지금은 저위험 단계지만, 이후 요구가 생기는지 계속 확인해주세요.";
+    appendMessage("ai", "직접 자료 전달은 없지만 의심 신호는 남아 있습니다.");
+    appendMessage("ai", "추가 위험 패턴이 있는지 확인해볼게요.");
 
-    appendMessage("ai", "현재는 직접 피해로 이어질 가능성이 상대적으로 낮아 보입니다.");
-    appendMessage("ai", "지금은 저위험 단계지만, 이후 요구가 생기는지 계속 확인해주세요.");
-
-    saveDiagnosisResult({
-      riskLevel: "저위험",
-      summary: "의심 정황은 있으나 자료 전달이 없어 현재는 저위험 단계로 판단됩니다.",
-      finalText
-    });
-
-    showUndoButton();
-    appendContactButtons();
-  }, 1200, "진단 완료");
+    renderThirdStep();
+  }, 1200, "진단 진행 중");
 }
 
 // ---------------------------------------
@@ -994,6 +961,193 @@ function selectSecondFromFirstNo_No() {
     appendContactButtons();
   }, 1200, "진단 완료");
 }
+//3단계 질문 선택지 제거
+function removeThirdChoices() {
+  const thirdChoices = document.getElementById("thirdChoices");
+  if (thirdChoices) thirdChoices.remove();
+}
+
+//4단계 질문 선택지 제거
+function removeFourthChoices() {
+  const FourthChoices = document.getElementById("fourtChoices");
+  if(FourthCHoices) FourthChoices.remove();
+}
+
+
+//3단계 질문 렌더링
+function renderThirdStep(){
+  appendMessage("ai", "상대방이 아래와 같은 행동을 한 적이 있나요?");
+
+  appendChoices("thirdChoices",[
+    {
+      test: "외부 메시전(텔레그램/라인 등)로 이동 요구",
+      onClick: selectTHird_Move
+    },
+    {
+      text: "파일 또는 앱 설치 요구",
+      onClick: selectTHird_File
+    },
+    {
+      text: "아직 그런 요구는 없고 대화만 이어짐",
+      onClick: selectTHird_Normal
+    }
+  ]);
+
+  showUndoButton();
+}
+ //3단계 선택 - 외부 메신저 이동 요구
+ function selectThird_Move() {
+  if (isAnswering) return;
+
+  diagnosisAnswers.thirdQuestion = "외부 메신저 (텔레그램/라인 등)로 이동 요구";
+  removeThirdChoices();
+  hideUndoButton();
+
+  appendMessage("user","외부 메신저(텔레그램/라인 등)로 이동 요구");
+
+  showDelayedResponse(() => {
+    appendMessage("ai","외부 메신저 이동 요구는 몸캠 피싱 및 유도형 협박에서 자주 나타나는 패턴입니다.");
+    appendMessage("ai", "현재 상황은 어디까지 진행되었나요?");
+
+    renderFourthStep();
+  }, 1200, "진단 진행 중");
+ }
+
+ //3단계 선택 - 파일 /앱 설치 요구
+ function selectThird_File() {
+  if (isAnswering) return;
+
+  diagnosisAnswers.thirdQuestion = "파일/앱 설치 요구";
+  removeThirdChoices();
+  hideUndoButton();
+
+  appendMessage("user","파일 또는 앱 설치 요구");
+
+  showDelayedResponse(() => {
+    appendMessage("ai", "파일이나 앱 설치 요구는 기기 해킹, 연락처 탈취, 추가 협박 가능성과 연결될 수 있습니다.");
+    appendMessage("ai","현재 상황은 어디까지 진행되었나요?");
+
+    renderFourthStep();
+  },1200, "진단 진행 중");
+ }
+
+//3단계 선택 - 아직 대화만 이어짐 
+function selectThird_Normal() {
+  if (isAnswering) return;
+
+  diagnosisAnswers.thirdQuestion = "계속 대화만 이어짐";
+  removeThirdChoices();
+  hideUndoButton();
+
+  appendMessage("user","아직 그런 요구는 없고 대화만 이어짐");
+
+  showDelayedResponse(() => {
+    appendMessage("ai","현재는 노골적인 유도 단계가 아닐 수 있지만, 이후 요구로 이어질 가능성은 계속 확인해야 합니다.");
+    appendMessage("ai","현재 상황은 어디까지 진행되었나요?");
+
+    renderFourthStep();
+  }, 1200, "진단 진행 중");
+}
+
+//4단계 질문 렌더링 
+function renderFourthStep(){
+  appendChoices("fourthChoices", [
+    {
+      text: "이미 돈을 요구받고 있습니다.",
+      onClick: selectFourth_Money
+    },
+    {
+      text: "아직 요구는 없지만 많이 불안합니다.",
+      onClick: selectFourth_Anxious
+    },
+    {
+      text: "대화만 있었고 일단 끝난 상태입니다.",
+      onClick: selectFourth_End
+    }
+  ]);
+
+  showUndoButton();
+}
+
+//4단게 선택 - 이미 돈 요구 
+function selectFourth_Money() {
+  if (isAnswering) return;
+
+  diagnosisAnswers.fourthQuestion = "이미 돈을 요구받고 있습니다.";
+  removeFourthChoices();
+  hideUndoButton();
+
+  appendMessage("user","이미 돈을 요구받고 있습니다.");
+
+  showDelayedResponse(() => {
+    const finalText =
+      "상대방의 협박, 자료 확보 가능성, 추가 요구 정황이 함께 보여 현재는 즉시 대응이 필요한 고위험 단계로 판단됩니다.";
+    
+    appendMessage("ai", "현재는 즉시 대응이 필요한 고위험 단계로 판단됩니다.");
+    appendMessage("ai", "대화 내용, 계정 정보, 송금 요구 정황을 보존하고 추가 대응을 멈추는 것이 중요합니다.");
+
+    completeDiagnosis ({
+      summary: "협박 정황과 가해자 패턴, 현재 진행 상태를 종합할 때 즉시 대응이 필요한 상태입니다.",
+      finalText
+    });
+  }, 1200, "진단 완료");
+}
+
+//4단계 선택- 아직 요구는 없지만 불안
+function selectFourth_Anxious(){
+  if (isAnswering) return;
+
+  diagnosisAnswers.fourthQuestion = "아직 요구는 없지만 많이 불안합니다.";
+  removeFourthChoices();
+  hideUndoButton();
+
+  appendMessage("user","아직 요구는 없지만 많이 불안합니다.");
+
+  showDelayedResponse(() => {
+    const finalText =
+    "직접적인 요구가 시작되지 않았더라도 위험 신호가 확인됩니다. 현재는 주의 단계로 보고 대화 내용과 계정 정보를 정리해두는 것이 좋습니다.";
+
+
+    appendMessage("ai","현재는 주의 단계로 판단됩니다.");
+    appendMessage("ai","아직 상황이 확대되기 전 증거를 정리해두는 것이 중요합니다.")
+
+    completeDiagnosis({
+      summary:"직접적인 요구는 없지만 패턴상 위험 신호가 있어 주의가 필요한 상태입니다.",
+      finalText
+    });
+  }, 1200, "진단 완료");
+}
+
+//4단계 선택 대화만 있었고 끝남
+function selectFourth_End() {
+  if (isAnswering) return;
+
+  diagnosisAnswers.fourthQuestion = "대화만 있었고 일단 끝난 상태입니다.";
+  removeFourthChoices();
+  hideUndoButton();
+
+  appendMessage("user","대화만 있었고 일단 끝난 상태입니다.");
+
+  showDelayedResponse(() =>{
+    const finalText =
+    "현재는 비교적 안정 상태로 보이지만, 향후 외부 메신저 이동, 자료 재요구, 저장/유포 언급이 생기면 다시 즉시 점검해야 합니다.";
+
+    appendMessage("ai","현재는 비교적 안정 상태입니다.");
+    appendMessage("ai","다만 이후 요구나 협박으로 이어질 가능성은 계속 주의해주세요.");
+
+    completeDiagnosis({
+      summary: "현재는 비교적 안정 상태로 보이지만 이후 위험 전환 가능성은 남아 있습니다.",
+      finalText
+    });
+  }, 1200, "진단 완료");
+}
+
+
+
+
+
+
+
 
 // ---------------------------------------
 // 페이지 열리면 첫 질문 자동 표시
