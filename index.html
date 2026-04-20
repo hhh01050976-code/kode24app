@@ -7,7 +7,9 @@
     <title>Kode24</title>
 </head>
 <body>
-    <!--앱 로딩 오버레이-->
+
+
+  <!--앱 로딩 오버레이-->
   <div id="appLoader" class="app-loader">
       <div class="loader-bg-grid"></div>
       <div class="loader-bg-glow loader-glow-1"></div>
@@ -90,62 +92,67 @@
 
       <div id="userArea"></div>
 
-      <div class="hero-text" id="heroText">
-        <div class="hero-badge">GLOBAL SECURITY</div>
-        <h1 class="hero-title">전 세계 몸캠 피싱 대응 플랫폼</h1>
-        <p class="hero-sub">
-          피해 현황 확인부터<br> 자가진단, 증거 분석, 즉시 대응까지 한 번에 지원합니다.
-        </p>
-      </div>
+     <div class="hero-text" id="heroText">
+      <div class="hero-badge">GLOBAL SECURITY</div>
+      <h1 class="hero-title">전 세계 몸캠 피싱 대응 플랫폼</h1>
+      <p class="hero-sub">
+        피해 현황 확인부터<br> 자가진단, 증거 분석, 즉시 대응까지 한 번에 지원합니다.
+      </p>
+    </div>
 
+  <div class="category-area" id="categoryArea">
       <button type="button" class="category-toggle-btn" id="categoryToggleBtn">
         카테고리 펼치기
       </button>
 
       <div class="category-wrap" id="categoryWrap">
-              <div class="category-bg"></div>
+        <div class="category-bg"></div>
 
-              <!-- 카테고리 넣는 div 배경 -->
-              <div class="back">
-                      <a href="./html/World_Map.html" class="categort-item" >
-                              <div class="card">
-                                  <img src="./img/card1.png" alt="글로벌 피해 현황">
-                              </div>
-                              <div class="label">글로벌 피해 현황</div>
-                      </a>
-                      <a href="./html/Incident_Types.html" class="categort-item" >
-                              <div class="card">
-                                  <img src="./img/card2.png" alt="피해 유형 분석">
-                              </div>
-                              <div class="label">피해 유형 분석</div>
-                      </a>                        
-                      <a href="./html/Threat_Patterns.html" class="categort-item" >
-                              <div class="card">
-                                  <img src="./img/card3.png" alt="가해 조직/패턴">
-                              </div>
-                              <div class="label">가해 조직/패턴</div>
-                      </a>                        
-                      <a href="./html/diagnosis/Self_Assessment.html" class="categort-item" >
-                              <div class="card">
-                                  <img src="./img/card4.png" alt="자가 진단 테스트">
-                              </div>
-                              <div class="label">자가 진단 테스트</div>
-                      </a>                        
-                      <a href="./html/Support_Center.html" class="categort-item" >
-                              <div class="card">
-                                  <img src="./img/card5.png" alt="예방 교육 신청">
-                              </div>
-                              <div class="label">예방 교육 신청</div>
-                      </a>                        
-                      <a href="./html/Help.html" class="categort-item" >
-                              <div class="card">
-                                  <img src="./img/card6.png" alt="상담 및 해결 후기">
-                              </div>
-                              <div class="label">즉시 대응 & 증거 분석</div>
-                      </a>
-              </div>
+        <div class="back">
+          <a href="./html/World_Map.html" class="categort-item">
+            <div class="card">
+              <img src="./img/card1.png" alt="글로벌 피해 현황">
+            </div>
+            <div class="label">글로벌 피해 현황</div>
+          </a>
 
+          <a href="./html/Incident_Types.html" class="categort-item">
+            <div class="card">
+              <img src="./img/card2.png" alt="피해 유형 분석">
+            </div>
+            <div class="label">피해 유형 분석</div>
+          </a>
+
+          <a href="./html/Threat_Patterns.html" class="categort-item">
+            <div class="card">
+              <img src="./img/card3.png" alt="가해 조직/패턴">
+            </div>
+            <div class="label">가해 조직/패턴</div>
+          </a>
+
+          <a href="./html/diagnosis/Self_Assessment.html" class="categort-item">
+            <div class="card">
+              <img src="./img/card4.png" alt="자가 진단 테스트">
+            </div>
+            <div class="label">자가 진단 테스트</div>
+          </a>
+
+          <a href="./html/Support_Center.html" class="categort-item">
+            <div class="card">
+              <img src="./img/card5.png" alt="예방 교육 신청">
+            </div>
+            <div class="label">예방 교육 신청</div>
+          </a>
+
+          <a href="./html/Help.html" class="categort-item">
+            <div class="card">
+              <img src="./img/card6.png" alt="즉시 대응 & 증거 분석">
+            </div>
+            <div class="label">즉시 대응 &amp; 증거 분석</div>
+          </a>
+        </div>
       </div>
+  </div>
 
 </div>
 
@@ -194,17 +201,18 @@
 
   let isCategoryOpen = false;
 
-  if (categoryToggleBtn && categoryWrap && heroText){
-    categoryToggleBtn.addEventListener("click", () =>{
+  if (categoryToggleBtn && categoryWrap && heroText) {
+    categoryToggleBtn.addEventListener("click", () => {
       isCategoryOpen = !isCategoryOpen;
 
       categoryWrap.classList.toggle("open", isCategoryOpen);
       heroText.classList.toggle("hide", isCategoryOpen);
+      categoryToggleBtn.classList.toggle("move-up", isCategoryOpen);
 
       categoryToggleBtn.textContent = isCategoryOpen
         ? "카테고리 닫기"
         : "카테고리 펼치기";
-    })
+    });
   }
 
 
