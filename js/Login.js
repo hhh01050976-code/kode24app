@@ -88,7 +88,7 @@ tabButtons.forEach((button) => {
 
 /* =====================
 
-관리자 로그인 처리 함수 
+관리자 로그인 처리 함수 (API)
 
 ====================*/
 function handleLogin(event){
@@ -416,51 +416,39 @@ toggleButtons.forEach((btn) => {
 로그인 처리하는 함수 ( API )
 ================*/
 loginForm.addEventListener("submit", (event) => {
-        event.preventDefault();
+    event.preventDefault();
 
-        const userId = document.getElementById("loginId").value.trim();
-        const password = document.getElementById("loginPassword").value.trim();
+    const userId = document.getElementById("loginId").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
 
-        if (!userId || !password) {
-            showToast("아이디와 비밀번호를 입력해주세요.");
-            return;
-        }
+    if (!userId || !password) {
+        showToast("아이디와 비밀번호를 입력해주세요.");
+        return;
+    }
 
-        // 기본 테스트 계정
-        const testUserId = "test";
-        const testPassword = "1234!";
+    // 관리자 계정
+    const adminId = "kode24";
+    const adminPw = "kode24qaz!!";
 
-        if (userId === testUserId && password === testPassword) {
-            const loginUser = {
-                userId: testUserId,
-                name: "코드24",
-                email: "test@kode24.com",
-                isLoggedIn: true
-            };
+    if (userId === adminId && password === adminPw) {
+        localStorage.setItem("isAdminLogin", "true");
+        showToast("관리자 로그인 되었습니다.");
 
-            showToast("로그인 되었습니다.");
+        setTimeout(() => {
+            location.href = "/html/admin/AdminDashboard.html";
+        }, 700);
+        return;
+    }
 
-            setTimeout(() => {
-                handleLoginSuccess(loginUser);
-            }, 700);
-            return;
-        }
+    // 기본 테스트 계정
+    const testUserId = "test";
+    const testPassword = "1234!";
 
-        // 회원가입 사용자 로그인
-        const users = getUsers();
-        const foundUser = users.find(
-            (user) => user.userId === userId && user.password === password
-        );
-
-        if (!foundUser) {
-            showToast("아이디 또는 비밀번호가 올바르지 않습니다.");
-            return;
-        }
-
+    if (userId === testUserId && password === testPassword) {
         const loginUser = {
-            userId: foundUser.userId,
-            name: foundUser.name,
-            email: foundUser.email,
+            userId: testUserId,
+            name: "코드24",
+            email: "test@kode24.com",
             isLoggedIn: true
         };
 
@@ -469,6 +457,32 @@ loginForm.addEventListener("submit", (event) => {
         setTimeout(() => {
             handleLoginSuccess(loginUser);
         }, 700);
+        return;
+    }
+
+    // 회원가입 사용자 로그인
+    const users = getUsers();
+    const foundUser = users.find(
+        (user) => user.userId === userId && user.password === password
+    );
+
+    if (!foundUser) {
+        showToast("아이디 또는 비밀번호가 올바르지 않습니다.");
+        return;
+    }
+
+    const loginUser = {
+        userId: foundUser.userId,
+        name: foundUser.name,
+        email: foundUser.email,
+        isLoggedIn: true
+    };
+
+    showToast("로그인 되었습니다.");
+
+    setTimeout(() => {
+        handleLoginSuccess(loginUser);
+    }, 700);
 });
 
 /*======================
