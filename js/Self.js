@@ -192,9 +192,9 @@ function completeDiagnosis({ summary, finalText }) {
   updateStatus("진단 완료");
   hideUndoButton();
 
-  if (isLoggedIn()) {
+  if (isLoggedIn()){
     setTimeout(() => {
-      location.href = "./profile/Result.html";
+      location.href = "/html/profile/Result.html";
     }, 900);
     return;
   }
