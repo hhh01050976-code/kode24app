@@ -57,7 +57,7 @@
                                 <input type="checkbox" id="keepLogin">
                                 <span>로그인 상태 유지</span>
                             </label>
-                            <button type="button" class="text-btn">비밀번호 찾기</button>
+                            <button type="button" class="text-btn" id="forgotPasswordBtn">비밀번호 찾기</button>
                         </div>
 
                         <button type="submit" class="primary-btn">로그인</button>
@@ -159,6 +159,29 @@
 
             <input type="text" id="emailCodeInput" placeholder="인증코드 입력">
             <button type="button" class="primary-btn" id="verifyCodeBtn">인증 확인</button>
+        </div>
+    </div>
+
+
+    <!--비밀번호 재설정 팝업 -->
+    <div class="modal-overlay" id="resetPwModal">
+        <div class="modal-box small-modal">
+            <div class="modal-header">
+                <h3>비밀번호 재설정</h3>
+                <button type="button" class="close-btn" id="closeResetPwModal">X</button>
+            </div>
+
+            <p class="modal-desc">
+                가입한 아이디와 이메일을 입력한 뒤<br>
+                새 비밀번호를 설정해주세요.
+            </p>
+
+            <input type="text" id="resetUserId" placeholder="아이디 입력">
+            <input type="email" id="resetEmail" placeholder="이메일 입력">
+            <input type="password" id="resetNewPassword" placeholder="새 비밀번호 입력">
+            <input type="password" id="resetNewPasswordConfirm" placeholder="새 비밀번호 확인">
+
+            <button type="button" class="primary-btn" id="resetPasswordBtn">비밀번호 변경하기</button>
         </div>
     </div>
 

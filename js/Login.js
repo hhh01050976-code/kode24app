@@ -41,6 +41,14 @@ const codeModal = document.getElementById("codeModal");
 const closeCodeModal = document.getElementById("closeCodeModal");
 const verifyCodeBtn = document.getElementById("verifyCodeBtn");
 const emailCodeInput = document.getElementById("emailCodeInput");
+const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+const resetPwModal = document.getElementById("resetPwModal");
+const closeResetPwModal = document.getElementById("closeResetPwModal");
+const resetUserId = document.getElementById("resetUserId");
+const resetEmail = document.getElementById("resetEmail");
+const resetNewPassword = document.getElementById("resetNewPassword");
+const resetNewPasswordConfirm = document.getElementById("resetNewPasswordConfirm");
+const resetPasswordBtn = document.getElementById("resetPasswordBtn");
 
 //상태값
 let generatedEmailCode = "";
@@ -192,6 +200,26 @@ function closeCodeModalFn() {
 }
 function generateCode() {
   return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+
+/*=================
+비밀번호 재설정 팝업
+============= */
+function openResetPwModal() {
+    if (!resetPwModal) return;
+    resetPwModal.classList.add("show");
+}
+
+function closeResetPwModalFn(){
+    if (!resetPwModal) return;
+
+    resetPwModal.classList.remove("show");
+
+    if (resetUserId) resetUserId.value = "";
+    if (resetEmail) resetEmail.value = "";
+    if (resetNewPassword)  resetNewPassword.value = "";
+    if (resetNewPasswordConfirm) resetNewPasswordConfirm.value = "";
 }
 
 /*======================
@@ -388,6 +416,26 @@ if(codeModal){
     })
 }
 
+//비밀번호 찾기 팝업 
+if (forgotPasswordBtn) {
+    forgotPasswordBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        openResetPwModal();
+    });
+}
+
+if (closeResetPwModal) {
+    closeResetPwModal.addEventListener("click", closeResetPwModalFn);
+}
+
+if (resetPwModal) {
+    resetPwModal.addEventListener("click", (event) => {
+        if (event.target === resetPwModal) {
+            closeResetPwModalFn();
+        }
+    });
+}
+
 
 /*======================
 비밀번호 보기/숨기기 토글
@@ -431,6 +479,7 @@ loginForm.addEventListener("submit", (event) => {
     const adminPw = "kode24qaz!!";
 
     if (userId === adminId && password === adminPw) {
+        console.log("관리자 분기 진입 성공")
         localStorage.setItem("isAdminLogin", "true");
         showToast("관리자 로그인 되었습니다.");
 
@@ -484,6 +533,69 @@ loginForm.addEventListener("submit", (event) => {
         handleLoginSuccess(loginUser);
     }, 700);
 });
+
+/*======================
+비밀번호 재설정 처리
+======================*/
+if (resetPasswordBtn) {
+    resetPasswordBtn.addEventListener("click", () => {
+        const userId = resetUserId.value.trim();
+        const email = resetEmail.value.trim();
+        const newPassword = resetNewPassword.value.trim();
+        const newPasswordConfirm = resetNewPasswordConfirm.value.trim();
+
+        if (!userId || !email || !newPassword || !newPasswordConfirm) {
+            showToast("모든 정보를 입력해주세요.");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showToast("올바른 이메일 형식으로 입력해주세요.");
+            return;
+        }
+
+        if (!isValidPassword(newPassword)) {
+            showToast("비밀번호는 7~14자 / 특수문자 포함으로 입력해주세요.");
+            return;
+        }
+
+        if (newPassword !== newPasswordConfirm) {
+            showToast("새 비밀번호가 서로 다릅니다.");
+            return;
+        }
+
+        if (userId === "kode24") {
+            showToast("관리자 계정은 여기서 재설정할 수 없습니다.");
+            return;
+        }
+
+        if (userId === "test") {
+            showToast("테스트 계정은 재설정할 수 없습니다.");
+            return;
+        }
+
+        const users = getUsers();
+        const userIndex = users.findIndex(
+            (user) => user.userId === userId && user.email === email
+        );
+
+        if (userIndex === -1) {
+            showToast("일치하는 회원 정보를 찾을 수 없습니다.");
+            return;
+        }
+
+        users[userIndex].password = newPassword;
+        saveUsers(users);
+
+        showToast("비밀번호가 변경되었습니다.");
+
+        document.getElementById("loginId").value = userId;
+        document.getElementById("loginPassword").value = "";
+
+        closeResetPwModalFn();
+        switchTab("login");
+    });
+}
 
 /*======================
 회원가입 함수 ( API )
