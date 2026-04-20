@@ -280,6 +280,11 @@ signupId.addEventListener("input", () => {
 signupPassword.addEventListener("input", () => {
     const password = signupPassword.value.trim();
 
+    if(!password){
+        setMessage(passwordMsg, "");
+        return;
+    }
+
     if (!password) {
         setMessage(passwordMsg, "비밀번호는 7~14자 / 특수문자 포함으로 입력해주세요.", "error");
         return;
