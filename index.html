@@ -90,7 +90,7 @@
 
       <div id="userArea"></div>
 
-      <div class="hero-text">
+      <div class="hero-text" id="heroText">
         <div class="hero-badge">GLOBAL SECURITY</div>
         <h1 class="hero-title">전 세계 몸캠 피싱 대응 플랫폼</h1>
         <p class="hero-sub">
@@ -98,7 +98,11 @@
         </p>
       </div>
 
-      <div class="category-wrap">
+      <button type="button" class="category-toggle-btn" id="categoryToggleBtn">
+        카테고리 펼치기
+      </button>
+
+      <div class="category-wrap" id="categoryWrap">
               <div class="category-bg"></div>
 
               <!-- 카테고리 넣는 div 배경 -->
@@ -182,6 +186,27 @@
   const statusFirewall = document.getElementById("statusFirewall");
   const statusScan = document.getElementById("statusScan");
   const statusSafeMode = document.getElementById("statusSafeMode");
+
+
+  const categoryToggleBtn = document.getElementById("categoryToggleBtn");
+  const categoryWrap = document.getElementById("categoryWrap");
+  const heroText = document.getElementById("heroText");
+
+  let isCategoryOpen = false;
+
+  if (categoryToggleBtn && categoryWrap && heroText){
+    categoryToggleBtn.addEventListener("click", () =>{
+      isCategoryOpen = !isCategoryOpen;
+
+      categoryWrap.classList.toggle("open", isCategoryOpen);
+      heroText.classList.toggle("hide", isCategoryOpen);
+
+      categoryToggleBtn.textContent = isCategoryOpen
+        ? "카테고리 닫기"
+        : "카테고리 펼치기";
+    })
+  }
+
 
   const loadingSteps = [
     { percent: 12, text: "Installing security module..."},
@@ -267,6 +292,8 @@ window.addEventListener("load", () => {
   sessionStorage.setItem("kode24_loader_seen", "true");
   runLoader();
 });
+
+
 
 </script>
 
