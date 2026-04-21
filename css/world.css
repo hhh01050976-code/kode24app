@@ -16,31 +16,42 @@ body {
   overflow: hidden;
 }
 
-/*뒤로가기 버튼*/
+
+/* 뒤로가기 버튼 */
 .back-btn {
-  position: absolute;
-  top: 23px;
-  left: 13px;
-  z-index: 1100;
-  width: 40px;   /* 🔥 가로 넓힘 */
-  height: 32px;  /* 🔥 세로 줄임 */
-  border: none;
-  background: transparent;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.75); /* 🔥 어둡게 */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* 🔥 왼쪽 정렬 */
-  cursor: pointer;
+  justify-content: center;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: all 0.25s ease;
 }
 
 .back-btn img {
-  width: 45px;
-  height: 45px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
+  display: block;
+  
+  filter: brightness(1.3) invert(1);
+  transition: all 0.25s ease;
 }
 
 .back-btn:active {
-  transform: scale(0.9);
-  opacity: 0.7;
+  transform: scale(0.94);
+  opacity: 0.82;
 }
 
 /*전체 app*/
@@ -108,8 +119,8 @@ body {
 /* 햄버거 버튼 */
 .menu-btn {
   position: absolute;
-  top: 160px;
-  left: 10px;
+  top: 155px;
+  left: 14px;
   z-index: 1200;
   width: 45px;
   height: 45px;
@@ -346,7 +357,7 @@ body {
 
   .top-info {
     top: 70px;
-    left: 10px;
+    left: 14px;
     right: 16px;
     padding: 14px 14px;
   }

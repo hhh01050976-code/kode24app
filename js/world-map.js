@@ -201,3 +201,27 @@ function updateCurrentLabel() {
 
   currentLabel.textContent = `현재 선택: ${categoryLabels[selectedCategory]}`;
 }
+
+// 뒤로가기 버튼 제어
+const backBtn = document.querySelector(".back-btn");
+const menuBtn = document.getElementById("menuBtn");
+const closeBtn = document.getElementById("closeBtn");
+const sidebar = document.getElementById("sidebar");
+
+// 햄버거 클릭 → 사이드바 열기 + 뒤로가기 숨김
+menuBtn.addEventListener("click", () => {
+  sidebar.classList.remove("closed");
+
+  if (backBtn) {
+    backBtn.style.display = "none"; // 🔥 숨김
+  }
+});
+
+// X 클릭 → 사이드바 닫기 + 뒤로가기 다시 표시
+closeBtn.addEventListener("click", () => {
+  sidebar.classList.add("closed");
+
+  if (backBtn) {
+    backBtn.style.display = "flex"; // 🔥 다시 보이기
+  }
+});
