@@ -53,6 +53,10 @@ body {
   transform: scale(0.94);
   opacity: 0.82;
 }
+.hidden-btn {
+  opacity: 0;
+  pointer-events: none;
+}
 
 /*전체 app*/
 .app {

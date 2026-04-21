@@ -201,27 +201,49 @@ function updateCurrentLabel() {
 
   currentLabel.textContent = `현재 선택: ${categoryLabels[selectedCategory]}`;
 }
-
-// 뒤로가기 버튼 제어
+// 뒤로가기 버튼 / 사이드바 상태 동기화
 const backBtn = document.querySelector(".back-btn");
 const menuBtn = document.getElementById("menuBtn");
 const closeBtn = document.getElementById("closeBtn");
 const sidebar = document.getElementById("sidebar");
+const categoryButtons = document.querySelectorAll(".category-btn");
 
-// 햄버거 클릭 → 사이드바 열기 + 뒤로가기 숨김
-menuBtn.addEventListener("click", () => {
-  sidebar.classList.remove("closed");
+// 사이드바 상태에 따라 뒤로가기 버튼 보이기/숨기기
+function syncBackButtonWithSidebar() {
+  if (!backBtn || !sidebar) return;
 
-  if (backBtn) {
-    backBtn.style.display = "none"; // 🔥 숨김
+  const isSidebarClosed = sidebar.classList.contains("closed");
+
+  if (isSidebarClosed) {
+    backBtn.classList.remove("hidden-btn");
+  } else {
+    backBtn.classList.add("hidden-btn");
   }
+}
+
+// 사이드바 열기
+if (menuBtn) {
+  menuBtn.addEventListener("click", () => {
+    sidebar.classList.remove("closed");
+    syncBackButtonWithSidebar();
+  });
+}
+
+// X 버튼으로 닫기
+if (closeBtn) {
+  closeBtn.addEventListener("click", () => {
+    sidebar.classList.add("closed");
+    syncBackButtonWithSidebar();
+  });
+}
+
+// 카테고리 버튼 눌렀을 때도 닫히면 뒤로가기 다시 보이게
+categoryButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    sidebar.classList.add("closed");
+    syncBackButtonWithSidebar();
+  });
 });
 
-// X 클릭 → 사이드바 닫기 + 뒤로가기 다시 표시
-closeBtn.addEventListener("click", () => {
-  sidebar.classList.add("closed");
-
-  if (backBtn) {
-    backBtn.style.display = "flex"; // 🔥 다시 보이기
-  }
-});
+// 처음 페이지 진입 시 상태 맞추기
+syncBackButtonWithSidebar();
