@@ -1,35 +1,20 @@
-// 즉시 대응 & 증거 분석 JS
+// 증거 보존 JS
+// ============================================
+// [현재 단계]
+// - 로컬 테스트용 LocalStorage 저장 구조
+// - 사진은 작은 파일만 base64 미리보기 저장
+// - 영상 / 일반 파일은 목록 표시용 메타데이터만 저장
+//
+// [외주 전환 시]
+// 1. fileToDataUrl() 기반 저장 제거
+// 2. buildEvidenceFileEntries()에서 파일 업로드 API 호출
+// 3. url에는 서버/스토리지 URL 저장
+// 4. localStorage 대신 DB/API 저장으로 교체
+// ============================================
 
 const EVIDENCE_KEY = "kode24_evidence_files";
 const ADMIN_ATTACKER_KEY = "kode24_admin_attacker_reports";
-
-/*=============================
-[API 연결 예정 메모]
-LocalStrorage + 테스트 데이터 기반으로 동작 중이지만
-API가 완성 된다면
-
-1) 로그인 사용자 확인
-- isUserLoggedIn()
-- getCurrentUser()
-
-2) 증거 저장
-- initEvidenceForm() 안 submit 처리
-- buildEvidenceFileEntries()
-
-3) 관리자 제보 저장
-- saveAdminAttackerReport()
-
-4) 위험 계정 조회
-- TEST_REPORTED_ACCOINTS
-- initLookupForm()
-
-5) 첨부 파일 조회
-- 현재는 LocalSorage(EVIDENCE_KEY) 사용
-- 나중에 파일 조회 API로 변경 
-
-
-========================*/
-
+const MAX_INLINE_PHOTO_SIZE = 2 * 1024 * 1024; // 2MB 이하 사진만 base64 저장
 
 // 선택된 파일 배열
 let selectedPhotoFiles = [];
@@ -37,11 +22,7 @@ let selectedVideoFiles = [];
 let selectedDocFiles = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-  // seedMockCurrentUser();  // 테스트 자동 로그인 제거
-  initChecklist();
   initEvidenceForm();
-  initLookupForm();
-  initPhoneAutoFormat();
   initFileUI();
   initAccordion();
   updateLoginGuideUI();
@@ -55,49 +36,61 @@ function goBack() {
 /* =========================
    로그인 체크
 ========================= */
-//현재 LocalStorage의 currentUserId 존재 여부 로그인 판단이지만,
-// 나중에 실제 로그인 API / 토큰 검증 방식으로 바꿀 자리 
-
-// 로그인 판단
+// [외주 전환 시]
+// localStorage 로그인 체크 대신 실제 로그인 API / 토큰 검증으로 교체
 function isUserLoggedIn() {
-  const userId = localStorage.getItem("currentUserId");
-  return !!userId;
+  try {
+    const loginUser = JSON.parse(localStorage.getItem("kode24_login_user") || "null");
+    return !!(loginUser && loginUser.isLoggedIn);
+  } catch (error) {
+    console.error("kode24_login_user 파싱 실패:", error);
+    return false;
+  }
 }
 
-// 로그인 페이지로 이동
 function moveToLogin() {
-  // 실제 로그인 페이지 경로에 맞게 수정
   window.location.href = "../html/Login.html";
 }
 
-// 로그인 상태에 따라 안내 박스 보여주기/숨기기
 function updateLoginGuideUI() {
   const loginGuideBox = document.getElementById("loginGuideBox");
   if (!loginGuideBox) return;
 
-  if (isUserLoggedIn()) {
-    loginGuideBox.style.display = "none";
-  } else {
-    loginGuideBox.style.display = "block";
+  loginGuideBox.style.display = isUserLoggedIn() ? "none" : "block";
+}
+
+function getCurrentUser() {
+  try {
+    const loginUser = JSON.parse(localStorage.getItem("kode24_login_user") || "null");
+
+    if (!loginUser || !loginUser.isLoggedIn) {
+      return null;
+    }
+
+    return {
+      userId: loginUser.userId || "",
+      email: loginUser.email || "",
+      name: loginUser.name || "",
+      token: loginUser.token || null
+    };
+  } catch (error) {
+    console.error("현재 사용자 정보 파싱 실패:", error);
+    return null;
   }
 }
 
-/* =========================
-  현재 사용자
-  로컬 스토리에서 사용자 정보 읽은 곳
-  나중에 실제 API 연결 시 내 정보 조회 API 응답값으로 교체 
-========================= */
-function getCurrentUser() {
-  if (!isUserLoggedIn()) {
-    return null;
-  }
+// 모바일 / 로컬 테스트용 로그아웃
+function forceLogoutForTest() {
+  localStorage.removeItem("kode24_login_user");
+  localStorage.removeItem("currentUserId");
+  localStorage.removeItem("currentUserEmail");
+  localStorage.removeItem("currentUserName");
+  localStorage.removeItem("accessToken");
 
-  return {
-    userId: localStorage.getItem("currentUserId") || "",
-    email: localStorage.getItem("currentUserEmail") || "",
-    name: localStorage.getItem("currentUserName") || "",
-    token: localStorage.getItem("accessToken") || null
-  };
+  showToast("테스트 로그아웃 완료");
+  setTimeout(() => {
+    location.reload();
+  }, 500);
 }
 
 /* =========================
@@ -132,6 +125,8 @@ function formatFileSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
 }
 
+// [외주 전환 시]
+// 이 함수는 제거하고 업로드 API 사용
 function fileToDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -139,6 +134,10 @@ function fileToDataUrl(file) {
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+}
+
+function createEvidenceId() {
+  return `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
 /* =========================
@@ -166,17 +165,6 @@ function buildSaveRequestPayload() {
   };
 }
 
-function buildLookupPayload(platform, normalizedValue) {
-  return {
-    user: getCurrentUser(),
-    lookup: {
-      platform,
-      value: normalizedValue,
-      checkedAt: new Date().toISOString()
-    }
-  };
-}
-
 /* =========================
    아코디언
 ========================= */
@@ -201,43 +189,7 @@ function initAccordion() {
 }
 
 /* =========================
-   1. 체크리스트
-========================= */
-function initChecklist() {
-  const checkItems = document.querySelectorAll(".check-item");
-  const checkedCountEl = document.getElementById("checkedCount");
-
-  if (!checkItems.length || !checkedCountEl) return;
-
-  checkItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      item.classList.toggle("active");
-
-      const icon = item.querySelector(".check-icon");
-      const label = item.dataset.label || "항목";
-
-      if (item.classList.contains("active")) {
-        icon.textContent = "☑";
-        showToast(`${label} 체크 완료`);
-      } else {
-        icon.textContent = "☐";
-        showToast(`${label} 체크 해제`);
-      }
-
-      updateCheckedCount();
-    });
-  });
-
-  function updateCheckedCount() {
-    const activeCount = document.querySelectorAll(".check-item.active").length;
-    checkedCountEl.textContent = activeCount;
-  }
-
-  updateCheckedCount();
-}
-
-/* =========================
-   2. 파일 UI
+   파일 UI
 ========================= */
 function initFileUI() {
   bindFileInput({
@@ -302,7 +254,7 @@ function updateFileText(textEl, count, label) {
   if (!textEl) return;
 
   if (count === 0) {
-    textEl.textContent = `${label}을 선택해주세요`;
+    textEl.textContent = `${label}을 업로드 해주세요`;
     textEl.classList.remove("active");
     return;
   }
@@ -384,8 +336,8 @@ function renderPreview(type) {
         type === "image"
           ? selectedPhotoFiles.length
           : type === "video"
-          ? selectedVideoFiles.length
-          : selectedDocFiles.length;
+            ? selectedVideoFiles.length
+            : selectedDocFiles.length;
 
       updateFileText(textEl, currentCount, label);
       showToast(`${label} 항목이 삭제되었습니다.`);
@@ -400,16 +352,13 @@ function renderPreview(type) {
 }
 
 /* =========================
-   3. 증거 저장
+   증거 저장
 ========================= */
-/*
-파일 엔트리 생성
-현재는 base64(DataURL)로 변환해서 로컬스토리 저장용 객체 생성이지만
-나중에 실제 API 연결 시 
-1. 파일 업로드 API로 먼저 업로드
-2. 서버가 돌려준 fileId / fileUrl을 받아서 저장 API에 함께 전달 
-*/
-function buildEvidenceFileEntries() {
+// [외주 전환 시]
+// - 현재는 localStorage 저장
+// - 이후에는 각 파일을 업로드 API로 보내고
+//   서버에서 받은 URL / fileId를 아래 객체에 넣으면 됨
+async function buildEvidenceFileEntries() {
   const currentUser = getCurrentUser();
   if (!currentUser) {
     throw new Error("로그인 사용자 정보가 없습니다.");
@@ -418,22 +367,31 @@ function buildEvidenceFileEntries() {
   const payload = buildEvidencePayload();
   const date = payload.savedAt.slice(0, 10);
 
-  const photoEntries = selectedPhotoFiles.map((file) => ({
-    id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-    ownerUserId: currentUser.userId,
-    ownerUserName: currentUser.name,
-    type: "photo",
-    name: file.name,
-    size: file.size,
-    date,
-    url: "",
-    attackerId: payload.attackerId,
-    profileLink: payload.profileLink,
-    evidenceMemo: payload.evidenceMemo
-  }));
+  const photoEntries = await Promise.all(
+    selectedPhotoFiles.map(async (file) => {
+      const isSmallEnough = file.size <= MAX_INLINE_PHOTO_SIZE;
+
+      return {
+        id: createEvidenceId(),
+        ownerUserId: currentUser.userId,
+        ownerUserName: currentUser.name,
+        type: "photo",
+        name: file.name,
+        size: file.size,
+        date,
+        url: isSmallEnough ? await fileToDataUrl(file) : "",
+        hasInlineData: isSmallEnough,
+        previewUnavailableReason: isSmallEnough ? "" : "사진 용량이 커서 미리보기 없이 목록만 저장되었습니다.",
+        attackerId: payload.attackerId,
+        profileLink: payload.profileLink,
+        evidenceMemo: payload.evidenceMemo,
+        savedAt: payload.savedAt
+      };
+    })
+  );
 
   const videoEntries = selectedVideoFiles.map((file) => ({
-    id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    id: createEvidenceId(),
     ownerUserId: currentUser.userId,
     ownerUserName: currentUser.name,
     type: "video",
@@ -441,13 +399,16 @@ function buildEvidenceFileEntries() {
     size: file.size,
     date,
     url: "",
+    hasInlineData: false,
+    previewUnavailableReason: "영상은 현재 로컬 테스트 버전에서 목록 저장만 지원합니다.",
     attackerId: payload.attackerId,
     profileLink: payload.profileLink,
-    evidenceMemo: payload.evidenceMemo
+    evidenceMemo: payload.evidenceMemo,
+    savedAt: payload.savedAt
   }));
 
   const docEntries = selectedDocFiles.map((file) => ({
-    id: `ev_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    id: createEvidenceId(),
     ownerUserId: currentUser.userId,
     ownerUserName: currentUser.name,
     type: "doc",
@@ -455,20 +416,16 @@ function buildEvidenceFileEntries() {
     size: file.size,
     date,
     url: "",
+    hasInlineData: false,
+    previewUnavailableReason: "파일은 현재 로컬 테스트 버전에서 목록 저장만 지원합니다.",
     attackerId: payload.attackerId,
     profileLink: payload.profileLink,
-    evidenceMemo: payload.evidenceMemo
+    evidenceMemo: payload.evidenceMemo,
+    savedAt: payload.savedAt
   }));
 
   return [...photoEntries, ...videoEntries, ...docEntries];
 }
-
-/*==================================
-관리자 제보 저장
-
-- 현재는 관리자 페이지에서 로컬 스토리에 같이 저장 하지만
-- 나중에는 관리자 제보 저장 API로 POST 요청하는 자리 
-===============================*/
 
 function saveAdminAttackerReport(evidencePayload, evidenceEntries = []) {
   const currentUser = getCurrentUser();
@@ -491,9 +448,6 @@ function saveAdminAttackerReport(evidencePayload, evidenceEntries = []) {
     attachmentIds: evidenceEntries.map((item) => item.id),
     savedAt: evidencePayload.savedAt
   };
-
-  //현재는 로컬스토리에 저장 
-  //나중에는 실제 API 연결 
 
   const saved = getStoredArray(ADMIN_ATTACKER_KEY);
   saved.unshift(report);
@@ -530,23 +484,6 @@ function initEvidenceForm() {
   evidenceForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    /*
-    [API 연결 예정]
-    현재 
-    1. 프론트에서 입력값 검사
-    2. 로컬 스토리에 증거 저장
-
-    나중에
-    1. 로그인 여부 확인
-    2. 파일 업로드 API 연출
-    3. 증거 저장 API 호출
-    4. 성공 응답 받아 저장 완료 UI 표시 
-    */
-
-
-    // =========================
-    // 로그인 안 되어 있으면 저장 막고 로그인 페이지로 이동
-    // =========================
     if (!isUserLoggedIn()) {
       showToast("로그인 후 증거를 저장할 수 있습니다.");
       setTimeout(() => {
@@ -562,7 +499,7 @@ function initEvidenceForm() {
       selectedDocFiles.length > 0;
 
     if (!evidencePayload.attackerId) {
-      showToast("가해자 ID / 계정명을 입력해주세요.");
+      showToast("가해자 ID를 입력해주세요.");
       return;
     }
 
@@ -573,9 +510,8 @@ function initEvidenceForm() {
 
     try {
       const requestPayload = buildSaveRequestPayload();
-      const newEntries = buildEvidenceFileEntries();
+      const newEntries = await buildEvidenceFileEntries();
 
-      //현재 로컬 스토리 저장 나중에 fetch API 수정
       const savedEvidence = getStoredArray(EVIDENCE_KEY);
       setStoredArray(EVIDENCE_KEY, [...newEntries, ...savedEvidence]);
 
@@ -583,133 +519,33 @@ function initEvidenceForm() {
 
       const currentUser = getCurrentUser();
 
+      const largePhotoCount = newEntries.filter(
+        (item) => item.type === "photo" && !item.hasInlineData
+      ).length;
+
+      const infoMessage =
+        selectedVideoFiles.length > 0 || selectedDocFiles.length > 0 || largePhotoCount > 0
+          ? "일부 대용량 파일은 목록만 저장되었습니다."
+          : "증거가 저장되었습니다.";
+
       savedEvidenceBox.innerHTML = `
         <h3 class="saved-title">증거 저장 완료</h3>
         <p class="saved-meta">가해자 ID: ${escapeHtml(evidencePayload.attackerId)}</p>
-        <p class="saved-meta">프로필 링크: ${escapeHtml(evidencePayload.profileLink || "-")}</p>
+        <p class="saved-meta">가해자 링크: ${escapeHtml(evidencePayload.profileLink || "-")}</p>
         <p class="saved-meta">추가 메모: ${escapeHtml(evidencePayload.evidenceMemo || "-")}</p>
         <p class="saved-meta">사진 ${evidencePayload.photoCount}개 / 영상 ${evidencePayload.videoCount}개 / 파일 ${evidencePayload.fileCount}개</p>
         <p class="saved-meta">저장 사용자: ${escapeHtml(currentUser?.name || "-")}</p>
         <p class="saved-meta">저장 시각: ${escapeHtml(evidencePayload.savedAt)}</p>
+        <p class="saved-meta">${escapeHtml(infoMessage)}</p>
       `;
 
       console.log("evidence save payload:", requestPayload);
       clearEvidenceFormUI();
-      showToast("증거가 저장되었습니다.");
+      showToast(infoMessage);
     } catch (error) {
       console.error("증거 저장 실패:", error);
       showToast("증거 저장 중 오류가 발생했습니다.");
     }
-  });
-}
-
-/* =========================
-   4. 전화번호 자동 하이픈
-========================= */
-function initPhoneAutoFormat() {
-  const platformEl = document.getElementById("platform");
-  const lookupValueEl = document.getElementById("lookupValue");
-
-  if (!platformEl || !lookupValueEl) return;
-
-  lookupValueEl.addEventListener("input", () => {
-    if (platformEl.value !== "phone") return;
-
-    const numbersOnly = lookupValueEl.value.replace(/\D/g, "");
-    lookupValueEl.value = formatPhoneNumber(numbersOnly);
-  });
-
-  platformEl.addEventListener("change", () => {
-    lookupValueEl.value = "";
-
-    if (platformEl.value === "phone") {
-      lookupValueEl.placeholder = "예) 010-1234-5678";
-    } else {
-      lookupValueEl.placeholder = "예) instagram_id / @telegramID / 전화번호";
-    }
-  });
-}
-
-function formatPhoneNumber(value) {
-  const onlyNums = String(value || "").replace(/\D/g, "");
-
-  if (onlyNums.length < 4) return onlyNums;
-  if (onlyNums.length < 8) return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
-  return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
-}
-
-/* =========================
-  위험 계정 확인 => 나중에 DB 갖고와서 사용자들이 실제 가해자들 아이디 검색할 수 있도록 진행
-========================= */
-//테스트 신고 계정 
-// 현재 프론트 내부 더미 데이터 
-// 나중에 실제 운영 제거 예정 및 위험 계정 조회 API로 대체
-const TEST_REPORTED_ACCOUNTS = {
-  instagram: ["hhh010509","juhyeonha","danger24"],
-  telegram: ["kode24_test","danger24"],
-  phone: ["01012345678","01011112222","01022223333"],
-  other: ["test_24"]
-};
-
-/*
-위험 게정 조회 폼
-현재는 TEST_REPORTED_ACCOUNTS 배열에서만 검색
-나중에 조회 API를 통해 submit 안에서 fetch 호출 
-*/
-function initLookupForm() {
-  const lookupForm = document.getElementById("lookupForm");
-  const resultBox = document.getElementById("lookupResult");
-
-  if (!lookupForm || !resultBox) return;
-
-  lookupForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const platformEl = document.getElementById("platform");
-    const lookupValueEl = document.getElementById("lookupValue");
-
-    const platform = platformEl ? platformEl.value : "";
-    const rawValue = lookupValueEl ? lookupValueEl.value.trim() : "";
-    const normalizedValue = platform === "phone" ? rawValue.replace(/\D/g, "") : rawValue;
-
-    if (!platform) {
-      showToast("플랫폼을 선택해주세요.");
-      return;
-    }
-
-    if (!rawValue) {
-      showToast("ID 또는 전화번호를 입력해주세요.");
-      return;
-    }
-
-    const requestPayload = buildLookupPayload(platform, normalizedValue);
-    /*
-    현재 프론트 더미데이터로 조회 
-    나중에 fetch api로 진행 
-    */
-    console.log("lookup payload:", requestPayload);
-
-    const normalizedInput = String(normalizedValue || "").toLowerCase();
-
-    const reportedList = (TEST_REPORTED_ACCOUNTS[platform] || []).map((item) =>
-      String(item).toLowerCase()
-    );
-
-    const isReported = reportedList.includes(normalizedInput);
-
-    resultBox.innerHTML = isReported
-      ? `
-        <div class="result-danger">
-          <strong>주의가 필요한 계정입니다.</strong>
-          <p>테스트 신고 이력이 존재하는 계정입니다.</p>
-        </div>
-      `
-      : `
-        <div class="result-safe">
-          <strong>현재 등록된 신고 이력이 없습니다.</strong>
-          <p>테스트 데이터 기준으로 조회되었습니다.</p>
-        </div>
-      `;
   });
 }
 

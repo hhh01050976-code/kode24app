@@ -377,6 +377,28 @@ body {
   font-weight: 700;
 }
 
+.file-item-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.file-delete-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.14);
+  color: #fca5a5;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.file-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.22);
+}
+
 /* =========================
    모바일 최적화
    ========================= */

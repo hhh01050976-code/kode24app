@@ -1,22 +1,18 @@
 /* ==============================
    증거 보존 파일 페이지 JS
-   앱 방식 + 아이폰 스타일 피커 + 파일 미리보기
    ============================== */
 
-/*
-[API 연결 예정 메모]
-현재 구조 LocalStorage("kode24_evidence_file")에서 전체 데이터 읽음
-
-
-나중에 실제 API 연결 시 
-1) seedMockCurrentUser() => 제거 (테스트용 로그인)
-2) getCurrentUser() => 실제 로그인 API / 토큰 기반으로 변경
-3) getEvidenceData() => LocalStorage 대신 서버 API 호출
-4) renderFileList() => API 응답 기반 렌더링 
-
-파일 URL( item.url )은 현재 base64 => 나중엔 서버 URL로 변경 
-
-*/
+// ============================================
+// [현재 단계]
+// - localStorage 기반 로컬 테스트용
+// - 사진: 일부만 미리보기 가능
+// - 영상/파일: 현재는 목록 저장만 지원
+//
+// [외주 전환 시]
+// 1. getEvidenceData()를 API 호출로 교체
+// 2. openPreview()에서 item.url 서버 URL 사용
+// 3. 영상/파일도 실제 재생/다운로드 가능하게 확장
+// ============================================
 
 const EVIDENCE_KEY = "kode24_evidence_files";
 
@@ -47,86 +43,86 @@ let selectedMonth = "";
 let pickerType = "";
 let tempPickerValue = "";
 
-
-//테스트 로그인 
-function seedMockCurrentUser() {
-  if (!localStorage.getItem("currentUserId")) {
-    localStorage.setItem("currentUserId", "user_demo_001");
-  }
-
-  if (!localStorage.getItem("currentUserName")) {
-    localStorage.setItem("currentUserName", "테스트사용자");
-  }
-}
-
-//현재 사용자 정보 
-//나중에 로그인 API / 토큰 기반으로 변경 
+/* =========================
+   로그인 사용자
+========================= */
 function getCurrentUser() {
-  return {
-    userId: localStorage.getItem("currentUserId") || "user_demo_001",
-    name: localStorage.getItem("currentUserName") || "테스트사용자"
-  };
+  try {
+    const loginUser = JSON.parse(localStorage.getItem("kode24_login_user") || "null");
+
+    if (!loginUser || !loginUser.isLoggedIn) {
+      return null;
+    }
+
+    return {
+      userId: loginUser.userId || "",
+      name: loginUser.name || ""
+    };
+  } catch (error) {
+    console.error("현재 사용자 정보 파싱 실패:", error);
+    return null;
+  }
 }
 
 function goBack() {
   location.href = "./MyPage.html";
 }
 
-
-//증거 데이터 가져오기 
+/* =========================
+   데이터
+========================= */
+// [외주 전환 시]
+// localStorage 대신 DB/API 조회로 교체
 function getEvidenceData() {
   const saved = localStorage.getItem(EVIDENCE_KEY);
-
   if (!saved) return [];
 
   try {
     const allEvidence = JSON.parse(saved);
     const currentUser = getCurrentUser();
 
-    //현재 프론트에서 사용자 필터링
-    return allEvidence.filter((item) => item.ownerUserId === currentUser.userId);
+    if (!currentUser || !currentUser.userId) {
+      return [];
+    }
 
-    //나중에 실제 API 연동
+    return allEvidence.filter((item) => item.ownerUserId === currentUser.userId);
   } catch (error) {
     console.error("증거 데이터 파싱 실패:", error);
     return [];
   }
 }
 
-//빈 상태 메세지 반환 
 function getEmptyMessage(type) {
   if (type === "photo") return "사진이 없습니다.";
   if (type === "video") return "영상이 없습니다.";
   return "파일이 없습니다.";
 }
 
-//연도/월 선택값 테그슽 업데이트 
+/* =========================
+   필터 라벨
+========================= */
 function updateTriggerLabels() {
   yearTrigger.textContent = selectedYear ? `${selectedYear}년` : "전체 연도";
   monthTrigger.textContent = selectedMonth ? `${Number(selectedMonth)}월` : "전체 월";
 }
 
-//연도 선택 옵션 생성 
+/* =========================
+   피커 옵션
+========================= */
 function getYearOptions() {
   const options = [{ value: "", label: "전체 연도" }];
-  const data = getEvidenceData();
+  const currentYear = new Date().getFullYear();
 
-  const years = [...new Set(
-    data
-      .map((item) => String(item.date || "").slice(0, 4))
-      .filter(Boolean)
-  )].sort((a, b) => Number(b) - Number(a));
-
-  years.forEach((year) => {
+  for (let year = currentYear; year >= 1999; year--) {
     options.push({
-      value: year,
+      value: String(year),
       label: `${year}년`
     });
-  });
+  }
 
   return options;
 }
-// 월 선택 옵션 생성 
+
 function getMonthOptions() {
   const options = [{ value: "", label: "전체 월" }];
 
@@ -141,8 +137,9 @@ function getMonthOptions() {
   return options;
 }
 
-
-//필터링 로직 
+/* =========================
+   필터링
+========================= */
 function getFilteredData() {
   let data = getEvidenceData();
 
@@ -159,10 +156,38 @@ function getFilteredData() {
     });
   }
 
-  return data.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  return data.sort((a, b) => String(b.savedAt || b.date || "").localeCompare(String(a.savedAt || a.date || "")));
 }
 
-//파일 리스트 렌더링 
+// 삭제 버튼
+function deleteEvidenceItem(targetId){
+  try {
+    const saved = JSON.parse(localStorage.getItem(EVIDENCE_KEY) || "[]");
+    const filtered = saved.filter((item) => String(item.id) !== String(targetId));
+    localStorage.setItem(EVIDENCE_KEY, JSON.stringify(filtered));
+  } catch (error) {
+    console.error("증거 삭제 실패 : ", error);
+  }
+}
+
+function showToast(message){
+  const toast = document.getElementById("appToast");
+  if (!toast){
+    alert(message);
+    return;
+  }
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+} 
+/* =========================
+   리스트 렌더링
+========================= */
 function renderFileList() {
   if (!fileList || !emptyState) return;
 
@@ -180,22 +205,50 @@ function renderFileList() {
   fileList.innerHTML = filtered
     .map((item) => `
       <article class="file-item" data-id="${item.id}">
-        <div class="file-name">${escapeHtml(item.name)}</div>
-        <div class="file-meta">${escapeHtml(item.date || "-")}</div>
+        <div class="file-item-top">
+          <div>
+            <div class="file-name">${escapeHtml(item.name)}</div>
+            <div class="file-meta">${escapeHtml(item.date || "-")}</div>
+          </div>
+          <button type="button" class="file-delete-btn" data-delete-id="${item.id}">
+            삭제
+          </button>
+        </div>
       </article>
     `)
     .join("");
 
   const items = fileList.querySelectorAll(".file-item");
   items.forEach((itemEl) => {
-    itemEl.addEventListener("click", () => {
+    itemEl.addEventListener("click", (e) => {
+      const deleteBtn = e.target.closest(".file-delete-btn");
+      if (deleteBtn) return;
+
       const targetId = itemEl.dataset.id;
       const target = filtered.find((item) => String(item.id) === String(targetId));
       if (target) openPreview(target);
     });
   });
+
+  const deleteButtons = fileList.querySelectorAll(".file-delete-btn");
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const targetId = button.dataset.deleteId;
+      const isConfirmed = confirm("이 파일을 삭제할까요?");
+
+      if (!isConfirmed) return;
+
+      deleteEvidenceItem(targetId);
+      renderFileList();
+      showToast("파일이 삭제되었습니다.");
+    });
+  });
 }
-//탭 전환 
+/* =========================
+   탭
+========================= */
 function initTabs() {
   if (!tabButtons.length) return;
 
@@ -210,7 +263,9 @@ function initTabs() {
   });
 }
 
-//미리 보기 - 파일 URL
+/* =========================
+   피커
+========================= */
 function openPicker(type) {
   pickerType = type;
   tempPickerValue = type === "year" ? selectedYear : selectedMonth;
@@ -244,14 +299,13 @@ function openPicker(type) {
 
   pickerSheet.classList.remove("hidden");
 }
-//피커 닫기 
+
 function closePicker() {
   pickerSheet.classList.add("hidden");
   pickerType = "";
   tempPickerValue = "";
 }
 
-//피커 이벤트 초기화 
 function initPicker() {
   if (yearTrigger) {
     yearTrigger.addEventListener("click", () => openPicker("year"));
@@ -281,27 +335,47 @@ function initPicker() {
   }
 }
 
-//파일 미리보기 
+/* =========================
+   미리보기
+========================= */
+// [외주 전환 시]
+// item.url 서버 URL이 들어오면 아래 안내 문구 대신 실제 재생/다운로드 처리
 function openPreview(item) {
   if (!previewModal || !previewTitle || !previewBody) return;
 
   previewTitle.textContent = item.name || "파일 보기";
 
   if (item.type === "photo") {
-    previewBody.innerHTML = `<img src="${item.url}" alt="${escapeHtml(item.name)}" class="preview-image" />`;
+    if (item.url) {
+      previewBody.innerHTML = `
+        <img src="${item.url}" alt="${escapeHtml(item.name)}" class="preview-image" />
+      `;
+    } else {
+      previewBody.innerHTML = `
+        <div class="preview-file-box">
+          <div class="preview-file-name">${escapeHtml(item.name)}</div>
+          <div class="preview-file-desc">
+            ${escapeHtml(item.previewUnavailableReason || "사진 미리보기를 지원하지 않습니다.")}
+          </div>
+        </div>
+      `;
+    }
   } else if (item.type === "video") {
     previewBody.innerHTML = `
-      <video controls class="preview-video">
-        <source src="${item.url}" />
-        브라우저에서 영상을 재생할 수 없습니다.
-      </video>
+      <div class="preview-file-box">
+        <div class="preview-file-name">${escapeHtml(item.name)}</div>
+        <div class="preview-file-desc">
+          ${escapeHtml(item.previewUnavailableReason || "영상은 현재 로컬 테스트 버전에서 목록 저장만 지원합니다.")}
+        </div>
+      </div>
     `;
   } else {
     previewBody.innerHTML = `
       <div class="preview-file-box">
         <div class="preview-file-name">${escapeHtml(item.name)}</div>
-        <div class="preview-file-desc">문서 미리보기 대신 새 탭에서 열 수 있도록 준비했습니다.</div>
-        <a href="${item.url}" target="_blank" class="preview-link-btn">파일 열기</a>
+        <div class="preview-file-desc">
+          ${escapeHtml(item.previewUnavailableReason || "파일은 현재 로컬 테스트 버전에서 목록 저장만 지원합니다.")}
+        </div>
       </div>
     `;
   }
@@ -309,21 +383,20 @@ function openPreview(item) {
   previewModal.classList.remove("hidden");
 }
 
-//미리보기 닫기 
 function closePreview() {
   if (!previewModal || !previewBody) return;
   previewModal.classList.add("hidden");
   previewBody.innerHTML = "";
 }
 
-//미리보기 이벤트 초기화 
 function initPreview() {
   if (previewBackdrop) previewBackdrop.addEventListener("click", closePreview);
   if (previewCloseBtn) previewCloseBtn.addEventListener("click", closePreview);
 }
 
-
-//html 안전 변환 (xss 방지)
+/* =========================
+   XSS 방지
+========================= */
 function escapeHtml(value) {
   return String(value || "")
     .replaceAll("&", "&amp;")
@@ -333,10 +406,10 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
-
-//페이지 시작 나중에 API fetch 후 렌더링 
+/* =========================
+   시작
+========================= */
 document.addEventListener("DOMContentLoaded", () => {
-  seedMockCurrentUser();
   updateTriggerLabels();
   initTabs();
   initPicker();

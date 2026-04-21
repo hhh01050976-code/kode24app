@@ -151,7 +151,7 @@
 
             <form class="evidence-form" id="evidenceForm">
             <label>
-                가해자 ID / 계정명
+                가해자 ID
                 <input
                 type="text"
                 id="attackerId"
@@ -160,7 +160,7 @@
             </label>
 
             <label>
-                프로필 링크
+                가해자 링크
                 <input
                 type="text"
                 id="profileLink"
@@ -168,20 +168,11 @@
                 />
             </label>
 
-            <label>
-                추가 메모
-                <textarea
-                id="evidenceMemo"
-                rows="4"
-                placeholder="상황 설명, 받은 메시지 내용, 피해 시점 등을 간단히 적어주세요"
-                ></textarea>
-            </label>
-
             <div class="file-upload">
                 <span class="file-title">사진 업로드</span>
                 <div class="file-box" onclick="document.getElementById('photoFiles').click()">
                 <div class="file-icon">📷</div>
-                <div class="file-text" id="photoText">사진을 선택해주세요</div>
+                <div class="file-text" id="photoText">사진을 업로드 해주세요</div>
                 </div>
                 <input type="file" id="photoFiles" accept="image/*" multiple hidden />
                 <div class="preview-list" id="photoPreview"></div>
@@ -191,7 +182,7 @@
                 <span class="file-title">영상 업로드</span>
                 <div class="file-box" onclick="document.getElementById('videoFiles').click()">
                 <div class="file-icon">🎬</div>
-                <div class="file-text" id="videoText">영상을 선택해주세요</div>
+                <div class="file-text" id="videoText">영상을 업로드 해주세요</div>
                 </div>
                 <input type="file" id="videoFiles" accept="video/*" multiple hidden />
                 <div class="preview-list" id="videoPreview"></div>
@@ -201,11 +192,20 @@
                 <span class="file-title">파일 업로드</span>
                 <div class="file-box" onclick="document.getElementById('docFiles').click()">
                 <div class="file-icon">📎</div>
-                <div class="file-text" id="docText">파일을 선택해주세요</div>
+                <div class="file-text" id="docText">파일을 업로드 해주세요</div>
                 </div>
                 <input type="file" id="docFiles" multiple hidden />
                 <div class="preview-list" id="docPreview"></div>
             </div>
+
+            <label>
+                추가 메모
+                <textarea
+                id="evidenceMemo"
+                rows="4"
+                placeholder="상황 설명, 받은 메시지 등을 적어주세요"
+                ></textarea>
+            </label>
 
             <button type="submit" class="primary-btn">증거 저장하기</button>
             </form>
