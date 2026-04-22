@@ -12,7 +12,10 @@
 
             <!-- 상단 -->
             <header class="login-header">
-                <button class="back-btn" onclick="history.back()">⬅</button>
+                <button class="back-btn" type="button" onclick="goBack()">
+                <img src="../../img/back.png" alt="뒤로가기">
+                </button>
+
                 <div class="brand-box">
                     <img src="../img/logo.png" alt="Kode24" class="brand-logo">
                 </div>
@@ -191,5 +194,12 @@
     <div class="app-toast" id="appToast"></div>
 
     <script src="../js/Login.js"></script><!-- 로그인 js-->
+
+    <script>
+  function goBack() {
+    location.href = "../../index.html";
+  }
+</script>
+
 </body>
 </html>

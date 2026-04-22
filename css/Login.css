@@ -48,38 +48,71 @@ body{
     align-items: center;
     margin-bottom: 28px;
 }
-.back-btn{
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(
-        135deg,
-        rgba(255,255,255,0.10),
-        rgba(255,255,255,0.03)
-    );
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
+
+/* 뒤로가기 버튼 */
+.back-btn {
+  position: static;
+  top: 30px;
+  left: 16px;
+  z-index: 9999;
+  width: 45px;
+  height: 45px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 13px;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  transition: all 0.25s ease;
+}
+
+.back-btn img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+  filter: brightness(1.3) invert(1);
+  transition: all 0.25s ease;
+}
+
+.back-btn:active {
+  transform: scale(0.94);
+  opacity: 0.82;
+}
+
+.brand-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    border: 1px solid rgba(255,255,255,0.20);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.24);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+        0 8px 20px rgba(139, 92, 246, 0.22),
+        inset 0 1px 0 rgba(255,255,255,0.24);
 }
-.brand-box{
-    padding: 10px 18px;
-    border-radius: 24px;
-    background: linear-gradient(
-        135deg,
-        rgba(255,255,2550.10),
-        rgba(255,255,255,0.02)
-    );
-    backdrop-filter: blur(12px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.18)
-}
-.brand-logo{
+.brand-logo {
     display: block;
-    width: 110px;
+    width: 95px;
     height: auto;
+    filter:
+        brightness(1.08)
+        saturate(1.15)
+        drop-shadow(0 2px 8px rgba(255,255,255,0.18));
 }
+
 /*===========
 인트로
 ============*/
@@ -163,15 +196,15 @@ body{
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
 }
 
 .auth-form label {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
     color: #e5e7eb;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
 }
 .auth-form input{
