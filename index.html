@@ -1,106 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/home.css">
-    <title>Kode24</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/home.css" />
+  <title>Kode24</title>
 </head>
 <body>
 
-
-  <!--앱 로딩 오버레이-->
+  <!-- 앱 로딩 오버레이 -->
   <div id="appLoader" class="app-loader">
-      <div class="loader-bg-grid"></div>
-      <div class="loader-bg-glow loader-glow-1"></div>
-      <div class="loader-bg-glow loader-glow-2"></div>
+    <div class="loader-bg-grid"></div>
+    <div class="loader-bg-glow loader-glow-1"></div>
+    <div class="loader-bg-glow loader-glow-2"></div>
 
-      <div class="loader-wrap">
-        <div class="loader-lock-circle">
-          <div class="lock-ring"></div>
-          <div class="lock-core">
-            <div class="lock-icon">🔒</div>
-          </div>
-        </div>
-
-        <h1 class="loader-title">KODE24 Protection</h1>
-        <p class="loader-subtitle">보호 시스템을  확인하고 있습니다.</p>
-
-        <div class="loader-panel">
-          <div class="loader-panel-top">
-            <span id="loaderStepText">Installing security module...</span>
-            <span id="loaderPercentText">0%</span>
-          </div>
-
-
-          <div class="progress-bar">
-            <div id="progressFill" class="progress-fill"></div>
-            <div class="progress-scan"></div>
-          </div>
-
-          <div class="loader-status-list">
-            <div class="status-row">
-              <span class="status-label">Firewall</span>
-              <span id="statusFirewall" class="status-value waiting">대기중</span>
-            </div>
-            <div class="status-row">
-              <span class="status-label">Threat Scan</span>
-              <span id="statusScan" class="status-value waiting">대기중</span>
-            </div>
-            <div class="status-row">
-              <span class="status-label">Safe Mode</span>
-              <span id="statusSafeMode" class="status-value waiting">대기중</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="loader-binary">
-          01001011 01001111 01000100 01000101 00110010 
+    <div class="loader-wrap">
+      <div class="loader-lock-circle">
+        <div class="lock-ring"></div>
+        <div class="lock-core">
+          <div class="lock-icon">🔒</div>
         </div>
       </div>
-  </div>
 
+      <h1 class="loader-title">KODE24 Protection</h1>
+      <p class="loader-subtitle">보호 시스템을 확인하고 있습니다.</p>
 
-<div class="hero" id="mainContent">
-    <img src="./img/mainwold.jpg" class="earth" alt="main earth">
-
-
-      <div>
-          <img src="./img/logo.png" alt="logo" class="logo">
-
-          <!--암호 느낌으로-->
-          <div class="security-hud">
-            <div class="hud-ring ring-1"></div>
-            <div class="hud-ring ring-2"></div>
-            <div class="hud-ring ring-3"></div>
-
-            <div class="hud-core"></div>
-            <div class="hud-scan"></div>
-
-            <div class="hud-dot dot-1"></div>
-            <div class="hud-dot dot-2"></div>
-            <div class="hud-dot dot-3"></div>
-            <div class="hud-dot dot-4"></div>
-
-            <span class="hud-line line-1"></span>
-            <span class="hud-line line-2"></span>
-
-
-          </div>
-
+      <div class="loader-panel">
+        <div class="loader-panel-top">
+          <span id="loaderStepText">Installing security module...</span>
+          <span id="loaderPercentText">0%</span>
         </div>
 
-      <div id="userArea"></div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+          <div class="progress-scan"></div>
+        </div>
 
-     <div class="hero-text" id="heroText">
+        <div class="loader-status-list">
+          <div class="status-row">
+            <span class="status-label">Firewall</span>
+            <span id="statusFirewall" class="status-value waiting">대기중</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Threat Scan</span>
+            <span id="statusScan" class="status-value waiting">대기중</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Safe Mode</span>
+            <span id="statusSafeMode" class="status-value waiting">대기중</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="loader-binary">
+        01001011 01001111 01000100 01000101 00110010
+      </div>
+    </div>
+  </div>
+
+  <div class="hero" id="mainContent">
+    <img src="./img/mainwold.jpg" class="earth" alt="main earth" />
+
+    <div>
+      <img src="./img/logo.png" alt="logo" class="logo" />
+
+      <div class="security-hud">
+        <div class="hud-ring ring-1"></div>
+        <div class="hud-ring ring-2"></div>
+        <div class="hud-ring ring-3"></div>
+
+        <div class="hud-core"></div>
+        <div class="hud-scan"></div>
+
+        <div class="hud-dot dot-1"></div>
+        <div class="hud-dot dot-2"></div>
+        <div class="hud-dot dot-3"></div>
+        <div class="hud-dot dot-4"></div>
+
+        <span class="hud-line line-1"></span>
+        <span class="hud-line line-2"></span>
+      </div>
+    </div>
+
+    <div id="userArea"></div>
+
+    <div class="hero-text" id="heroText">
       <div class="hero-badge">GLOBAL SECURITY</div>
       <h1 class="hero-title">전 세계 몸캠 피싱 대응 플랫폼</h1>
       <p class="hero-sub">
-        피해 현황 확인부터<br> 자가진단, 증거 분석, 즉시 대응까지 한 번에 지원합니다
+        피해 현황 확인부터<br />
+        자가진단, 증거 분석, 즉시 대응까지 한 번에 지원합니다
       </p>
     </div>
 
-  <div class="category-area" id="categoryArea">
+    <div class="category-area" id="categoryArea">
       <button type="button" class="category-toggle-btn" id="categoryToggleBtn">
         카테고리 펼치기
       </button>
@@ -109,201 +102,200 @@
         <div class="category-bg"></div>
 
         <div class="back">
-          <a href="./html/World_Map.html" class="categort-item">
+          <a href="./html/World_Map.html" class="categort-item" aria-label="글로벌 피해 현황">
             <div class="card">
-              <img src="./img/card1.png" alt="글로벌 피해 현황">
+              <div class="card-image">
+                <img src="./img/card1_global_status.png" alt="글로벌 피해 현황" />
+              </div>
+              <div class="label">글로벌 피해 현황</div>
             </div>
-            <div class="label">글로벌 피해 현황</div>
           </a>
 
-          <a href="./html/Incident_Types.html" class="categort-item">
+          <a href="./html/Incident_Types.html" class="categort-item" aria-label="피해 유형 분석">
             <div class="card">
-              <img src="./img/card2.png" alt="피해 유형 분석">
+              <div class="card-image">
+                <img src="./img/card2_incident_types.png" alt="피해 유형 분석" />
+              </div>
+              <div class="label">피해 유형 분석</div>
             </div>
-            <div class="label">피해 유형 분석</div>
           </a>
 
-          <a href="./html/Threat_Patterns.html" class="categort-item">
+          <a href="./html/Threat_Patterns.html" class="categort-item" aria-label="가해 조직 패턴">
             <div class="card">
-              <img src="./img/card3.png" alt="가해 조직/패턴">
+              <div class="card-image">
+                <img src="./img/card3_threat_patterns.png" alt="가해 조직 패턴" />
+              </div>
+              <div class="label">가해 조직/패턴</div>
             </div>
-            <div class="label">가해 조직/패턴</div>
           </a>
 
-          <a href="./html/diagnosis/Self_Assessment.html" class="categort-item">
+          <a href="./html/diagnosis/Self_Assessment.html" class="categort-item" aria-label="자가 진단 테스트">
             <div class="card">
-              <img src="./img/card4.png" alt="자가 진단 테스트">
+              <div class="card-image">
+                <img src="./img/card4_self_assessment.png" alt="자가 진단 테스트" />
+              </div>
+              <div class="label">자가 진단 테스트</div>
             </div>
-            <div class="label">자가 진단 테스트</div>
           </a>
 
-          <a href="./html/Support_Center.html" class="categort-item">
+          <a href="./html/Support_Center.html" class="categort-item" aria-label="예방 교육 신청">
             <div class="card">
-              <img src="./img/card5.png" alt="예방 교육 신청">
+              <div class="card-image">
+                <img src="./img/card5_prevention_education.png" alt="예방 교육 신청" />
+              </div>
+              <div class="label">예방 교육 신청</div>
             </div>
-            <div class="label">예방 교육 신청</div>
           </a>
 
-          <a href="./html/Help.html" class="categort-item">
+          <a href="./html/Help.html" class="categort-item" aria-label="증거 분석">
             <div class="card">
-              <img src="./img/card6.png" alt="즉시 대응 & 증거 분석">
+              <div class="card-image">
+                <img src="./img/card6_evidence_analysis.png" alt="증거 분석" />
+              </div>
+              <div class="label">증거 분석</div>
             </div>
-            <div class="label">증거 분석</div>
           </a>
         </div>
       </div>
+    </div>
   </div>
 
-</div>
+  <script>
+    const userArea = document.getElementById("userArea");
+    const loginUser = JSON.parse(localStorage.getItem("kode24_login_user") || "null");
 
+    if (loginUser && loginUser.isLoggedIn) {
+      userArea.innerHTML = `
+        <div class="user-box">
+          <span class="user-name" id="goMyPage">${loginUser.name}님</span>
+        </div>
+      `;
 
-<script>
-
-// 로그인 정보 가져오기
-  const userArea = document.getElementById("userArea");
-  const loginUser = JSON.parse(localStorage.getItem("kode24_login_user") || "null");
-
-  if (loginUser && loginUser.isLoggedIn) {
-    userArea.innerHTML = `
-      <div class="user-box">
-        <span class="user-name" id="goMyPage">${loginUser.name}님</span>
-      </div>
-    `;
-
-    // 👉 클릭하면 마이페이지 이동
-    document.getElementById("goMyPage").addEventListener("click", () => {
-      location.href = "./html/profile/MyPage.html";
-    });
-
-  } else {
-    userArea.innerHTML = `
-      <a href="./html/Login.html" class="login-btn">
-        <img src="./img/Login.png" alt="login">
-        <span>로그인</span>
-      </a>
-    `;
-  }
-
-  //로딩 오버레이
-  const appLoader = document.getElementById("appLoader");
-  const progressFill = document.getElementById("progressFill");
-  const loaderPercentText = document.getElementById("loaderPercentText");
-  const loaderStepText = document.getElementById("loaderStepText");
-
-  const statusFirewall = document.getElementById("statusFirewall");
-  const statusScan = document.getElementById("statusScan");
-  const statusSafeMode = document.getElementById("statusSafeMode");
-
-
-  const categoryToggleBtn = document.getElementById("categoryToggleBtn");
-  const categoryWrap = document.getElementById("categoryWrap");
-  const heroText = document.getElementById("heroText");
-
-  let isCategoryOpen = false;
-
-  if (categoryToggleBtn && categoryWrap && heroText) {
-    categoryToggleBtn.addEventListener("click", () => {
-      isCategoryOpen = !isCategoryOpen;
-
-      categoryWrap.classList.toggle("open", isCategoryOpen);
-      heroText.classList.toggle("hide", isCategoryOpen);
-      categoryToggleBtn.classList.toggle("move-up", isCategoryOpen);
-
-      categoryToggleBtn.textContent = isCategoryOpen
-        ? "카테고리 닫기"
-        : "카테고리 펼치기";
-    });
-  }
-
-
-  const loadingSteps = [
-    { percent: 12, text: "Installing security module..."},
-    { percent: 28, text: "Checking firewall status..."},
-    { percent: 47, text: "Scanning threat patterns..."},
-    { percent: 69, text: "Loading protextion engine..."},
-    { percent: 86, text: "Applying secure shield..."},
-    { percent: 100, text: "System ready."}
-  ];
-
-  let currentPercent = 0;
-  let stepIndex = 0;
-
-  function updateStatus(){
-    if (currentPercent >= 20) {
-      statusFirewall.textContent ="작동중";
-      statusFirewall.className = "status-value active";
+      document.getElementById("goMyPage").addEventListener("click", () => {
+        location.href = "./html/profile/MyPage.html";
+      });
+    } else {
+      userArea.innerHTML = `
+        <a href="./html/Login.html" class="login-btn">
+          <img src="./img/Login.png" alt="login" />
+          <span>로그인</span>
+        </a>
+      `;
     }
 
-    if (currentPercent >= 50){
-      statusScan.textContent = "분석중";
-      statusScan.className = "status-value active";
+    const appLoader = document.getElementById("appLoader");
+    const progressFill = document.getElementById("progressFill");
+    const loaderPercentText = document.getElementById("loaderPercentText");
+    const loaderStepText = document.getElementById("loaderStepText");
+
+    const statusFirewall = document.getElementById("statusFirewall");
+    const statusScan = document.getElementById("statusScan");
+    const statusSafeMode = document.getElementById("statusSafeMode");
+
+    const categoryToggleBtn = document.getElementById("categoryToggleBtn");
+    const categoryWrap = document.getElementById("categoryWrap");
+    const heroText = document.getElementById("heroText");
+
+    let isCategoryOpen = false;
+
+    if (categoryToggleBtn && categoryWrap && heroText) {
+      categoryToggleBtn.addEventListener("click", () => {
+        isCategoryOpen = !isCategoryOpen;
+
+        categoryWrap.classList.toggle("open", isCategoryOpen);
+        heroText.classList.toggle("hide", isCategoryOpen);
+        categoryToggleBtn.classList.toggle("move-up", isCategoryOpen);
+
+        categoryToggleBtn.textContent = isCategoryOpen
+          ? "카테고리 닫기"
+          : "카테고리 펼치기";
+      });
     }
 
-    if (currentPercent >= 85) {
-    statusSafeMode.textContent = "활성화";
-    statusSafeMode.className = "status-value active";
+    const loadingSteps = [
+      { percent: 12, text: "Installing security module..." },
+      { percent: 28, text: "Checking firewall status..." },
+      { percent: 47, text: "Scanning threat patterns..." },
+      { percent: 69, text: "Loading protection engine..." },
+      { percent: 86, text: "Applying secure shield..." },
+      { percent: 100, text: "System ready." }
+    ];
+
+    let currentPercent = 0;
+    let stepIndex = 0;
+
+    function updateStatus() {
+      if (currentPercent >= 20) {
+        statusFirewall.textContent = "작동중";
+        statusFirewall.className = "status-value active";
+      }
+
+      if (currentPercent >= 50) {
+        statusScan.textContent = "분석중";
+        statusScan.className = "status-value active";
+      }
+
+      if (currentPercent >= 85) {
+        statusSafeMode.textContent = "활성화";
+        statusSafeMode.className = "status-value active";
+      }
+
+      if (currentPercent >= 100) {
+        statusFirewall.textContent = "완료";
+        statusFirewall.className = "status-value done";
+
+        statusScan.textContent = "완료";
+        statusScan.className = "status-value done";
+
+        statusSafeMode.textContent = "완료";
+        statusSafeMode.className = "status-value done";
+      }
     }
 
-    if (currentPercent >= 100) {
-      statusFirewall.textContent = "완료";
-      statusFirewall.className = "status-value done";
+    function runLoader() {
+      const interval = setInterval(() => {
+        if (stepIndex < loadingSteps.length) {
+          const target = loadingSteps[stepIndex];
 
-      statusScan.textContent = "완료";
-      statusScan.className = "status-value done";
-
-      statusSafeMode.textContent = "완료";
-      statusSafeMode.className = "status-value done";
-    }
-  }
-
-  function runLoader() {
-    const interval = setInterval(() => {
-      if (stepIndex < loadingSteps.length){
-        const target = loadingSteps[stepIndex];
-
-        if(currentPercent < target.percent) {
-          currentPercent++;
-          progressFill.style.width = `$[currentPercent]%`;
-          loaderPercentText.textContent = `${currentPercent}%`;
-          updateStatus();
-        }else {
-          loaderStepText.textContent = target.text;
-          stepIndex++;
-        }
-      } else {
-        clearInterval(interval);
-
-        setTimeout(() => {
-          appLoader.classList.add("hide");
+          if (currentPercent < target.percent) {
+            currentPercent++;
+            progressFill.style.width = `${currentPercent}%`;
+            loaderPercentText.textContent = `${currentPercent}%`;
+            updateStatus();
+          } else {
+            loaderStepText.textContent = target.text;
+            stepIndex++;
+          }
+        } else {
+          clearInterval(interval);
 
           setTimeout(() => {
-            appLoader.style.display = 'none';
-          }, 700);
-        }, 500);
+            appLoader.classList.add("hide");
+
+            setTimeout(() => {
+              appLoader.style.display = "none";
+            }, 700);
+          }, 500);
+        }
+      }, 35);
+    }
+
+    window.addEventListener("load", () => {
+      const hasSeenLoader = sessionStorage.getItem("kode24_loader_seen");
+
+      if (hasSeenLoader === "true") {
+        appLoader.classList.add("hide");
+
+        setTimeout(() => {
+          appLoader.style.display = "none";
+        }, 100);
+
+        return;
       }
-    }, 35);
-  }
 
-window.addEventListener("load", () => {
-  const hasSeenLoader = sessionStorage.getItem("kode24_loader_seen");
-
-  if (hasSeenLoader === "true") {
-    appLoader.classList.add("hide");
-
-    setTimeout(() => {
-      appLoader.style.display = "none";
-    }, 100);
-
-    return;
-  }
-
-  sessionStorage.setItem("kode24_loader_seen", "true");
-  runLoader();
-});
-
-
-
-</script>
-
+      sessionStorage.setItem("kode24_loader_seen", "true");
+      runLoader();
+    });
+  </script>
 </body>
 </html>
