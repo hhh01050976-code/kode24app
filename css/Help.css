@@ -23,29 +23,45 @@ body {
 /* 뒤로가기 */
 .back-btn {
   position: fixed;
-  top: 15px;
-  left: 15px;
-  z-index: 1300;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
   width: 45px;
   height: 45px;
-  border-radius: 12px;
-  border: none;
-  background: rgba(139,92,246,0.18);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+
+  transition: all 0.25s ease;
 }
 
-.back-btn:hover {
-  opacity: 0.9;
-  background: rgba(139,92,246,0.28);
+.back-btn img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+  
+  filter: brightness(1.3) invert(1);
+  transition: all 0.25s ease;
 }
 
 .back-btn:active {
-  transform: scale(0.96);
+  transform: scale(0.94);
+  opacity: 0.82;
 }
+
 
 /* =========================
    2. 상단 헤더

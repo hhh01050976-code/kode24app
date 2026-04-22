@@ -15,6 +15,11 @@
 
 */
 
+//뒤로가기
+window.goBack = function () {
+  history.back();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initHeroSlider();      // 상단 배경 슬라이드
   initReviewTicker();    // 후기 자동 스크롤

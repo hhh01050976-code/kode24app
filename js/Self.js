@@ -196,11 +196,37 @@ function completeDiagnosis({ summary, finalText }) {
     setTimeout(() => {
       location.href = "/html/profile/Result.html";
     }, 900);
+    
     return;
   }
 
   appendContactButtons();
   appendLoginGuide();
+}
+
+function appendResultButton(){
+  const chatBody = document.getElementById("chatBody");
+  if (!chatBody) return;
+
+  const existing = document.getElementById("resultButton");
+  if (existing) existing.remove();
+
+  const btn = document.createElement("button");
+  btn.id = "resultButton";
+  btn.className = "result-view-btn";
+  btn.innerText = "내 진단 결과 자세히 보기";
+
+  btn.onclick = () => {
+    location.href = "/html/profile/Result.html";
+  };
+
+  chatBody.appendChild(btn);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function removeResultButton() {
+  const btn = document.getElementById("resultButton");
+  if (btn) btn.remove() ;
 }
 
 // ---------------------------------------
