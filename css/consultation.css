@@ -33,15 +33,44 @@ body{
     font-size: 22px;
 }
 
-.back-btn{
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.12);
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
+/*뒤로 가기*/
+.back-btn {
+  position: static;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
+  width: 50px;
+  height: 50px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 13px;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  transition: all 0.25s ease;
+}
+
+.back-btn img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+  filter: brightness(1.3) invert(1);
+  transition: all 0.25s ease;
+}
+
+.back-btn:active {
+  transform: scale(0.94);
+  opacity: 0.82;
 }
 
 .history-card {

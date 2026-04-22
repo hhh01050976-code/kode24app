@@ -36,15 +36,44 @@ html,body{
     font-weight: 700;
 }
 
+/*뒤로가기 버튼*/
 .back-btn {
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
+  position: static;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
+  width: 45px;
+  height: 45px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 13px;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  transition: all 0.25s ease;
+}
+
+.back-btn img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  display: block;
+  filter: brightness(1.3) invert(1);
+  transition: all 0.25s ease;
+}
+
+.back-btn:active {
+  transform: scale(0.94);
+  opacity: 0.82;
 }
 
 .info-card {
@@ -167,69 +196,69 @@ input{
         gap: 10px;
         margin-bottom: 16px;
     }
-.top-bar h1 {
-    font-size: 25px;
-  }
+    .top-bar h1 {
+        font-size: 25px;
+      }
 
-  .back-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-    border-radius: 10px;
-    flex-shrink: 0;
-  }
+    .back-btn {
+      width: 35px;
+      height: 35px;
+      font-size: 18px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
 
-  .info-card {
-    padding: 16px;
-    border-radius: 18px;
-  }
+    .info-card {
+      padding: 16px;
+      border-radius: 18px;
+    }
 
-  .card-header {
-    margin-bottom: 16px;
-    gap: 10px;
-    align-items: flex-start;
-  }
+    .card-header {
+      margin-bottom: 16px;
+      gap: 10px;
+      align-items: flex-start;
+    }
 
-  .card-header h2 {
-    font-size: 18px;
-    line-height: 1.4;
-  }
+    .card-header h2 {
+      font-size: 18px;
+      line-height: 1.4;
+    }
 
-  .edit-btn,
-  .sub-btn,
-  .main-btn {
-    padding: 12px;
-    font-size: 14px;
-    border-radius: 10px;
-  }
+    .edit-btn,
+    .sub-btn,
+    .main-btn {
+      padding: 12px;
+      font-size: 14px;
+      border-radius: 10px;
+    }
 
-  .field-group {
-    margin-bottom: 14px;
-  }
+    .field-group {
+      margin-bottom: 14px;
+    }
 
-  .field-group label {
-    font-size: 13px;
-    margin-bottom: 6px;
-  }
+    .field-group label {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
 
-  .field-group input {
-    padding: 12px;
-    font-size: 14px;
-    border-radius: 12px;
-  }
+    .field-group input {
+      padding: 12px;
+      font-size: 14px;
+      border-radius: 12px;
+    }
 
-  .action-row {
-    gap: 8px;
-    margin-top: 16px;
-  }
+    .action-row {
+      gap: 8px;
+      margin-top: 16px;
+    }
 
-  .app-toast {
-    width: calc(100% - 24px);
-    max-width: 360px;
-    bottom: 16px;
-    font-size: 13px;
-    text-align: center;
-  }
+    .app-toast {
+      width: calc(100% - 24px);
+      max-width: 360px;
+      bottom: 16px;
+      font-size: 13px;
+      text-align: center;
+    }
 }
 
 /*더 작은 기기에 대응*/
