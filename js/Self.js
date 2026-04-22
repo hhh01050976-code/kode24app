@@ -399,7 +399,7 @@ function showEmailOptions() {
       <div class="email-popup-subtitle">원하시는 메일 서비스를 선택해주세요</div>
 
       <a class="email-option-btn gmail"
-         href="https://mail.google.com/mail/?view=cm&fs=1&to=hhh010509@naver.com&su=문의드립니다"
+         href="https://mail.google.com/mail/?view=cm&fs=1&to=kode24gpt@gmail.com&su=문의드립니다"
          target="_blank">
          지메일로 문의하기
       </a>
