@@ -374,7 +374,7 @@ body {
 .user-box {
   display: flex;
   align-items: center;
-  padding: 6px 12px;
+  padding: 9px 12px;
 }
 
 .user-name {
@@ -1023,7 +1023,7 @@ body {
   }
 
   .user-box {
-    top: 18px;
+    top: 24px;
     right: 14px;
   }
 
