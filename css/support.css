@@ -161,11 +161,10 @@ body.modal-open {
 }
 
 .back-btn img {
-  width: 30px;
-  height: 30px;
+  width: 27px;
+  height: 27px;
   object-fit: contain;
   display: block;
-  
   filter: brightness(1.3) invert(1);
   transition: all 0.25s ease;
 }
