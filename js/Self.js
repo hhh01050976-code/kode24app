@@ -2,21 +2,19 @@
 
 /*
 [ API 연결 예정 메모 ]
-- localStorage(kode24_diagnosis_result")에 저장
-- 결과 페이지 (result.html에서 해당 데이터 읽어서 출력)
-
+- localStorage("kode24_diagnosis_result")에 저장
+- 결과 페이지 (Result.html)에서 해당 데이터 읽어서 출력
 
 나중에 실제 API 연결 시 변경 핵심
-
-1) saveDiagnosisReuslt()
+1) saveDiagnosisResult()
 2) 결과 조회 (Result 페이지)
 3) 상담 연결 버튼
-4) 사용자 정보 ( 비로그인 상태에서도 사용 가능 )
+4) 사용자 정보 (비로그인 상태에서도 사용 가능)
 */
 
 const RESULT_KEY = "kode24_diagnosis_result";
 const LOGIN_USER_KEY = "kode24_login_user";
-const LOGIN_REDIRECT_KEY = "kode24_login_redirect_after"; //회원가입 하면 저장되는 로그인 
+const LOGIN_REDIRECT_KEY = "kode24_login_redirect_after";
 
 function getLoginUser() {
   const savedUser = localStorage.getItem(LOGIN_USER_KEY);
@@ -25,7 +23,7 @@ function getLoginUser() {
   try {
     return JSON.parse(savedUser);
   } catch (error) {
-    console.error("로그인 사용자 데이터 파싱 실패: ", error);
+    console.error("로그인 사용자 데이터 파싱 실패:", error);
     return null;
   }
 }
@@ -192,19 +190,64 @@ function completeDiagnosis({ summary, finalText }) {
   updateStatus("진단 완료");
   hideUndoButton();
 
+  const metrics = calculateDiagnosisMetrics();
+
+  appendDiagnosisSummaryCard({
+    riskLevel: metrics.riskLevel,
+    leakProbability: metrics.leakProbability,
+    summary
+  });
+
   if (isLoggedIn()){
-    setTimeout(() => {
-      location.href = "/html/profile/Result.html";
-    }, 900);
-    
-    return;
+    appendResultButton();
+  } else {
+    appendLoginGuide();
   }
 
   appendContactButtons();
-  appendLoginGuide();
 }
 
-function appendResultButton(){
+function appendDiagnosisSummaryCard({ riskLevel, leakProbability, summary }) {
+  const chatBody = document.getElementById("chatBody");
+  if (!chatBody) return;
+
+  const existing = document.getElementById("diagnosisSummaryCard");
+  if (existing) existing.remove();
+
+  const card = document.createElement("div");
+  card.id = "diagnosisSummaryCard";
+  card.className = `diagnosis-summary-card ${riskLevel}`;
+
+  card.innerHTML = `
+    <div class="diagnosis-summary-top">
+      <div class="diagnosis-summary-label">간단 진단 결과</div>
+      <div class="diagnosis-summary-badge">${riskLevel}</div>
+    </div>
+
+    <div class="diagnosis-summary-main">
+      <strong>현재 예상 위험도: ${riskLevel}</strong>
+      <p>${summary}</p>
+    </div>
+
+    <div class="diagnosis-summary-meta">
+      유포 위험 추정치 <span>${leakProbability}%</span>
+    </div>
+
+    <div class="diagnosis-summary-sub">
+      자세한 체크리스트와 세부 결과는<br>내 프로필에서 확인할 수 있습니다.
+    </div>
+  `;
+
+  chatBody.appendChild(card);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function removeDiagnosisSummaryCard() {
+  const card = document.getElementById("diagnosisSummaryCard");
+  if (card) card.remove();
+}
+
+function appendResultButton() {
   const chatBody = document.getElementById("chatBody");
   if (!chatBody) return;
 
@@ -214,7 +257,7 @@ function appendResultButton(){
   const btn = document.createElement("button");
   btn.id = "resultButton";
   btn.className = "result-view-btn";
-  btn.innerText = "내 진단 결과 자세히 보기";
+  btn.innerText = "내 프로필에서 자세히 보기";
 
   btn.onclick = () => {
     location.href = "/html/profile/Result.html";
@@ -226,7 +269,7 @@ function appendResultButton(){
 
 function removeResultButton() {
   const btn = document.getElementById("resultButton");
-  if (btn) btn.remove() ;
+  if (btn) btn.remove();
 }
 
 // ---------------------------------------
@@ -258,13 +301,12 @@ function appendLoginGuide() {
 function removeLoginGuide() {
   const guide = document.getElementById("loginGuideBox");
   if (guide) guide.remove();
-};
+}
 
 function goToLoginPage() {
   localStorage.setItem(LOGIN_REDIRECT_KEY, "/html/profile/Result.html");
   location.replace("/html/Login.html");
-};
-
+}
 
 // ---------------------------------------
 // 상태 표시 함수
@@ -439,6 +481,8 @@ function undoLastChoice() {
   hideUndoButton();
   removeLoginGuide();
   removeContactButtons();
+  removeResultButton();
+  removeDiagnosisSummaryCard();
   closeEmailOptions();
 
   if (chatHistory.length === 0) {
@@ -541,6 +585,8 @@ function renderByState() {
   hideUndoButton();
   removeLoginGuide();
   removeContactButtons();
+  removeResultButton();
+  removeDiagnosisSummaryCard();
 
   const chatBody = document.getElementById("chatBody");
   chatBody.innerHTML = "";
@@ -595,6 +641,16 @@ function renderByState() {
       updateStatus("진단 완료");
       appendMessage("ai", "직접 협박은 없더라도 자료 전달이 있었다면 위험이 커질 수 있습니다.");
       appendMessage("ai", "현재는 주의 이상 단계로 보고 상황을 기록해두는 것이 좋습니다.");
+
+      const metrics = calculateDiagnosisMetrics();
+
+      appendDiagnosisSummaryCard({
+        riskLevel: metrics.riskLevel,
+        leakProbability: metrics.leakProbability,
+        summary: "간단 진단 결과가 저장되었습니다. 자세한 내용은 내 프로필에서 확인해주세요."
+      });
+
+      appendResultButton();
       appendContactButtons();
       if (!isLoggedIn()) appendLoginGuide();
       return;
@@ -605,6 +661,16 @@ function renderByState() {
       updateStatus("진단 완료");
       appendMessage("ai", "상황을 더 지켜볼 필요가 있습니다. 상대방이 자료를 확보했을 가능성을 완전히 배제하기 어렵습니다.");
       appendMessage("ai", "현재는 주의 단계로 보고 대화를 정리해두는 것이 좋습니다.");
+
+      const metrics = calculateDiagnosisMetrics();
+
+      appendDiagnosisSummaryCard({
+        riskLevel: metrics.riskLevel,
+        leakProbability: metrics.leakProbability,
+        summary: "간단 진단 결과가 저장되었습니다. 자세한 내용은 내 프로필에서 확인해주세요."
+      });
+
+      appendResultButton();
       appendContactButtons();
       if (!isLoggedIn()) appendLoginGuide();
       return;
@@ -615,6 +681,16 @@ function renderByState() {
       updateStatus("진단 완료");
       appendMessage("ai", "현재는 비교적 위험도가 낮아 보입니다.");
       appendMessage("ai", "지금은 저위험 단계지만, 외부 메신저 이동이나 저장 언급이 생기면 다시 점검해주세요.");
+
+      const metrics = calculateDiagnosisMetrics();
+
+      appendDiagnosisSummaryCard({
+        riskLevel: metrics.riskLevel,
+        leakProbability: metrics.leakProbability,
+        summary: "간단 진단 결과가 저장되었습니다. 자세한 내용은 내 프로필에서 확인해주세요."
+      });
+
+      appendResultButton();
       appendContactButtons();
       if (!isLoggedIn()) appendLoginGuide();
       return;
@@ -719,6 +795,15 @@ function renderByState() {
     appendMessage("ai", "다만 이후 요구나 협박으로 이어질 가능성은 계속 주의해주세요.");
   }
 
+  const metrics = calculateDiagnosisMetrics();
+
+  appendDiagnosisSummaryCard({
+    riskLevel: metrics.riskLevel,
+    leakProbability: metrics.leakProbability,
+    summary: "간단 진단 결과가 저장되었습니다. 자세한 내용은 내 프로필에서 확인해주세요."
+  });
+
+  appendResultButton();
   appendContactButtons();
   if (!isLoggedIn()) appendLoginGuide();
 }
@@ -1150,7 +1235,6 @@ function renderFourthStep() {
     }
   ]);
 
-  // 마지막 선택지 누르기 전까지는 직전 취소 보이기
   showUndoButton();
 }
 
