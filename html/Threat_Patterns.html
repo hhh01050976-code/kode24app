@@ -1,95 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/../css/Threat.css"/><!-- Threat.css 경로 코드-->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <title>가해자 조직 / 패턴 분석 대시보드</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="/../css/Threat.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <title>통합 분석 대시보드</title>
 </head>
 <body>
 <div class="app">
 
+  <!-- 공통 뒤로가기 -->
+  <button class="back-btn hidden" id="globalBackBtn" type="button">
+    <img src="../img/back.png" alt="뒤로가기" />
+  </button>
 
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-top">
-        <div class="top-buttons">
-        <button class="back-btn" type="button" onclick="goBack()">
-            <img src="../img/back.png" alt="뒤로가기" />
-        </button>
-          <button class="menu-btn" id="menuBtn">☰</button>
+  <!-- ===== 진입 선택 화면 ===== -->
+  <section class="dashboard-select" id="dashboardSelect">
+    <div class="select-header">
+      <h1>통합 분석 대시보드</h1>
+      <p>확인하려는 분석 영역을 선택해주세요.</p>
+    </div>
+
+    <div class="select-card-wrap">
+      <button class="select-card" id="openVictimView" type="button">
+        <div class="select-card-bg victim-bg"></div>
+        <div class="select-card-overlay"></div>
+        <div class="select-card-text">
+          <strong>피해 현황</strong>
+          <span>국가별 피해 / 플랫폼 / 유형 / 증감률 분석</span>
         </div>
+      </button>
 
-        <button class="close-btn" id="closeBtn">✕</button>
+      <button class="select-card" id="openThreatView" type="button">
+        <div class="select-card-bg threat-bg"></div>
+        <div class="select-card-overlay"></div>
+        <div class="select-card-text">
+          <strong>가해자 분석</strong>
+          <span>밀집 지역 / 협박 금액 / 봇 사용 / 협박 방식 분석</span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== 피해 현황 뷰 ===== -->
+  <section class="dashboard-view hidden" id="victimView">
+    <aside id="victimSidebar" class="sidebar closed">
+      <div class="sidebar-header">
+        <h2>피해 현황 카테고리</h2>
+        <button class="close-btn" id="victimCloseBtn">✕</button>
       </div>
 
-        <h2 class="sidebar-title">카테고리</h1>
-
-        <ul class="category-list">
-            <li><button class="category-btn active" data-category="region">가해자 발생 밀집 지역</button></li>
-            <li><button class="category-btn" data-category="money">국가별 평균 협박 금액</button></li>
-            <li><button class="category-btn" data-category="bot">자동화 봇 사용 비율</button></li>
-            <li><button class="category-btn" data-category="method">국가별 협박 방식</button></li>
-        </ul>
+      <div class="sidebar-menu">
+        <button class="category-btn victim-category active" data-category="countryTotal">국가별 전체 피해 발생</button>
+        <button class="category-btn victim-category" data-category="cityDensity">도시 단위 발생 밀도</button>
+        <button class="category-btn victim-category" data-category="yearlyChange">전년 대비 증감률</button>
+        <button class="category-btn victim-category" data-category="monthlyChange">달 별 피해 증감률</button>
+        <button class="category-btn victim-category" data-category="timeDayRate">시간대 / 요일별 발생률</button>
+        <button class="category-btn victim-category" data-category="platformRate">플랫폼별 발생률</button>
+        <button class="category-btn victim-category" data-category="typeRate">유형별 발생 비중</button>
+      </div>
     </aside>
 
-    <div class="overlay" id="overlay"></div>
+    <main id="victimMainContent" class="main-content">
+      <button id="victimMenuBtn" class="menu-btn victim-menu-btn">☰</button>
 
-    <!--메인-->
-    <main class="main">
-        <!--지도 영역-->
-        <section class="map-section">
+      <section class="map-section">
+        <div class="top-info">
+          <h1>피해 현황 분석</h1>
+          <p id="currentCategoryLabel">현재 선택: 국가별 전체 피해 발생</p>
+        </div>
 
-            <div class="page-header-card">
-            <h1>가해자 활동 분석 대시보드</h1>
-            <p id="categoryTitle">전 세계 마커 현황</p>
-            </div>
+        <div id="victimMap"></div>
+      </section>
 
+      <section class="chart-section">
+        <div class="chart-card">
+          <h3 id="barChartTitle">국가별 피해 발생 TOP</h3>
+          <canvas id="barChart"></canvas>
+        </div>
 
-            <!-- 실제 지도 들어갈 자리 -->      
-             
-            <!--지도 안에 위험도 div-->
-            <div class="map-container" id="mapContainer">
-            <div class="map-legend">
-                <div class="map-legend-title">위험도</div>
-
-                <div class="legend-item red">
-                <span class="dot"></span>
-                <span>매우 위험</span>
-                </div>
-
-                <div class="legend-item orange">
-                <span class="dot"></span>
-                <span>높음</span>
-                </div>
-
-                <div class="legend-item yellow">
-                <span class="dot"></span>
-                <span>중간</span>
-                </div>
-
-                <div class="legend-item green">
-                <span class="dot"></span>
-                <span>약함</span>
-                </div>
-            </div>
-            </div>
-
-           
-        </section>
-
-        <!--통계 영역-->
-        <section class="stats-section hidden" id="statsSection">
-            <h2 id="statsTitle">가해자 밀집 지역 통계 </h2>
-            <div class="stats-circle-wrap" id="statsCircleWrap"></div>
-            <!--js 원형 통계 삽입 자리-->
-            <div class="stats-desc" id="statsdesc"></div>
-        </section>
+        <div class="chart-card">
+          <h3 id="donutChartTitle">카테고리 비중</h3>
+          <canvas id="donutChart"></canvas>
+        </div>
+      </section>
     </main>
+
+    <div id="countryDetailModal" class="country-detail-modal hidden">
+      <div class="country-detail-panel">
+        <div class="detail-header">
+          <h2 id="detailTitle">국가 상세 데이터</h2>
+          <button id="closeDetailBtn" class="close-detail-btn">X</button>
+        </div>
+
+        <div class="detail-chart-wrap">
+          <canvas id="countryDetailChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 가해자 분석 뷰 ===== -->
+  <section class="dashboard-view hidden" id="threatView">
+    <aside class="sidebar" id="threatSidebar">
+      <div class="sidebar-top">
+        <div class="top-buttons">
+          <button class="menu-btn" id="threatMenuBtn">☰</button>
+        </div>
+        <button class="close-btn" id="threatCloseBtn">✕</button>
+      </div>
+
+      <h2 class="sidebar-title">카테고리</h2>
+
+      <ul class="category-list">
+        <li><button class="category-btn threat-category active" data-category="region">가해자 발생 밀집 지역</button></li>
+        <li><button class="category-btn threat-category" data-category="money">국가별 평균 협박 금액</button></li>
+        <li><button class="category-btn threat-category" data-category="bot">자동화 봇 사용 비율</button></li>
+        <li><button class="category-btn threat-category" data-category="method">국가별 협박 방식</button></li>
+      </ul>
+    </aside>
+
+    <div class="overlay" id="threatOverlay"></div>
+
+    <main class="main">
+      <section class="map-section">
+        <div class="page-header-card">
+          <h1>가해자 활동 분석 대시보드</h1>
+          <p id="categoryTitle">전 세계 마커 현황</p>
+        </div>
+
+        <div class="map-container" id="mapContainer">
+          <div class="map-legend">
+            <div class="map-legend-title">위험도</div>
+
+            <div class="legend-item red"><span class="dot"></span><span>매우 위험</span></div>
+            <div class="legend-item orange"><span class="dot"></span><span>높음</span></div>
+            <div class="legend-item yellow"><span class="dot"></span><span>중간</span></div>
+            <div class="legend-item green"><span class="dot"></span><span>약함</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-section hidden" id="statsSection">
+        <h2 id="statsTitle">가해자 밀집 지역 통계</h2>
+        <div class="stats-circle-wrap" id="statsCircleWrap"></div>
+        <div class="stats-desc" id="statsDesc"></div>
+      </section>
+    </main>
+  </section>
 </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script type="module" src="../js/Threat.js"></script> <!-- 가해자 조직 js 파일 경로-->
-
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="../js/combined-dashboard.js"></script>
 </body>
 </html>
