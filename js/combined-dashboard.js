@@ -17,18 +17,27 @@ const globalBackBtn = document.getElementById("globalBackBtn");
 const openVictimViewBtn = document.getElementById("openVictimView");
 const openThreatViewBtn = document.getElementById("openThreatView");
 
+
+
+
+
+
+
+
+
+
+
+
 function showSelectScreen() {
   dashboardSelect.classList.remove("hidden");
   victimView.classList.add("hidden");
   threatView.classList.add("hidden");
-  globalBackBtn.classList.add("hidden");
 }
 
 function showVictimView() {
   dashboardSelect.classList.add("hidden");
   victimView.classList.remove("hidden");
   threatView.classList.add("hidden");
-  globalBackBtn.classList.remove("hidden");
 
   setTimeout(() => {
     if (!victimMap) {
@@ -47,7 +56,6 @@ function showThreatView() {
   dashboardSelect.classList.add("hidden");
   victimView.classList.add("hidden");
   threatView.classList.remove("hidden");
-  globalBackBtn.classList.remove("hidden");
 
   setTimeout(() => {
     if (!threatMap) {
@@ -63,9 +71,26 @@ function showThreatView() {
   }, 200);
 }
 
-if (openVictimViewBtn) openVictimViewBtn.addEventListener("click", showVictimView);
-if (openThreatViewBtn) openThreatViewBtn.addEventListener("click", showThreatView);
-if (globalBackBtn) globalBackBtn.addEventListener("click", showSelectScreen);
+if (openVictimViewBtn) {
+  openVictimViewBtn.addEventListener("click", showVictimView);
+}
+
+if (openThreatViewBtn) {
+  openThreatViewBtn.addEventListener("click", showThreatView);
+}
+
+if (globalBackBtn) {
+  globalBackBtn.addEventListener("click", () => {
+    const isSelectVisible = !dashboardSelect.classList.contains("hidden");
+
+    if (isSelectVisible) {
+      window.location.href = "../index.html";
+      return;
+    }
+
+    showSelectScreen();
+  });
+}
 
 /* -------------------------
    피해 현황 데이터 / 상태
@@ -524,14 +549,14 @@ function openThreatSidebar() {
   if (sidebar) sidebar.classList.add("open");
   if (overlay) overlay.classList.add("show");
   if (menuBtn) menuBtn.classList.add("hide");
-  if (globalBackBtn) globalBackBtn.classList.add("hide");
+//   if (globalBackBtn) globalBackBtn.classList.add("hide");
 }
 
 function closeThreatSidebar() {
   if (sidebar) sidebar.classList.remove("open");
   if (overlay) overlay.classList.remove("show");
   if (menuBtn) menuBtn.classList.remove("hide");
-  if (globalBackBtn) globalBackBtn.classList.remove("hide");
+//   if (globalBackBtn) globalBackBtn.classList.remove("hide");
 }
 
 function createThreatMap() {

@@ -26,7 +26,22 @@ body {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #08101f, #0d1830);
+  background:
+  radial-gradient(circle at 20% 20%, rgba(99,102,241,0.18), transparent 40%),
+  radial-gradient(circle at 80% 30%, rgba(236,72,153,0.12), transparent 45%),
+  radial-gradient(circle at 50% 80%, rgba(56,189,248,0.12), transparent 45%),
+  linear-gradient(to bottom, #050b18, #0b1224);
+}
+.app::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 22px 22px;
+
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 /* =========================
@@ -41,7 +56,7 @@ body {
 ========================= */
 .back-btn {
   position: fixed;
-  top: 15px;
+  top: 30px;
   left: 15px;
   z-index: 1400;
 
@@ -78,6 +93,25 @@ body {
 .hidden-btn {
   opacity: 0;
   pointer-events: none;
+}
+
+.back-btn,
+.menu-btn {
+  background: linear-gradient(
+    180deg,
+    rgba(26, 38, 66, 0.92),
+    rgba(17, 27, 49, 0.88)
+  );
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.back-btn:hover,
+.menu-btn:hover {
+  transform: translateY(-1px);
 }
 
 /* =========================
@@ -162,6 +196,27 @@ body {
   filter: blur(4px) brightness(0.65);
 }
 
+.select-card {
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.select-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.42);
+}
+
+.select-card:hover .select-card-bg {
+  filter: blur(1px) brightness(0.9);
+  transform: scale(1.04);
+}
+
+.select-card:active {
+  transform: scale(0.985);
+}
+
 .select-card-overlay {
   position: absolute;
   inset: 0;
@@ -176,7 +231,21 @@ body {
   justify-content: flex-end;
   align-items: flex-start;
   text-align: left;
-  padding: 24px 20px;
+  padding: 22px 22px 20px;
+}
+
+.select-card-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #dbeafe;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .select-card-text strong {
@@ -184,12 +253,12 @@ body {
   font-size: 28px;
   font-weight: 800;
   color: #ffffff;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .select-card-text span {
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.55;
   color: #dbe5f3;
 }
 
@@ -211,9 +280,9 @@ body {
   z-index: 1300;
   width: 45px;
   height: 45px;
-  border: none;
+  /* border: none; */
   border-radius: 10px;
-  background: rgba(29, 46, 82, 0.85);
+  /* background: rgba(29, 46, 82, 0.85); */
   color: white;
   font-size: 22px;
   cursor: pointer;
