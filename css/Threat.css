@@ -151,7 +151,7 @@ body {
   background-size: cover;
   background-position: center;
 
-  filter: blur(8px) brightness(0.5);
+  filter: blur(4px) brightness(0.7);
 }
 
 .threat-bg {
@@ -159,16 +159,12 @@ body {
   background-size: cover;
   background-position: center;
 
-  filter: blur(8px) brightness(0.45);
+  filter: blur(4px) brightness(0.65);
 }
 
 .select-card-overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to bottom, rgba(8, 16, 31, 0.12), rgba(8, 16, 31, 0.80)),
-    rgba(11, 16, 32, 0.12);
-  backdrop-filter: blur(6px);
 }
 
 .select-card-text {
