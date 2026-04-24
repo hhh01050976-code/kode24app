@@ -13,12 +13,10 @@
 <body>
 <div class="app">
 
-  <!-- 공통 뒤로가기 -->
   <button class="back-btn" id="globalBackBtn" type="button">
     <img src="../img/back.png" alt="뒤로가기" />
   </button>
 
-  <!-- ===== 진입 선택 화면 ===== -->
   <section class="dashboard-select" id="dashboardSelect">
     <div class="select-header">
       <h1>통합 분석 대시보드</h1>
@@ -30,7 +28,7 @@
         <div class="select-card-bg victim-bg"></div>
         <div class="select-card-overlay"></div>
         <div class="select-card-text">
-        <div class="select-card-badge">GLOBAL STATUS</div>  
+          <div class="select-card-badge">GLOBAL STATUS</div>
           <strong>피해 현황</strong>
           <span>국가별 피해 / 플랫폼 / 유형 / 증감률 분석</span>
         </div>
@@ -40,7 +38,7 @@
         <div class="select-card-bg threat-bg"></div>
         <div class="select-card-overlay"></div>
         <div class="select-card-text">
-        <div class="select-card-badge">THREAT INTEL</div>  
+          <div class="select-card-badge">THREAT INTEL</div>
           <strong>가해자 분석</strong>
           <span>밀집 지역 / 협박 금액 / 봇 사용 / 협박 방식 분석</span>
         </div>
@@ -48,7 +46,6 @@
     </div>
   </section>
 
-  <!-- ===== 피해 현황 뷰 ===== -->
   <section class="dashboard-view hidden" id="victimView">
     <aside id="victimSidebar" class="sidebar closed">
       <div class="sidebar-header">
@@ -68,7 +65,7 @@
     </aside>
 
     <main id="victimMainContent" class="main-content">
-      <button id="victimMenuBtn" class="menu-btn victim-menu-btn">☰</button>
+        <button id="victimMenuBtn" class="menu-btn victim-menu-btn" type="button">☰</button>
 
       <section class="map-section">
         <div class="top-info">
@@ -106,57 +103,71 @@
     </div>
   </section>
 
-  <!-- ===== 가해자 분석 뷰 ===== -->
-  <section class="dashboard-view hidden" id="threatView">
-    <aside class="sidebar" id="threatSidebar">
-      <div class="sidebar-top">
-        <div class="top-buttons">
-          <button class="menu-btn" id="threatMenuBtn">☰</button>
+
+
+
+    <!-- ===== 가해자 분석 뷰 ===== -->
+    <section class="dashboard-view hidden" id="threatView">
+    <!-- 햄버거 버튼 -->
+    <button id="threatMenuBtn" class="menu-btn threat-menu-btn" type="button">☰</button>
+
+
+    <!-- 사이드바 -->
+    <aside id="threatSidebar" class="sidebar closed">
+        <div class="sidebar-header">
+        <h2>카테고리</h2>
+        <button id="threatCloseBtn" class="close-btn" type="button">✕</button>
         </div>
-        <button class="close-btn" id="threatCloseBtn">✕</button>
-      </div>
 
-      <h2 class="sidebar-title">카테고리</h2>
+        <div class="sidebar-menu">
+        <button class="category-btn threat-category active" data-category="region" type="button">
+            가해자 발생 밀집 지역
+        </button>
 
-      <ul class="category-list">
-        <li><button class="category-btn threat-category active" data-category="region">가해자 발생 밀집 지역</button></li>
-        <li><button class="category-btn threat-category" data-category="money">국가별 평균 협박 금액</button></li>
-        <li><button class="category-btn threat-category" data-category="bot">자동화 봇 사용 비율</button></li>
-        <li><button class="category-btn threat-category" data-category="method">국가별 협박 방식</button></li>
-      </ul>
+        <button class="category-btn threat-category" data-category="money" type="button">
+            국가별 평균 협박 금액
+        </button>
+
+        <button class="category-btn threat-category" data-category="bot" type="button">
+            자동화 봇 사용 비율
+        </button>
+
+        <button class="category-btn threat-category" data-category="method" type="button">
+            국가별 협박 방식
+        </button>
+        </div>
     </aside>
 
-    <div class="overlay" id="threatOverlay"></div>
-
     <main class="main">
-      <section class="map-section">
+        <section class="map-section">
         <div class="page-header-card">
-          <h1>가해자 활동 분석 대시보드</h1>
-          <p id="categoryTitle">전 세계 마커 현황</p>
+            <h1>가해자 활동 분석 대시보드</h1>
+            <p id="categoryTitle">전 세계 마커 현황</p>
         </div>
 
         <div class="map-container" id="mapContainer">
-          <div class="map-legend">
+            <div class="map-legend">
             <div class="map-legend-title">위험도</div>
 
             <div class="legend-item red"><span class="dot"></span><span>매우 위험</span></div>
             <div class="legend-item orange"><span class="dot"></span><span>높음</span></div>
             <div class="legend-item yellow"><span class="dot"></span><span>중간</span></div>
             <div class="legend-item green"><span class="dot"></span><span>약함</span></div>
-          </div>
+            </div>
         </div>
-      </section>
+        </section>
 
-      <section class="stats-section hidden" id="statsSection">
+        <section class="stats-section hidden" id="statsSection">
         <h2 id="statsTitle">가해자 밀집 지역 통계</h2>
         <div class="stats-circle-wrap" id="statsCircleWrap"></div>
         <div class="stats-desc" id="statsDesc"></div>
-      </section>
+        </section>
     </main>
-  </section>
+    </section>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="../js/combined-dashboard.js"></script>
+
 </body>
 </html>
