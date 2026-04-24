@@ -429,6 +429,10 @@ body {
    지도
 ========================= */
 
+/* .leaflet-tile {
+  filter: brightness(1.3) contrast(0.9);
+} */
+
 #victimMap,
 #mapContainer,
 .map-container {
@@ -441,20 +445,19 @@ body {
   background: #07041a;
   border: 1px solid rgba(168, 85, 247, 0.20);
   box-shadow:
-    0 22px 46px rgba(0, 0, 0, 0.48),
-    0 0 28px rgba(124, 58, 237, 0.18),
-    inset 0 0 0 1px rgba(255,255,255,0.04);
+    0 0 20px rgba(147,197,253,0.15),
+    0 20px 40px rgba(0,0,0,0.4);
 }
 
 #victimMap .leaflet-tile-pane,
 #mapContainer .leaflet-tile-pane {
   filter:
-    grayscale(0.75)
-    brightness(0.82)
-    contrast(1.22)
-    sepia(0.35)
-    hue-rotate(245deg)
-    saturate(1.55);
+    /* grayscale(0.4) */
+    brightness(1.15)
+    contrast(0.95)
+    /* sepia(0.35)
+    hue-rotate(245deg) */
+    saturate(1.1);
 }
 
 #victimMap::after,
