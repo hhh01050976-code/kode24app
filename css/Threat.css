@@ -164,7 +164,7 @@ body {
   position: relative;
   width: 100%;
   min-height: 220px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(168, 85, 247, 0.32);
   border-radius: 26px;
   overflow: hidden;
   cursor: pointer;
