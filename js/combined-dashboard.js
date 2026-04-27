@@ -1308,6 +1308,41 @@ function buildCategoryStats(data) {
   };
 }
 
+function animateStatNumber(el, text, duration = 800) {
+  const number = parseInt(String(text).replace(/[^0-9]/g, ""), 10);
+
+  // 숫자가 없는 값은 그대로 출력
+  // 예: "메신저<br>유도형"
+  if (isNaN(number)) {
+    el.innerHTML = text;
+    return;
+  }
+
+  const prefix = String(text).startsWith("$") ? "$" : "";
+  const suffix = String(text).includes("%") ? "%" :
+                 String(text).includes("건") ? "건" :
+                 String(text).includes("위") ? "위" :
+                 String(text).includes("개") ? "개" : "";
+
+  let start = 0;
+  const startTime = performance.now();
+
+  function update(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const current = Math.floor(progress * number);
+
+    el.textContent = `${prefix}${current}${suffix}`;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = `${prefix}${number}${suffix}`;
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+
 function renderThreatCountrySummary() {
   if (!statsCircleWrap || !threatSelectedCountry) return;
 
@@ -1331,15 +1366,20 @@ function renderThreatCountrySummary() {
 
   statsCircleWrap.innerHTML = "";
 
-  countryCircles.forEach((item) => {
+    countryCircles.forEach((item) => {
     const card = document.createElement("div");
     card.className = "stat-card";
+
     card.innerHTML = `
-      <div class="circle ${item.color}">${item.value}</div>
-      <div class="stat-label">${item.label}</div>
+        <div class="circle ${item.color}"></div>
+        <div class="stat-label">${item.label}</div>
     `;
+
     statsCircleWrap.appendChild(card);
-  });
+
+    const valueEl = card.querySelector(".circle");
+    animateStatNumber(valueEl, item.value);
+    });
 
   if (statsSection) statsSection.classList.remove("hidden");
 }
@@ -1361,15 +1401,20 @@ function renderThreatStats(categoryKey) {
 
   statsCircleWrap.innerHTML = "";
 
-  data.circles.forEach((item) => {
+    data.circles.forEach((item) => {
     const card = document.createElement("div");
     card.className = "stat-card";
+
     card.innerHTML = `
-      <div class="circle ${item.color}">${item.value}</div>
-      <div class="stat-label">${item.label}</div>
+        <div class="circle ${item.color}"></div>
+        <div class="stat-label">${item.label}</div>
     `;
+
     statsCircleWrap.appendChild(card);
-  });
+
+    const valueEl = card.querySelector(".circle");
+    animateStatNumber(valueEl, item.value);
+    });
 
   if (statsSection) statsSection.classList.remove("hidden");
 }
@@ -1397,6 +1442,36 @@ function setupThreatCategoryButtons() {
     };
   });
 }
+
+//숫자 카운팅 애니메이션 
+function animateValue(el, endValue, duration = 800){
+    let start = 0;
+    const startTime = performance.now();
+
+    function update(currentTime){
+        const progress = Math.main((currentTime - startTime) / duration, 1);
+        const value = Math.floor(progress * endValue);
+
+        el.textContent = value;
+
+        if (progress < 1 ){
+            requestAnimationFrame(update);
+        } else {
+            el.textContent = endValue;
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+
+
+
+
+
+
+
+
 
 /* 초기 */
 showSelectScreen();

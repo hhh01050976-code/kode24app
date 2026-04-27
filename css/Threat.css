@@ -1045,18 +1045,83 @@ body {
     0 0 14px rgba(168,85,247,0.28);
 }
 
-/* 차트 캔버스가 너무 눌려 보이지 않게 */
-/* .chart-card canvas {
-  height: 285px !important;
-  filter:
-    drop-shadow(0 12px 18px rgba(0,0,0,0.35))
-    drop-shadow(0 0 10px rgba(168,85,247,0.18));
-} */
-
 /* 모바일에서 카드 간격 조금 더 여유 */
 .chart-section {
   gap: 20px;
 }
+
+/*==========
+ 인터랙션 / 애니메이션 강화 
+==========*/
+.stat-card{
+  transition: 
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+    animation: cardFadeUp 0.45s ease both;
+}
+.stat-card:hover{
+  transform: translateY(-4px) scale(1.015);
+  border-color: rgba(216,180,254,0.35);
+  box-shadow:
+    0 28px 56px rgba(0,0,0,0.52),
+    0 0 32px rgba(168,85,247,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.stat-card:active{
+  transform: scale(0.97);
+}
+
+@keyframes cardFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-marker{
+  animation: markerPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes markerPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 
+      0 0 0 4px rgba(255.255.255.0.08),
+      0 0 12px currentColor,
+      0 0 22px currentColor;
+  }
+
+  50% {
+    transform: scale(1.22);
+    box-shadow:
+      0 0 0 7px rgba(255,255,255,0.06),
+      0 0 18px currentColor,
+      0 0 34px currentColor;
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 4px rgba(255,255,255,0.08),
+      0 0 12px currentColor,
+      0 0 22px currentColor;
+  }
+}
+.chart-card{
+  animation: cardFadeUp 0.5s ease both;
+}
+
+
+
+
+
+
+
 /* =========================
    태블릿 이상
 ========================= */
