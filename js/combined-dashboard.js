@@ -1148,9 +1148,27 @@ function renderThreatMarkers() {
       icon: createMarkerIcon(marker.color),
     }).bindPopup(marker.label);
 
+    // ✅ 나라 클릭 → 해당 국가 통계
     leafletMarker.on("click", () => {
       threatSelectedCountry = marker.country;
       renderThreatStats(currentCategory);
+    });
+
+    // ✅ 팝업 X 클릭 → 전체 통계로 복귀
+    leafletMarker.on("popupclose", () => {
+      threatSelectedCountry = null;
+      currentCategory = "region";
+
+      renderThreatStats("region");
+
+      // ⭐ 카테고리 버튼 active도 같이 초기화
+      const buttons = document.querySelectorAll(".threat-category");
+      buttons.forEach((btn) => {
+        btn.classList.toggle(
+          "active",
+          btn.dataset.category === "region"
+        );
+      });
     });
 
     threatMarkerGroup.addLayer(leafletMarker);
