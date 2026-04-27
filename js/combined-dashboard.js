@@ -49,12 +49,14 @@ function moveToMyLocation(targetMap, type) {
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
 
+        const offsetY = type === "victim" ? -17 : -1;
+
       const marker = L.popup({
         closeButton: false,
         autoClose: false,
         closeOnClick: false,
         className: "my-location-popup",
-        offset: [0, -10],
+        offset: [0, offsetY ],
       })
         .setLatLng([lat, lng])
         .setContent('<div class="my-location-label">현재 위치</div>')
@@ -184,48 +186,103 @@ const fakeData = {
     { country: "미국", lat: 38.9072, lng: -77.0369, value: "203건", chartValue: 203 },
     { country: "영국", lat: 51.5072, lng: -0.1276, value: "76건", chartValue: 76 },
     { country: "인도", lat: 28.6139, lng: 77.2090, value: "167건", chartValue: 167 },
+    { country: "캐나다", lat: 45.4215, lng: -75.6972, value: "63건", chartValue: 63 },
+    { country: "멕시코", lat: 19.4326, lng: -99.1332, value: "72건", chartValue: 72 },
+    { country: "브라질", lat: -23.5505, lng: -46.6333, value: "88건", chartValue: 88 },
+    { country: "아르헨티나", lat: -34.6037, lng: -58.3816, value: "41건", chartValue: 41 },
+    { country: "프랑스", lat: 48.8566, lng: 2.3522, value: "69건", chartValue: 69 },
+    { country: "독일", lat: 52.52, lng: 13.405, value: "74건", chartValue: 74 },
+    { country: "스페인", lat: 40.4168, lng: -3.7038, value: "57건", chartValue: 57 },
+    { country: "이탈리아", lat: 41.9028, lng: 12.4964, value: "53건", chartValue: 53 },
+    { country: "호주", lat: -33.8688, lng: 151.2093, value: "61건", chartValue: 61 },
+    { country: "뉴질랜드", lat: -36.8485, lng: 174.7633, value: "28건", chartValue: 28 },
+    { country: "필리핀", lat: 14.5995, lng: 120.9842, value: "66건", chartValue: 66 },
+    { country: "태국", lat: 13.7563, lng: 100.5018, value: "59건", chartValue: 59 },
+    { country: "베트남", lat: 21.0278, lng: 105.8342, value: "71건", chartValue: 71 },
+    { country: "인도네시아", lat: -6.2088, lng: 106.8456, value: "84건", chartValue: 84 },
+    { country: "남아프리카공화국", lat: -26.2041, lng: 28.0473, value: "39건", chartValue: 39 },
+    { country: "나이지리아", lat: 6.5244, lng: 3.3792, value: "58건", chartValue: 58 },
+    { country: "이집트", lat: 30.0444, lng: 31.2357, value: "47건", chartValue: 47 },
   ],
+
   cityDensity: [
     { country: "대한민국", lat: 37.5665, lng: 126.9780, value: "서울 밀도 54", chartValue: 54 },
     { country: "일본", lat: 35.6762, lng: 139.6503, value: "도쿄 밀도 47", chartValue: 47 },
     { country: "미국", lat: 38.9072, lng: -77.0369, value: "뉴욕 밀도 66", chartValue: 66 },
     { country: "영국", lat: 51.5072, lng: -0.1276, value: "런던 밀도 33", chartValue: 33 },
     { country: "인도", lat: 28.6139, lng: 77.2090, value: "델리 밀도 59", chartValue: 59 },
+    { country: "캐나다", lat: 45.4215, lng: -75.6972, value: "토론토 밀도 31", chartValue: 31 },
+    { country: "멕시코", lat: 19.4326, lng: -99.1332, value: "멕시코시티 밀도 38", chartValue: 38 },
+    { country: "브라질", lat: -23.5505, lng: -46.6333, value: "상파울루 밀도 42", chartValue: 42 },
+    { country: "프랑스", lat: 48.8566, lng: 2.3522, value: "파리 밀도 36", chartValue: 36 },
+    { country: "독일", lat: 52.52, lng: 13.405, value: "베를린 밀도 34", chartValue: 34 },
+    { country: "호주", lat: -33.8688, lng: 151.2093, value: "시드니 밀도 29", chartValue: 29 },
+    { country: "나이지리아", lat: 6.5244, lng: 3.3792, value: "라고스 밀도 41", chartValue: 41 },
   ],
+
   yearlyChange: [
     { country: "대한민국", lat: 37.5665, lng: 126.9780, value: "+12%", chartValue: 12 },
     { country: "일본", lat: 35.6762, lng: 139.6503, value: "+8%", chartValue: 8 },
     { country: "미국", lat: 38.9072, lng: -77.0369, value: "+19%", chartValue: 19 },
     { country: "영국", lat: 51.5072, lng: -0.1276, value: "+6%", chartValue: 6 },
     { country: "인도", lat: 28.6139, lng: 77.2090, value: "+14%", chartValue: 14 },
+    { country: "브라질", lat: -23.5505, lng: -46.6333, value: "+11%", chartValue: 11 },
+    { country: "독일", lat: 52.52, lng: 13.405, value: "+7%", chartValue: 7 },
+    { country: "베트남", lat: 21.0278, lng: 105.8342, value: "+10%", chartValue: 10 },
+    { country: "인도네시아", lat: -6.2088, lng: 106.8456, value: "+13%", chartValue: 13 },
+    { country: "나이지리아", lat: 6.5244, lng: 3.3792, value: "+9%", chartValue: 9 },
   ],
+
   monthlyChange: [
     { country: "대한민국", lat: 37.5665, lng: 126.9780, value: "+4.2%", chartValue: 4.2 },
     { country: "일본", lat: 35.6762, lng: 139.6503, value: "-1.1%", chartValue: 1.1 },
     { country: "미국", lat: 38.9072, lng: -77.0369, value: "+7.6%", chartValue: 7.6 },
     { country: "영국", lat: 51.5072, lng: -0.1276, value: "+2.4%", chartValue: 2.4 },
     { country: "인도", lat: 28.6139, lng: 77.2090, value: "+5.8%", chartValue: 5.8 },
+    { country: "캐나다", lat: 45.4215, lng: -75.6972, value: "+2.1%", chartValue: 2.1 },
+    { country: "브라질", lat: -23.5505, lng: -46.6333, value: "+3.9%", chartValue: 3.9 },
+    { country: "프랑스", lat: 48.8566, lng: 2.3522, value: "+2.8%", chartValue: 2.8 },
+    { country: "태국", lat: 13.7563, lng: 100.5018, value: "+4.5%", chartValue: 4.5 },
+    { country: "이집트", lat: 30.0444, lng: 31.2357, value: "+2.6%", chartValue: 2.6 },
   ],
+
   timeDayRate: [
     { country: "대한민국", lat: 37.5665, lng: 126.9780, value: "금요일 / 22시", chartValue: 82 },
     { country: "일본", lat: 35.6762, lng: 139.6503, value: "토요일 / 23시", chartValue: 76 },
     { country: "미국", lat: 38.9072, lng: -77.0369, value: "일요일 / 21시", chartValue: 88 },
     { country: "영국", lat: 51.5072, lng: -0.1276, value: "금요일 / 20시", chartValue: 64 },
     { country: "인도", lat: 28.6139, lng: 77.2090, value: "토요일 / 22시", chartValue: 79 },
+    { country: "독일", lat: 52.52, lng: 13.405, value: "토요일 / 21시", chartValue: 62 },
+    { country: "브라질", lat: -23.5505, lng: -46.6333, value: "일요일 / 23시", chartValue: 68 },
+    { country: "필리핀", lat: 14.5995, lng: 120.9842, value: "금요일 / 23시", chartValue: 71 },
+    { country: "호주", lat: -33.8688, lng: 151.2093, value: "토요일 / 20시", chartValue: 55 },
+    { country: "나이지리아", lat: 6.5244, lng: 3.3792, value: "일요일 / 22시", chartValue: 67 },
   ],
+
   platformRate: [
     { country: "대한민국", lat: 37.5665, lng: 126.9780, value: "Instagram 45%", chartValue: 45 },
     { country: "일본", lat: 35.6762, lng: 139.6503, value: "LINE 52%", chartValue: 52 },
     { country: "미국", lat: 38.9072, lng: -77.0369, value: "Snapchat 37%", chartValue: 37 },
     { country: "영국", lat: 51.5072, lng: -0.1276, value: "WhatsApp 31%", chartValue: 31 },
     { country: "인도", lat: 28.6139, lng: 77.2090, value: "Telegram 41%", chartValue: 41 },
+    { country: "브라질", lat: -23.5505, lng: -46.6333, value: "Instagram 39%", chartValue: 39 },
+    { country: "독일", lat: 52.52, lng: 13.405, value: "Telegram 33%", chartValue: 33 },
+    { country: "태국", lat: 13.7563, lng: 100.5018, value: "LINE 44%", chartValue: 44 },
+    { country: "필리핀", lat: 14.5995, lng: 120.9842, value: "Facebook 42%", chartValue: 42 },
+    { country: "멕시코", lat: 19.4326, lng: -99.1332, value: "WhatsApp 36%", chartValue: 36 },
   ],
+
   typeRate: [
     { country: "대한민국", lat: 37.5665, lng: 126.9780, value: "몸캠 피싱 61%", chartValue: 61 },
     { country: "일본", lat: 35.6762, lng: 139.6503, value: "연애빙자형 42%", chartValue: 42 },
     { country: "미국", lat: 38.9072, lng: -77.0369, value: "SNS 유도형 55%", chartValue: 55 },
     { country: "영국", lat: 51.5072, lng: -0.1276, value: "협박형 36%", chartValue: 36 },
     { country: "인도", lat: 28.6139, lng: 77.2090, value: "메신저 유도형 49%", chartValue: 49 },
+    { country: "브라질", lat: -23.5505, lng: -46.6333, value: "SNS 유도형 44%", chartValue: 44 },
+    { country: "프랑스", lat: 48.8566, lng: 2.3522, value: "협박형 35%", chartValue: 35 },
+    { country: "인도네시아", lat: -6.2088, lng: 106.8456, value: "메신저 유도형 46%", chartValue: 46 },
+    { country: "나이지리아", lat: 6.5244, lng: 3.3792, value: "파일 유도형 38%", chartValue: 38 },
+    { country: "호주", lat: -33.8688, lng: 151.2093, value: "SNS 유도형 34%", chartValue: 34 },
   ],
 };
 
@@ -273,14 +330,13 @@ function renderVictimCategoryData(categoryKey) {
   const selectedData = fakeData[categoryKey] || [];
 
   selectedData.forEach((item) => {
-    const marker = L.marker([item.lat, item.lng], {
-      icon: L.icon({
-        iconUrl: "https://cdn-icons-png.flaticon.com/512/252/252025.png",
-        iconSize: [28, 28],
-        iconAnchor: [14, 28],
-        popupAnchor: [0, -28],
-      }),
-    });
+const marker = L.circleMarker([item.lat, item.lng], {
+  radius: 8,
+  color: "rgba(255,255,255,0.95)",
+  weight: 2,
+  fillColor: "#8b5cf6",
+  fillOpacity: 0.9,
+});
 
     marker.bindPopup(`
       <div class="data-popup">
@@ -310,9 +366,11 @@ function setupVictimSidebar() {
 
   menuBtn.onclick = () => {
     sidebar.classList.remove("closed");
+    sidebar.classList.add("open");
   };
 
   closeBtn.onclick = () => {
+    sidebar.classList.remove("open");
     sidebar.classList.add("closed");
   };
 }
@@ -329,7 +387,10 @@ function setupVictimCategoryButtons() {
       renderVictimCategoryData(category);
 
       const sidebar = document.getElementById("victimSidebar");
-      if (sidebar) sidebar.classList.add("closed");
+      if (sidebar) {
+        sidebar.classList.remove("open");
+        sidebar.classList.add("closed");
+      }
     };
   });
 }
@@ -356,24 +417,34 @@ function setActiveVictimCategoryButton(categoryKey) {
    국가 상세 차트
 ------------------------- */
 function getCountryDetailData(countryName) {
-  const details = [];
+  const baseData = (fakeData.countryTotal || []).find(
+    (item) => item.country === countryName
+  );
 
-  Object.keys(categoryLabels).forEach((categoryKey) => {
+  const baseValue = baseData?.chartValue || 50;
+
+  const fallbackValues = {
+    countryTotal: baseValue,
+    cityDensity: Math.round(baseValue * 0.42),
+    yearlyChange: Math.max(4, Math.round(baseValue * 0.08)),
+    monthlyChange: Math.max(1, Math.round(baseValue * 0.025)),
+    timeDayRate: Math.min(90, Math.round(baseValue * 0.55)),
+    platformRate: Math.min(70, Math.round(baseValue * 0.38)),
+    typeRate: Math.min(75, Math.round(baseValue * 0.43)),
+  };
+
+  return Object.keys(categoryLabels).map((categoryKey) => {
     const found = (fakeData[categoryKey] || []).find(
       (item) => item.country === countryName
     );
 
-    if (found) {
-      details.push({
-        categoryKey,
-        label: categoryLabels[categoryKey],
-        value: found.value,
-        chartValue: found.chartValue ?? found.value ?? 0,
-      });
-    }
+    return {
+      categoryKey,
+      label: categoryLabels[categoryKey],
+      value: found?.value || `${fallbackValues[categoryKey]}`,
+      chartValue: found?.chartValue ?? fallbackValues[categoryKey],
+    };
   });
-
-  return details;
 }
 
 function renderCountryDetailChart(countryName) {
@@ -387,54 +458,145 @@ function renderCountryDetailChart(countryName) {
   }
 
   const details = getCountryDetailData(countryName);
+
   const labels = details.map((item) => item.label.split(" "));
-  const values = details.map((item) => item.chartValue ?? item.value ?? 0);
+  const values = details.map((item) => item.chartValue ?? 0);
+
+  const detail3DPlugin = {
+    id: "detail3DBar",
+
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const meta = chart.getDatasetMeta(0);
+
+      meta.data.forEach((bar) => {
+        const { x, y, base, width } = bar.getProps(
+          ["x", "y", "base", "width"],
+          true
+        );
+
+        const depth = 9;
+        const left = x - width / 2;
+        const right = x + width / 2;
+
+        ctx.save();
+
+        // 오른쪽 면
+        ctx.beginPath();
+        ctx.moveTo(right, y);
+        ctx.lineTo(right + depth, y - depth);
+        ctx.lineTo(right + depth, base - depth);
+        ctx.lineTo(right, base);
+        ctx.closePath();
+        ctx.fillStyle = "rgba(76, 29, 149, 0.38)";
+        ctx.fill();
+
+        // 윗면
+        ctx.beginPath();
+        ctx.moveTo(left, y);
+        ctx.lineTo(right, y);
+        ctx.lineTo(right + depth, y - depth);
+        ctx.lineTo(left + depth, y - depth);
+        ctx.closePath();
+        ctx.fillStyle = "rgba(191, 219, 254, 0.5)";
+        ctx.fill();
+
+        // 앞면 광택
+        const shine = ctx.createLinearGradient(left, y, right, y);
+        shine.addColorStop(0, "rgba(255,255,255,0.28)");
+        shine.addColorStop(0.45, "rgba(255,255,255,0.04)");
+        shine.addColorStop(1, "rgba(0,0,0,0.18)");
+
+        ctx.fillStyle = shine;
+        ctx.fillRect(left, y, width, base - y);
+
+        ctx.shadowColor = "rgba(147,197,253,0.75)";
+        ctx.shadowBlur = 8;
+        ctx.strokeStyle = "rgba(255,255,255,0.28)";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(left, y, width, base - y);
+
+        ctx.restore();
+      });
+    },
+  };
 
   countryDetailChartInstance = new Chart(ctx, {
     type: "bar",
     data: {
       labels,
-      datasets: [{
-        data: values,
-        borderWidth: 0,
-        borderRadius: 8,
-        backgroundColor: [
-          "#2563eb",
-          "#3b82f6",
-          "#60a5fa",
-          "#93c5fd",
-          "#a78bfa",
-          "#8b5cf6",
-          "#7c3aed",
-        ],
-      }],
+      datasets: [
+        {
+          data: values,
+          barThickness: 26,
+          borderRadius: 5,
+          borderWidth: 0,
+          backgroundColor: [
+            "#2563eb",
+            "#3b82f6",
+            "#60a5fa",
+            "#93c5fd",
+            "#8b5cf6",
+            "#7c8df8",
+            "#c4b5fd",
+          ],
+        },
+      ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 22,
+          right: 18,
+          bottom: 4,
+          left: 0,
+        },
+      },
       plugins: {
         legend: { display: false },
+        tooltip: {
+          backgroundColor: "rgba(15, 23, 42, 0.95)",
+          borderColor: "rgba(168, 85, 247, 0.75)",
+          borderWidth: 1,
+          titleColor: "#ffffff",
+          bodyColor: "#e9d5ff",
+          cornerRadius: 12,
+          padding: 12,
+          displayColors: false,
+        },
       },
       scales: {
         x: {
           ticks: {
-            color: "#e2e8f0",
-            font: { size: 13, weight: "600" },
+            color: "#ffffff",
+            font: {
+              size: 12,
+              weight: "700",
+            },
             maxRotation: 0,
             minRotation: 0,
             autoSkip: false,
+            padding: 8,
           },
           grid: { display: false },
+          border: { display: false },
         },
         y: {
+          beginAtZero: true,
           ticks: {
-            color: "#ffffff",
-            font: { size: 15 },
+            color: "rgba(255,255,255,0.85)",
+            font: { size: 13 },
           },
-          grid: { color: "rgba(255,255,255,0.08)" },
+          grid: {
+            color: "rgba(168,85,247,0.14)",
+          },
+          border: { display: false },
         },
       },
     },
+    plugins: [detail3DPlugin],
   });
 }
 
@@ -491,15 +653,15 @@ function renderBarChart() {
     barChartInstance.destroy();
   }
 
-  const sorted = [...(fakeData[selectedCategory] || [])].sort(
-    (a, b) => b.chartValue - a.chartValue
-  );
+    const sorted = [...(fakeData[selectedCategory] || [])]
+    .sort((a, b) => b.chartValue - a.chartValue)
+    .slice(0, 4);
 
   const labels = sorted.map((item) => item.country);
   const values = sorted.map((item) => item.chartValue);
 
   const titleEl = document.getElementById("barChartTitle");
-  if (titleEl) titleEl.textContent = `${categoryLabels[selectedCategory]} TOP 순위`;
+  if (titleEl) titleEl.textContent = `${categoryLabels[selectedCategory]} TOP 4 순위`;
 
   const bar3DPlugin = {
     id: "strongBar3D",
@@ -626,6 +788,83 @@ function renderBarChart() {
   });
 }
 
+
+function getDonutDataByCategory(categoryKey) {
+  const donutDataMap = {
+    countryTotal: {
+      title: "피해 유형 비율",
+      data: [
+        { label: "SNS 유도형", value: 32 },
+        { label: "메신저 유도형", value: 26 },
+        { label: "파일 유도형", value: 22 },
+        { label: "연애 유도형", value: 20 },
+      ],
+    },
+
+    cityDensity: {
+      title: "도시 밀집 유형 비율",
+      data: [
+        { label: "대도시", value: 42 },
+        { label: "수도권", value: 28 },
+        { label: "관광지", value: 18 },
+        { label: "기타", value: 12 },
+      ],
+    },
+
+    yearlyChange: {
+      title: "전년 대비 증감 유형",
+      data: [
+        { label: "증가", value: 58 },
+        { label: "유지", value: 24 },
+        { label: "감소", value: 12 },
+        { label: "급증", value: 6 },
+      ],
+    },
+
+    monthlyChange: {
+      title: "월별 변동 유형",
+      data: [
+        { label: "증가세", value: 45 },
+        { label: "완만", value: 30 },
+        { label: "감소세", value: 15 },
+        { label: "급변", value: 10 },
+      ],
+    },
+
+    timeDayRate: {
+      title: "발생 시간대 비율",
+      data: [
+        { label: "야간", value: 40 },
+        { label: "주말", value: 25 },
+        { label: "평일", value: 22 },
+        { label: "새벽", value: 13 },
+      ],
+    },
+
+    platformRate: {
+      title: "플랫폼별 비율",
+      data: [
+        { label: "Instagram", value: 35 },
+        { label: "LINE", value: 25 },
+        { label: "Telegram", value: 22 },
+        { label: "기타", value: 18 },
+      ],
+    },
+
+    typeRate: {
+      title: "피해 유형 비율",
+      data: [
+        { label: "몸캠 피싱", value: 38 },
+        { label: "SNS 유도형", value: 27 },
+        { label: "메신저 유도형", value: 21 },
+        { label: "연애 유도형", value: 14 },
+      ],
+    },
+  };
+
+  return donutDataMap[categoryKey] || donutDataMap.countryTotal;
+}
+
 /* =========================
    3D 도넛 차트
 ========================= */
@@ -639,18 +878,17 @@ function renderDonutChart() {
     donutChartInstance.destroy();
   }
 
-  const sorted = [...(fakeData[selectedCategory] || [])].sort(
-    (a, b) => b.chartValue - a.chartValue
-  );
+  const donutInfo = getDonutDataByCategory(selectedCategory);
+  const typeData = donutInfo.data;
 
-  const labels = sorted.map((item) => item.country);
-  const values = sorted.map((item) => item.chartValue);
+  const labels = typeData.map((item) => item.label);
+  const values = typeData.map((item) => item.value);
 
   const titleEl = document.getElementById("donutChartTitle");
-  if (titleEl) titleEl.textContent = `${categoryLabels[selectedCategory]} TOP 순위`;
+  if (titleEl) titleEl.textContent = donutInfo.title;
 
-    const colors = ["#8b5cf6", "#7c8df8", "#60a5fa", "#93c5fd", "#c4b5fd"];
-    const sideColors = ["#6d5bd0", "#5b6ee1", "#3b82f6", "#60a5fa", "#8b5cf6"];
+  const colors = ["#8b5cf6", "#7c8df8", "#60a5fa", "#93c5fd"];
+  const sideColors = ["#6d5bd0", "#5b6ee1", "#3b82f6", "#60a5fa"];
 
   const donut3DPlugin = {
     id: "strongDonut3D",
@@ -669,21 +907,8 @@ function renderDonutChart() {
           );
 
           ctx.beginPath();
-          ctx.arc(
-            props.x,
-            props.y + depth,
-            props.outerRadius,
-            props.startAngle,
-            props.endAngle
-          );
-          ctx.arc(
-            props.x,
-            props.y + depth,
-            props.innerRadius,
-            props.endAngle,
-            props.startAngle,
-            true
-          );
+          ctx.arc(props.x, props.y + depth, props.outerRadius, props.startAngle, props.endAngle);
+          ctx.arc(props.x, props.y + depth, props.innerRadius, props.endAngle, props.startAngle, true);
           ctx.closePath();
 
           ctx.fillStyle = sideColors[index % sideColors.length];
@@ -744,14 +969,16 @@ function renderDonutChart() {
     type: "doughnut",
     data: {
       labels,
-      datasets: [{
-        data: values,
-        backgroundColor: colors,
-        borderColor: "rgba(255,255,255,0.22)",
-        borderWidth: 2,
-        hoverOffset: 8,
-        spacing: 1,
-      }],
+      datasets: [
+        {
+          data: values,
+          backgroundColor: colors,
+          borderColor: "rgba(255,255,255,0.22)",
+          borderWidth: 2,
+          hoverOffset: 8,
+          spacing: 1,
+        },
+      ],
     },
     options: {
       responsive: true,
@@ -789,6 +1016,11 @@ function renderDonutChart() {
           cornerRadius: 12,
           padding: 12,
           displayColors: false,
+          callbacks: {
+            label(context) {
+              return `${context.label}: ${context.raw}%`;
+            },
+          },
         },
       },
     },
@@ -805,12 +1037,28 @@ function renderCharts() {
    가해자 분석 데이터
 ------------------------- */
 const rawThreatData = [
-  { country: "대한민국", city: "서울", region: "아시아", lat: 37.5665, lng: 126.9780, incidents: 112, extortionAmount: 1800, botScore: 0.68, method: "메신저 유도형" },
-  { country: "일본", city: "도쿄", region: "아시아", lat: 35.6762, lng: 139.6503, incidents: 88, extortionAmount: 2100, botScore: 0.57, method: "연애빙자형" },
-  { country: "미국", city: "뉴욕", region: "북미", lat: 40.7128, lng: -74.0060, incidents: 134, extortionAmount: 2600, botScore: 0.74, method: "SNS 유도형" },
-  { country: "영국", city: "런던", region: "유럽", lat: 51.5072, lng: -0.1276, incidents: 72, extortionAmount: 1700, botScore: 0.49, method: "협박형" },
-  { country: "인도", city: "델리", region: "아시아", lat: 28.6139, lng: 77.2090, incidents: 98, extortionAmount: 1500, botScore: 0.63, method: "파일 유도형" },
+  { country: "대한민국", city: "서울", region: "아시아", lat: 37.5665, lng: 126.9780, incidents: 112, extortionAmount: 1800, botScore: 0.68, method: "메신저 <br>유도형" },
+  { country: "일본", city: "도쿄", region: "아시아", lat: 35.6762, lng: 139.6503, incidents: 88, extortionAmount: 2100, botScore: 0.57, method: "연애 <br> 유도형" },
+  { country: "인도", city: "델리", region: "아시아", lat: 28.6139, lng: 77.2090, incidents: 98, extortionAmount: 1500, botScore: 0.63, method: "파일 <br>유도형" },
+  { country: "필리핀", city: "마닐라", region: "아시아", lat: 14.5995, lng: 120.9842, incidents: 61, extortionAmount: 1300, botScore: 0.55, method: "SNS <br> 유도형" },
+
+  { country: "미국", city: "뉴욕", region: "북미", lat: 40.7128, lng: -74.0060, incidents: 134, extortionAmount: 2600, botScore: 0.74, method: "SNS <br>유도형" },
+  { country: "캐나다", city: "토론토", region: "북미", lat: 43.6532, lng: -79.3832, incidents: 58, extortionAmount: 2200, botScore: 0.48, method: "협박 <br>형" },
+  { country: "멕시코", city: "멕시코시티", region: "북미", lat: 19.4326, lng: -99.1332, incidents: 67, extortionAmount: 1700, botScore: 0.51, method: "파일 <br> 유도형" },
+
+  { country: "영국", city: "런던", region: "유럽", lat: 51.5072, lng: -0.1276, incidents: 72, extortionAmount: 1700, botScore: 0.49, method: "협박 <br> 형" },
+  { country: "프랑스", city: "파리", region: "유럽", lat: 48.8566, lng: 2.3522, incidents: 69, extortionAmount: 1900, botScore: 0.53, method: "연애 <br> 유도형" },
+  { country: "독일", city: "베를린", region: "유럽", lat: 52.52, lng: 13.405, incidents: 64, extortionAmount: 1850, botScore: 0.46, method: "메신저 <br> 유도형" },
+
+  { country: "브라질", city: "상파울루", region: "남미", lat: -23.5505, lng: -46.6333, incidents: 81, extortionAmount: 1600, botScore: 0.58, method: "SNS <br> 유도형" },
+  { country: "아르헨티나", city: "부에노스아이레스", region: "남미", lat: -34.6037, lng: -58.3816, incidents: 32, extortionAmount: 1400, botScore: 0.44, method: "협박 <br>형" },
+
+  { country: "호주", city: "시드니", region: "오세아니아", lat: -33.8688, lng: 151.2093, incidents: 55, extortionAmount: 2400, botScore: 0.5, method: "SNS <br> 유도형" },
+
+  { country: "남아프리카공화국", city: "요하네스버그", region: "아프리카", lat: -26.2041, lng: 28.0473, incidents: 28, extortionAmount: 1200, botScore: 0.47, method: "파일 <br> 유도형" },
+  { country: "나이지리아", city: "라고스", region: "아프리카", lat: 6.5244, lng: 3.3792, incidents: 73, extortionAmount: 1100, botScore: 0.69, method: "메신저 <br>유도형" }
 ];
+
 
 const statsSection = document.getElementById("statsSection");
 const statsCircleWrap = document.getElementById("statsCircleWrap");
@@ -842,11 +1090,13 @@ function setupThreatSidebar() {
   if (menuBtn && sidebar) {
     menuBtn.onclick = () => {
       sidebar.classList.remove("closed");
+      sidebar.classList.add("open");
     };
   }
 
   if (closeBtn && sidebar) {
     closeBtn.onclick = () => {
+        sidebar.classList.remove("open");
       sidebar.classList.add("closed");
     };
   }
@@ -1024,8 +1274,8 @@ function buildCategoryStats(data) {
       circles: [
         { label: "평균 봇 비율", value: `${botStats.avgPercent}%`, color: "red" },
         { label: `1위 ${botStats.highest.country}`, value: `${botStats.highest.percent}%`, color: "blue" },
-        { label: `2위 ${botStats.second.country}`, value: `${botStats.second.percent}%`, color: "green" },
-        { label: "고위험 국가 수", value: `${botStats.highRiskCount}개`, color: "orange" },
+        { label: "최근 증가율", value: "+12%", color: "green" },
+        { label: "고위험 패턴", value: "메신저 <br> 유도형", color: "orange"},
       ],
     },
     method: {
@@ -1058,7 +1308,7 @@ function renderThreatCountrySummary() {
   ];
 
   if (statsTitle) statsTitle.textContent = `${item.country} 요약 분석`;
-  if (statsDesc) statsDesc.textContent = `${item.country} 선택 상태`;
+  if (statsDesc) statsDesc.textContent = "";
   if (categoryTitle) categoryTitle.textContent = `${item.country} 상세 정보`;
 
   statsCircleWrap.innerHTML = "";
@@ -1088,7 +1338,7 @@ function renderThreatStats(categoryKey) {
   if (!data || !statsCircleWrap) return;
 
   if (statsTitle) statsTitle.textContent = data.title;
-  if (statsDesc) statsDesc.textContent = data.desc;
+  if (statsDesc) statsDesc.textContent = "";
   if (categoryTitle) categoryTitle.textContent = data.title;
 
   statsCircleWrap.innerHTML = "";
@@ -1122,7 +1372,10 @@ function setupThreatCategoryButtons() {
       renderThreatStats(currentCategory);
 
       const sidebar = document.getElementById("threatSidebar");
-      if (sidebar) sidebar.classList.add("closed");
+      if (sidebar) {
+        sidebar.classList.remove("open");
+        sidebar.classList.add("closed");
+      }
     };
   });
 }
