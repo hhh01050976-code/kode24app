@@ -1,4 +1,4 @@
-/*보호 쉴드 css*/
+/* 보호 쉴드 css */
 
 * {
   box-sizing: border-box;
@@ -6,18 +6,19 @@
 
 body {
   margin: 0;
-  font-family: "Pretendard", "Noto Sans KR", sans-serif;
-  background: #0b1020;
+  font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+  background: #070b18;
   color: #ffffff;
 }
 
 .app-page {
   min-height: 100vh;
+  padding: 88px 16px 36px;
   background:
-    radial-gradient(circle at top, rgba(124, 58, 237, 0.24), transparent 28%),
-    linear-gradient(180deg, #11162a 0%, #0b1020 100%);
+    radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.32), transparent 30%),
+    radial-gradient(circle at 90% 18%, rgba(34, 211, 238, 0.12), transparent 28%),
+    linear-gradient(180deg, #11162a 0%, #070b18 100%);
 }
-
 
 /* 뒤로가기 */
 .back-btn {
@@ -29,11 +30,7 @@ body {
   height: 45px;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
-  background: linear-gradient(
-    145deg,
-    rgba(255,255,255,0.08),
-    rgba(255,255,255,0.02)
-  );
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   display: flex;
@@ -42,7 +39,6 @@ body {
   box-shadow:
     0 10px 25px rgba(0,0,0,0.35),
     inset 0 1px 0 rgba(255,255,255,0.12);
-
   transition: all 0.25s ease;
 }
 
@@ -50,13 +46,732 @@ body {
   width: 26px;
   height: 26px;
   object-fit: contain;
-  display: block;
-  
   filter: brightness(1.3) invert(1);
-  transition: all 0.25s ease;
 }
 
 .back-btn:active {
   transform: scale(0.94);
   opacity: 0.82;
+}
+
+/* Hero */
+.shield-hero {
+  max-width: 520px;
+  margin: 0 auto 22px;
+}
+
+.shield-badge {
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #e9d5ff;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(216, 180, 254, 0.22);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.16);
+  margin-bottom: 14px;
+}
+
+.shield-hero h1 {
+  margin: 0 0 12px;
+  font-size: 31px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.shield-hero p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* 상태 카드 */
+.shield-status-card {
+  max-width: 520px;
+  margin: 0 auto 20px;
+  padding: 26px 18px 22px;
+  border-radius: 28px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.28), transparent 36%),
+    linear-gradient(145deg, rgba(26, 21, 58, 0.96), rgba(8, 12, 27, 0.98));
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  box-shadow:
+    0 22px 50px rgba(0,0,0,0.48),
+    0 0 32px rgba(124, 58, 237, 0.20),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.shield-orb {
+  width: 178px;
+  height: 178px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle, rgba(148, 163, 184, 0.24), rgba(30, 41, 59, 0.8));
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow:
+    inset 0 0 35px rgba(255,255,255,0.06),
+    0 0 28px rgba(148, 163, 184, 0.18);
+  transition: all 0.35s ease;
+}
+
+.shield-orb.active {
+  background:
+    radial-gradient(circle, rgba(34, 197, 94, 0.38), rgba(16, 185, 129, 0.12)),
+    linear-gradient(145deg, rgba(34, 197, 94, 0.22), rgba(8, 12, 27, 0.95));
+  border-color: rgba(134, 239, 172, 0.45);
+  box-shadow:
+    0 0 34px rgba(34, 197, 94, 0.5),
+    0 0 70px rgba(16, 185, 129, 0.25),
+    inset 0 0 35px rgba(255,255,255,0.1);
+  animation: shieldPulse 1.8s ease-in-out infinite;
+}
+
+.orb-inner {
+  width: 122px;
+  height: 122px;
+  border-radius: 50%;
+  background: rgba(3, 7, 18, 0.58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  font-weight: 900;
+  line-height: 1.35;
+  color: #ffffff;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+}
+
+@keyframes shieldPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+.shield-desc {
+  margin: 0 auto 18px;
+  max-width: 390px;
+  color: #dbeafe;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.shield-toggle-btn,
+.scan-btn {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  height: 56px;
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  background: linear-gradient(135deg, #8b5cf6 0% , #3b82f6 55% , #22d3ee 100%);
+  box-shadow:
+    0 16px 34px rgba(37, 99, 235, 0.32),
+    0 0 28px rgba(124,58,237,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -12px 22px rgba(0,0,0,0.18);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+}
+
+.shield-toggle-btn::before,
+.scan-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 17px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.24), transparent 42%);
+  pointer-events: none;
+}
+
+.shield-toggle-btn::after,
+.scan-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.35),
+    transparent
+  );
+  transform: skewX(-18deg);
+  
+  animation: shineMove 2.5s infinite;
+}
+
+@keyframes shineMove {
+  0% {
+    left: -80%;
+  }
+  100% {
+    left: 140%;
+  }
+}
+
+/*=====================
+보호모드 키면 나타내는 탭
+========================*/
+.live-monitor-panel {
+  max-width: 520px;
+  margin: 0 auto 20px;
+  padding: 20px 16px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(34, 197, 94, 0.14), transparent 34%),
+    linear-gradient(145deg, rgba(15, 23, 42, 0.94), rgba(8, 12, 27, 0.98));
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  box-shadow:
+    0 20px 44px rgba(0,0,0,0.42),
+    0 0 30px rgba(34,197,94,0.12);
+  animation: monitorFadeUp 0.35s ease both;
+}
+@keyframes monitorFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.monitor-result-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #bbf7d0;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+.monitor-live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 12px rgba(34,197,94,0.75);
+  animation: livePulse 1.3s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.55;
+  }
+}
+.monitor-result-main {
+  text-align: center;
+  padding: 2px 6px 16px;
+}
+.monitor-result-icon {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 13px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dcfce7;
+  font-size: 32px;
+  font-weight: 900;
+  background:
+    radial-gradient(circle, rgba(34,197,94,0.34), rgba(16,185,129,0.12));
+  border: 1px solid rgba(134,239,172,0.38);
+  box-shadow:
+    0 0 24px rgba(34,197,94,0.38),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.monitor-result-icon.safe {
+  color: #dcfce7;
+  background:
+    radial-gradient(circle, rgba(34,197,94,0.34), rgba(16,185,129,0.12));
+  border-color: rgba(134,239,172,0.38);
+  box-shadow:
+    0 0 24px rgba(34,197,94,0.38),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.monitor-result-main h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+.monitor-result-main p {
+  margin: 0 auto;
+  max-width: 330px;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.monitor-summary-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1ft);
+  gap: 9px;
+  margin: 8px 0 14px;
+}
+.monitor-summary-card {
+  min-height: 82px;
+  border-radius: 18px;
+  padding: 13px 8px;
+  text-align: center;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.monitor-summary-card strong {
+  display: block;
+  font-size: 25px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.monitor-summary-card span {
+  font-size: 12px;
+  font-weight: 900;
+  color: #cbd5e1;
+}
+
+.monitor-summary-card.warn strong {
+  color: #fbbf24;
+}
+
+.monitor-summary-card.safe strong {
+  color: #86efac;
+}
+
+.monitor-summary-card.watching strong {
+  color: #67e8f9;
+}
+
+.monitor-detail-toggle {
+  width: 100%;
+  height: 42px;
+  border: 1px solid rgba(216,180,254,0.18);
+  border-radius: 15px;
+  color: #e9d5ff;
+  font-size: 13px;
+  font-weight: 900;
+  background:
+    linear-gradient(145deg, rgba(168,85,247,0.13), rgba(59,130,246,0.08));
+  cursor: pointer;
+  margin-top: 2px;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.monitor-detail-toggle:active {
+  transform: scale(0.98);
+}
+
+.monitor-scan-list {
+  display: none;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 13px;
+}
+
+.monitor-scan-list.open {
+  display: flex;
+}
+
+.monitor-scan-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 13px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.07);
+  animation: itemFade 0.25s ease both;
+}
+
+.monitor-scan-item span {
+  font-size: 13px;
+  font-weight: 800;
+  color: #e5e7eb;
+}
+
+.monitor-scan-item strong {
+  font-size: 12px;
+  color: #86efac;
+}
+
+.monitor-scan-item.warn strong {
+  color: #fbbf24;
+}
+
+.monitor-scan-item.danger strong {
+  color: #fb7185;
+}
+
+.monitor-scan-item.watching strong {
+  color: #67e8f9;
+}
+
+@keyframes monitorFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes livePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.55;
+  }
+}
+
+@keyframes itemFade {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scan-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: #bbf7d0;
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(34, 197, 94, 0.13);
+  border: 1px solid rgba(134, 239, 172, 0.28);
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.18);
+}
+
+.live-badge span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34,197,94,0.7);
+  animation: livePulse 1.3s ease-in-out infinite;
+}
+
+.monitor-scan-list {
+  display: none;
+}
+
+.monitor-scan-list.open {
+  display: flex;
+}
+
+/* 섹션 공통 */
+.scan-section,
+.risk-section,
+.guide-section,
+.result-grid {
+  max-width: 520px;
+  margin: 0 auto 20px;
+}
+
+.scan-section,
+.risk-section,
+.guide-section {
+  padding: 20px 16px;
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(8, 12, 27, 0.96));
+  border: 1px solid rgba(168, 85, 247, 0.16);
+  box-shadow: 0 18px 38px rgba(0,0,0,0.34);
+}
+
+.section-title h2,
+.guide-section h2 {
+  margin: 0 0 8px;
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.section-title p {
+  margin: 0 0 16px;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* 스캔 */
+.scan-progress-wrap {
+  margin-top: 16px;
+  margin-bottom: 14px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.scan-progress-text {
+  font-size: 13px;
+  color: #e9d5ff;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.scan-progress-bar {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.08);
+}
+
+.scan-progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8b5cf6, #22d3ee, #22c55e);
+  transition: width 0.35s ease;
+}
+
+/* 결과 카드 */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+}
+
+.result-card {
+  min-height: 116px;
+  padding: 14px 9px;
+  border-radius: 20px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(24, 32, 62, 0.92), rgba(8, 12, 27, 0.96));
+  border: 1px solid rgba(168, 85, 247, 0.16);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.32);
+}
+
+.result-label {
+  display: block;
+  color: #c4b5fd;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.result-card strong {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.result-card p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* 위험 앱 카드 */
+.risk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.risk-card {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  padding: 15px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.risk-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(168, 85, 247, 0.14);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.16);
+  font-size: 21px;
+}
+
+.risk-card h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.risk-card p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* 가이드 */
+.guide-section ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.guide-section li {
+  margin-bottom: 9px;
+  color: #dbeafe;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* 🔥 전체 화면 우측 상단 LIVE */
+
+.global-live-badge {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 7px 10px;
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 900;
+  color: #bbf7d0;
+
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(134, 239, 172, 0.35);
+
+  box-shadow:
+    0 0 16px rgba(34,197,94,0.25),
+    0 0 6px rgba(34,197,94,0.2) inset;
+    pointer-events: none
+}
+
+.global-live-badge span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px rgba(34,197,94,0.8);
+
+  animation: livePulse 1.2s ease-in-out infinite;
+}
+
+/* 🔥 팝업 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 340px;
+  background: #0f172a;
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(168,85,247,0.2);
+}
+
+.modal-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+}
+
+.modal-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.modal-item span {
+  color: #fbbf24;
+  font-size: 12px;
+}
+
+.modal-close-btn {
+  width: 100%;
+  margin-top: 12px;
+  height: 42px;
+  border-radius: 12px;
+  border: none;
+  background: #6366f1;
+  color: #fff;
+}
+
+/* 데스크탑 */
+@media (min-width: 768px) {
+  .app-page {
+    padding-top: 96px;
+  }
+
+  .shield-hero,
+  .shield-status-card,
+  .scan-section,
+  .risk-section,
+  .guide-section,
+  .result-grid {
+    max-width: 720px;
+  }
+
+  .result-grid {
+    gap: 16px;
+  }
 }

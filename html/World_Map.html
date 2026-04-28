@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/../css/shield.css"/><!-- support.css 경로 코드-->
-
-    
+    <link rel="stylesheet" href="/../css/shield.css"/><!-- shield.css 경로 코드-->
     <title>전 세계지도 대시보드</title>
     <!-- 보호 쉴드 모드 페이지로 생성할 것-->
 </head>
@@ -17,18 +15,163 @@
   <img src="../../img/back.png" alt="뒤로가기" />
   </button>
 
-  <div class="app-page">
+  <main class="app-page">
+
+    <div class="global-live-badge" id="scanLiveBadge">
+      <span></span>
+      LIVE
+    </div>
+
+    <!-- 섹션 1 -->
+    <section class="shield-hero">
+      <div class="shield-badge">KODE24 PROTECTION</div>
+      <h1>보호 쉴드 모드</h1>
+      <p>
+        몸캠 피싱에 사용될 수 있는 악성 앱, 영상 탈취 앱,<br> 연락처 수집 앱, 원격 제어 앱 위험 요소를 점검합니다.
+      </p>
+    </section>
 
 
+    <!-- 섹션 2 -->
+    <section class="shield-status-card">
+      <div class="shield-orb" id="shieldOrb">
+        <div class="orb-inner">
+          <span id="shieldStateText">보호 대기 중</span>
+        </div>
+      </div>
+
+      <p class="shield-desc" id="shieldDesc">
+        보호 모드를 켜면 의심 앱 설치 및 민감 권한을 <br>감시하는 상태로 전환됩니다.
+      </p>
+
+      <button class="shield-toggle-btn" id="shieldToggleBtn" type="button">
+        보호 모드 켜기
+      </button>
+    </section>
+
+    <!-- 섹션 3 -->
+    <section class="scan-section">
+
+      <div class="section-title">
+        <h2>의심 파일 스캔</h2>
+        <p>APK 파일, 권한 정보, 원격 제어 위험 요소를 점검합니다.</p>
+      </div>
+
+      <button class="scan-btn" id="scanBtn" type="button">
+        의심 파일 스캔하기
+      </button>
+
+      <div class="scan-progress-wrap hidden" id="scanProgressWrap">
+        <div class="scan-progress-text" id="scanText">스캔 준비 중...</div>
+        <div class="scan-progress-bar">
+          <div class="scan-progress-fill" id="scanProgressFill"></div>
+        </div>
+      </div>
+
+      <button class="monitor-detail-toggle hidden" id="toggleDetailBtn">
+        상세 보기 ▼
+      </button>
+
+      <div class="monitor-scan-list" id="monitorScanList"></div>
+    </section>
+
+    <!--섹션 4 -->
+    <section class="result-grid" id="resultGrid">
+      <article class="result-card">
+        <span class="result-label">위험 APK</span>
+        <strong id="dangerApkCount">0개</strong>
+        <p>출처 불명 설치 파일</p>
+      </article>
+
+      <article class="result-card">
+        <span class="result-label">주의 앱</span>
+        <strong id="warningAppCount">0개</strong>
+        <p>민감 권한 사용 앱</p>
+      </article>
+
+      <article class="result-card">
+        <span class="result-label">권한 위험</span>
+        <strong id="permissionRiskCount">0개</strong>
+        <p>카메라 / 연락처 / <br>파일 접근</p>
+      </article>
+    </section>
+
+    <!-- 섹션 5 -->
+     <!-- <section class="risk-section">
+      <div class="section-title">
+        <h2>위험 앱 유형</h2>
+        <p>몸캠 피싱에서 자주 악용되는 앱 유형입니다.</p>
+      </div>
+
+      <div class="risk-list">
+        <article class="risk-card">
+          <div class="risk-icon">🎥</div>
+          <div>
+            <h3>영상 탈취 의심 앱</h3>
+            <p>카메라, 마이크, 저장소 권한을 <br>동시에 요구하는 앱을 점검합니다.</p>
+          </div>
+        </article>
+
+        <article class="risk-card">
+          <div class="risk-icon">👥</div>
+          <div>
+            <h3>연락처 수집 의심 앱</h3>
+            <p>연락처, 통화 기록, 문자 접근 권한을 <br>가진 앱을 확인합니다.</p>
+          </div>
+        </article>
+        
+        <article class="risk-card">
+          <div class="risk-icon">🛰️</div>
+          <div>
+            <h3>원격 제어 의심 앱</h3>
+            <p>접근성 권한, 화면 오버레이, 원격 제어 <br>권한 사용 여부를 확인합니다.</p>
+          </div>
+        </article>
+
+        <article class="risk-card">
+          <div class="risk-icon">📦</div>
+          <div>
+            <h3>출처 불명 APK</h3>
+            <p>공식 스토어 외부에서 <br>전달받은 설치 파일 위험성을 점검합니다.</p>
+          </div>
+        </article>
+      </div>
+     </section> -->
+
+
+     <!-- 섹션 6 -->
+     <section class="guide-section">
+      <h2>보호 가이드</h2>
+      <ul>
+        <li>상대방이 보낸 APK 파일은 설치하지 마세요.</li>
+        <li>출처 불명 앱 설치 권한을 꺼두는 것이 안전합니다.</li>
+        <li>카메라, 마이크, 연락처 권한을 과도하게<br> 요구하는 앱은 주의 하세요.</li>
+        <li>이미 설치했다면 즉시 상담을 요청하고<br> 앱 삭제를 진행하세요.</li>
+      </ul>
+     </section>
+
+  </main>
+
+
+
+
+<div id="scanDetailModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle">상세 정보</h3>
+
+    <div id="modalList"></div>
+
+    <button class="modal-close-btn" onclick="closeModal()">닫기</button>
   </div>
+</div>
 
 
 
 
+<script src="../js/shield.js"></script> 
 
 
 
-<script src="../js/shield.js"></script>
 
 </body>
 </html>
