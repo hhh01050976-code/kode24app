@@ -28,8 +28,17 @@
     { "id": 39, "date": "2026-04-19", "type": "연애 사기 결합형", "platform": "랜덤채팅앱", "route": "랜덤채팅", "ageGroup": "40대", "gender": "male", "damageAmount": 5500000 },
 
     { "id": 40, "date": "2026-03-05", "type": "플랫폼별 유형", "platform": "영상통화앱", "route": "영상통화", "ageGroup": "10대", "gender": "female", "damageAmount": 700000 },
-    { "id": 41, "date": "2026-04-08", "type": "플랫폼별 유형", "platform": "영상통화앱", "route": "영상통화", "ageGroup": "10대", "gender": "female", "damageAmount": 900000 }
-  ],
+    { "id": 41, "date": "2026-04-08", "type": "플랫폼별 유형", "platform": "영상통화앱", "route": "영상통화", "ageGroup": "10대", "gender": "female", "damageAmount": 900000 },
+    
+    { "id": 1, "date": "2025-04-03", "type": "랜덤 채팅 유도형", "platform": "인스타그램", "route": "DM", "ageGroup": "20대", "gender": "male", "damageAmount": 1200000 },
+    { "id": 2, "date": "2025-04-08", "type": "랜덤 채팅 유도형", "platform": "랜덤채팅앱", "route": "랜덤채팅", "ageGroup": "30대", "gender": "male", "damageAmount": 1500000 },
+    { "id": 3, "date": "2025-04-12", "type": "영상 통화 녹화형", "platform": "텔레그램", "route": "영상통화", "ageGroup": "30대", "gender": "male", "damageAmount": 2300000 },
+    { "id": 4, "date": "2025-04-18", "type": "딥 페이크 형", "platform": "커뮤니티", "route": "커뮤니티", "ageGroup": "20대", "gender": "female", "damageAmount": 900000 },
+    { "id": 5, "date": "2025-04-23", "type": "연애 사기 결합형", "platform": "라인", "route": "DM", "ageGroup": "40대", "gender": "female", "damageAmount": 3500000 },
+    { "id": 6, "date": "2025-04-27", "type": "플랫폼별 유형", "platform": "영상통화앱", "route": "영상통화", "ageGroup": "10대", "gender": "female", "damageAmount": 500000 }
+
+    ],
+
   "romanceFunnel": {
     "labels": ["접근", "신뢰형성", "사적대화", "영상유도", "협박/금전요구"],
     "male": [100, 82, 61, 43, 28],
