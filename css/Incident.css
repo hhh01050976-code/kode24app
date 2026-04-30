@@ -1,4 +1,8 @@
 /* 피해 유형 분석 데이터 대시보드 CSS */
+
+/* ===============================
+   Reset
+================================ */
 * {
   margin: 0;
   padding: 0;
@@ -9,68 +13,53 @@ html,
 body {
   width: 100%;
   min-height: 100%;
-  font-family: 'Spoqa Han Sans Neo', sans-serif;
-  font-weight: 400;
-    background: #050b18;
-  color: white;
-  overflow-x: hidden;
   font-family: Arial, "Noto Sans KR", sans-serif;
-};
-
-body {
-    padding: 5px;
-    background:
-        radial-gradient(circle at 20% 10%, rgba(124,58,237,0.12), transparent 30%),
-        radial-gradient(circle at 80% 20%, rgba(59,130,246,0.10), transparent 30%),
-        linear-gradient(
-        180deg,
-        #0a0f1f 0%,
-        #070c18 40%,
-        #040812 100%
-        );
+  color: #f8fafc;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(37, 99, 235, 0.22), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(124, 58, 237, 0.18), transparent 30%),
+    linear-gradient(180deg, #050816 0%, #07111f 48%, #020617 100%);
 }
 
-/* 뒤로가기 버튼 */
+body {
+  padding: 0;
+}
+
+/* ===============================
+   Back Button
+================================ */
 .back-btn {
   position: fixed;
   top: 16px;
   left: 16px;
   z-index: 9999;
 
-  width: 48px;
-  height: 48px;
-
-  border: 1px solid rgba(255,255,255,0.08);
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 16px;
 
-  background: linear-gradient(
-    145deg,
-    rgba(255,255,255,0.08),
-    rgba(255,255,255,0.02)
-  );
-
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   box-shadow:
-    0 10px 25px rgba(0,0,0,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.12);
+    0 12px 26px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
-  transition: all 0.25s ease;
+  transition: transform 0.22s ease, opacity 0.22s ease, border-color 0.22s ease;
 }
 
 .back-btn img {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
-  display: block;
-  
-  filter: brightness(1.3) invert(1);
-  transition: all 0.25s ease;
+  filter: brightness(1.35) invert(1);
 }
 
 .back-btn:active {
@@ -78,102 +67,217 @@ body {
   opacity: 0.82;
 }
 
-/* 전체 앱 */
+/* ===============================
+   App Layout
+================================ */
 .incident-app {
   position: relative;
   width: 100%;
   max-width: 430px;
+  min-height: 100vh;
   margin: 0 auto;
-  min-height: calc(100vh - 10px);
-  padding: 86px 16px 24px;
+  padding: 70px 15px 26px;
 
   background:
-    radial-gradient(circle at 20% 10%, rgba(124, 58, 237, 0.16), transparent 22%),
-    radial-gradient(circle at 80% 15%, rgba(59, 130, 246, 0.12), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-  overflow: hidden;
+    linear-gradient(180deg, rgba(15, 23, 42, 0.12), rgba(2, 6, 23, 0.16));
 }
 
-/* 히어로 영역 */
+
+.hero-badge{
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(56,189,248,0.16);
+  border: 1px solid rgba(56,189,248,0.35);
+  color: #7dd3fc;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+}
+
+.summary-icon {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 12px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  background: rgba(59, 130, 246, 0.16);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  backdrop-filter: blur(6px);
+  font-size: 15px;
+}
+/* 파랑 - 전체 신고 */
+.icon-blue {
+  background: rgba(59, 130, 246, 0.18);
+  border: 1px solid rgba(96, 165, 250, 0.25);
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.35);
+}
+
+/* 보라 - 유형 */
+.icon-purple {
+  background: rgba(139, 92, 246, 0.18);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.35);
+}
+
+/* 빨강 - 증가율 */
+.icon-red {
+  background: rgba(244, 63, 94, 0.18);
+  border: 1px solid rgba(251, 113, 133, 0.25);
+  box-shadow: 0 0 14px rgba(244, 63, 94, 0.35);
+}
+
+/* 초록 - 금액 */
+.icon-green {
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.35);
+}
+
+.summary-icon::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 14px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+  opacity: 0.4;
+}
+/* ===============================
+   Hero
+================================ */
 .incident-hero {
   position: relative;
   overflow: hidden;
 
+  padding: 22px 18px;
+  margin: 6px 0 16px;
+
+  border-radius: 24px;
+  border: 1px solid rgba(191, 219, 254, 0.18);
+
   background:
-    linear-gradient(135deg, rgba(67, 97, 238, 0.34), rgba(139, 92, 246, 0.30)),
-    rgba(255, 255, 255, 0.04);
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 22px;
-  padding: 22px 18px 20px;
-  margin-top: 12px;
-  margin-bottom: 14px;
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+    radial-gradient(circle at 88% 18%, rgba(255, 255, 255, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(37, 99, 235, 0.45), rgba(124, 58, 237, 0.36));
 
   box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 16px 34px rgba(37, 99, 235, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 .incident-hero::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.18), transparent 28%),
-    radial-gradient(circle at 15% 100%, rgba(124, 58, 237, 0.12), transparent 30%);
-  pointer-events: none;
+  right: -40px;
+  top: -50px;
+  width: 150px;
+  height: 150px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.13);
+  filter: blur(8px);
 }
 
 .incident-hero h1 {
   position: relative;
   z-index: 1;
+  margin-bottom: 9px;
+
   font-size: 22px;
   font-weight: 800;
   line-height: 1.3;
-  margin-bottom: 10px;
+  letter-spacing: -0.7px;
   color: #ffffff;
 }
 
 .incident-hero p {
   position: relative;
   z-index: 1;
-  font-size: 13px;
+
+  font-size: 12px;
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(226, 232, 240, 0.9);
 }
 
-/* 상단 요약 카드 그리드 */
+/* ===============================
+   Summary Cards
+================================ */
 .summary-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
+  margin-bottom: 16px;
 }
 
 .summary-card {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 92px;
+  padding: 15px 14px;
+
+  border-radius: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.13);
+
   background:
-    linear-gradient(180deg, rgba(7, 18, 44, 0.92), rgba(6, 16, 38, 0.92));
-  border-radius: 18px;
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+    linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(3, 7, 18, 0.96));
+
   box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 12px 28px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.summary-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 42%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.9), transparent);
+}
+
+.summary-card::after {
+  content: "";
+  position: absolute;
+  right: -28px;
+  bottom: -28px;
+
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.14), transparent 68%);
 }
 
 .summary-label {
+  position: relative;
+  z-index: 1;
+
   display: block;
-  font-size: 12px;
+  margin-bottom: 9px;
+
+  font-size: 11px;
+  font-weight: 600;
   color: #94a3b8;
-  margin-bottom: 8px;
 }
 
 .summary-value {
-  font-size: 18px;
+  position: relative;
+  z-index: 1;
+
+  font-size: 19px;
   font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
   color: #f8fafc;
 }
 
@@ -181,43 +285,91 @@ body {
   color: #fb7185;
 }
 
-/* 공통 카드 */
-.dashboard-card,
-.type-list-section {
-  background:
-    linear-gradient(180deg, rgba(7, 18, 44, 0.94), rgba(6, 16, 38, 0.94));
-  border-radius: 20px;
-  padding: 16px;
-  margin-bottom: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+.summary-value.counting {
+  text-shadow: 0 0 16px rgba(56, 189, 248, 0.36);
 }
 
+/* ===============================
+   Dashboard Cards
+================================ */
+.dashboard-card,
+.type-list-section {
+  position: relative;
+  overflow: hidden;
+
+  padding: 17px 15px;
+  margin-bottom: 15px;
+
+  border-radius: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+
+  background:
+    linear-gradient(180deg, rgba(10, 20, 42, 0.96), rgba(3, 7, 18, 0.98));
+
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.dashboard-card::before,
+.type-list-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at 90% 8%, rgba(99, 102, 241, 0.08), transparent 28%),
+    linear-gradient(135deg, rgba(59, 130, 246, 0.035), transparent 40%);
+
+  pointer-events: none;
+}
+
+/* ===============================
+   Card Header
+================================ */
 .card-header,
 .section-title {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
+
   margin-bottom: 14px;
 }
 
 .card-header h2,
 .section-title h2 {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 800;
+  letter-spacing: -0.6px;
   color: #f8fafc;
 }
 
 .card-header span {
-  font-size: 11px;
+  flex-shrink: 0;
+
+  padding: 5px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+
+  background: rgba(148, 163, 184, 0.07);
+
+  font-size: 10px;
   color: #94a3b8;
 }
 
-/* 차트 */
+/* ===============================
+   Chart
+================================ */
 .chart-wrap {
+  position: relative;
+  z-index: 1;
+
   width: 100%;
+  padding-top: 4px;
 }
 
 .chart-wrap.medium {
@@ -225,7 +377,7 @@ body {
 }
 
 .chart-wrap.tall {
-  height: 320px;
+  height: 318px;
 }
 
 .chart-wrap canvas {
@@ -234,25 +386,44 @@ body {
   display: block;
 }
 
-/* 유형별 상세 요약 */
+/* ===============================
+   Type Detail Cards
+================================ */
 .type-list {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 .type-card {
-  background: linear-gradient(
-    180deg,
-    rgba(30, 41, 59, 0.88),
-    rgba(15, 23, 42, 0.95)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 14px;
+  position: relative;
+  overflow: hidden;
+
+  padding: 15px;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.11);
+
+  background:
+    linear-gradient(135deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.96));
+
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    0 6px 18px rgba(0, 0, 0, 0.14);
+    0 8px 18px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.type-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #38bdf8, #8b5cf6);
 }
 
 .type-card-top {
@@ -260,25 +431,39 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
+
   margin-bottom: 10px;
+  padding-left: 6px;
 }
 
 .type-card-top h3 {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.3px;
   color: #f8fafc;
-  margin: 0;
+}
+
+.type-card p {
+  padding-left: 6px;
+  margin-bottom: 12px;
+
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(203, 213, 225, 0.86);
 }
 
 .badge {
   flex-shrink: 0;
-  margin-left: auto;
+
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(59, 130, 246, 0.18);
-  color: #93c5fd;
+  border: 1px solid rgba(96, 165, 250, 0.18);
+
+  background: rgba(59, 130, 246, 0.14);
+
   font-size: 11px;
   font-weight: 700;
+  color: #bfdbfe;
 }
 
 .type-meta {
@@ -286,12 +471,15 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+
+  padding-left: 6px;
+
   font-size: 12px;
   color: #94a3b8;
 }
 
 .type-meta .risk {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .risk.very-high {
@@ -309,11 +497,198 @@ body {
 .risk.medium {
   color: #4ade80;
 }
+.risk.low {
+  color: #cbd5e1;
+}
+.growth {
+  font-weight: 700;
+}
 
-/* 모바일 최적화 */
-@media (max-width: 768px) {
+.growth.up {
+  color: #22c55e; /* 초록 */
+}
+
+.growth.down {
+  color: #ef4444; /* 빨강 */
+}
+
+/* 카드 공통 터치 반응*/
+.summary-card,
+.dashboard-card,
+.type-card {
+  transform: translateY(0) scale(1);
+  transition: transform 0.22s ease, 
+  box-shadow 0.22s ease, 
+  border-color 0.22s ease, 
+  background 0.22 ease;
+}
+.summary-card:active,
+.dashboard-card:active,
+.type-card:active{
+  transform: translateY(2px) scale(0.985);
+  border-color: rgba(56,189,248,0.34);
+}
+.summary-card:hover{
+  box-shadow: 0 14px 34px rgba(0,0,0,0.34),
+  0 0 22px rgba(56,189,248,0.08),
+  inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.dashboard-card::after,
+.type-list-section::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 22px;
+  right: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.85), rgba(139,92,246,0.7), transparent);
+  opacity: 0.8;
+}
+
+/* 페이지 진입 시 카드 등장 애니메이션 */
+.incident-hero,
+.summary-card,
+.dashboard-card,
+.type-list-section {
+  animation: cardFadeUp 0.55s ease both;
+}
+
+.summary-card:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.summary-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.summary-card:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.summary-card:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.dashboard-card:nth-of-type(1) {
+  animation-delay: 0.25s;
+}
+
+.dashboard-card:nth-of-type(2) {
+  animation-delay: 0.3s;
+}
+
+.dashboard-card:nth-of-type(3) {
+  animation-delay: 0.35s;
+}
+
+.dashboard-card:nth-of-type(4) {
+  animation-delay: 0.4s;
+}
+
+@keyframes cardFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 아이콘 미세 플로팅 */
+.summary-icon {
+  animation: iconFloat 2.8s ease-in-out infinite;
+}
+
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+
+/* 아이콘 주변 은은한 펄스 */
+.summary-icon::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  animation: iconPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  50% {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
+}
+
+/* 뒤로가기 버튼 반응 */
+.back-btn {
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.back-btn:active {
+  transform: scale(0.92);
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+/* 움직임 줄이기 설정 사용자 배려 */
+@media (prefers-reduced-motion: reduce) {
+  .incident-hero,
+  .summary-card,
+  .dashboard-card,
+  .type-list-section,
+  .summary-icon,
+  .summary-icon::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* 요약 카드 유형별 룰렛 느낌 */
+.type-roulette{
+  height: 28px;
+  overflow: hidden;
+  position: relative;
+}
+.type-roulette-inner {
+  display: flex;
+  flex-direction: column;
+  transition: transform 1.5s cubic-bezier(0.2,0.8,0.2,1);
+}
+.type-item{
+  height: 28px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+/* */
+
+/* ===============================
+   Mobile
+================================ */
+@media (max-width: 430px) {
   .incident-app {
-    padding: 60px 14px 20px;
+    padding: 66px 14px 24px;
   }
 
   .back-btn {
@@ -323,27 +698,31 @@ body {
     height: 46px;
   }
 
-  .back-btn img {
-    width: 26px;
-    height: 26px;
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
-  .incident-hero {
-    padding: 20px 16px 18px;
-    border-radius: 20px;
+  .summary-card {
+    min-height: 88px;
+    padding: 14px 12px;
   }
 
-  .incident-hero h1 {
-    font-size: 20px;
+  .summary-value {
+    font-size: 16px;
   }
 
-  .incident-hero p {
-    font-size: 12px;
-  }
-
-  .summary-card,
   .dashboard-card,
   .type-list-section {
-    border-radius: 18px;
+    border-radius: 20px;
+    padding: 16px 14px;
+  }
+
+  .chart-wrap.medium {
+    height: 250px;
+  }
+
+  .chart-wrap.tall {
+    height: 310px;
   }
 }
