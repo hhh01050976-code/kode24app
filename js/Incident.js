@@ -294,6 +294,41 @@ function commonAxisTicks() {
   };
 }
 
+const neonColors = [
+  "rgba(59,13,246,0.95)",
+  "rgba(34,211,238,0.95)",
+  "rgba(139,92,246,0.95)",
+  "rgba(236,72,153,0.95)",
+  "rgba(246,115,22,0.95)",
+  "rgba(34,197,94,0.95)"
+]
+
+function neonTooltip() {
+  return {
+    backgroundColor: "rgba(15,23,42,0.96)",
+    borderColor: "tgba(56,189,248,0.65)",
+    borderWidth: 1,
+    titleColor: "#ffffff",
+    bodyColor: "#dbeafe",
+    cornerTadius: 12,
+    padding: 12,
+    displayColors: true
+  };
+}
+
+const neonGlowPlugin = {
+  id: "neonGlowPlugin",
+  beforeDatasetDraw(chart) {
+    const { ctx } = chart;
+    ctx.save();
+    ctx.shadowColor = "rgba(56, 189, 248, 0.65)";
+    ctx.shadowBlur = 14;
+  },
+  afterDatasetDraw(chart) {
+    chart.ctx.restore();
+  }
+};
+
 function destroyCharts() {
   [
     typeDonutChart,
@@ -320,8 +355,11 @@ function createRandomChatDonutChart() {
       labels: incidentData.randomChat.labels,
       datasets: [{
         data: incidentData.randomChat.values,
-        backgroundColor: incidentData.randomChat.colors,
-        borderWidth: 0
+        backgroundColor: neonColors,
+        borderColor: "rgba(255,255,255,0.22)",
+        borderWidth: 2,
+        hoverOffset: 12,
+        spacing: 2
       }]
     },
     options: {
@@ -333,9 +371,11 @@ function createRandomChatDonutChart() {
         legend: {
           position: "bottom",
           labels: commonLegendLabels()
-        }
+        },
+        tooltip: neonTooltip()
       }
-    }
+    },
+    plugins: [neonGlowPlugin]
   });
 }
 
@@ -348,21 +388,25 @@ function createVideoLineChart() {
     data: {
       labels: incidentData.videoCall.labels,
       datasets: [{
-        label: "월별 발생 건수",
-        data: incidentData.videoCall.values,
-        borderColor: "#38bdf8",
-        backgroundColor: "rgba(56, 189, 248, 0.18)",
-        fill: true,
-        tension: 0.35,
-        pointRadius: 4,
-        pointHoverRadius: 5
-      }]
+      label: "월별 발생 건수",
+      data: incidentData.videoCall.values,
+      borderColor: "rgba(34, 211, 238, 1)",
+      backgroundColor: "rgba(34, 211, 238, 0.16)",
+      pointBackgroundColor: "#67e8f9",
+      pointBorderColor: "#ffffff",
+      pointBorderWidth: 2,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      fill: true,
+      tension: 0.42
+    }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: commonLegendLabels() }
+        legend: { labels: commonLegendLabels() },
+        tooltip: neonTooltip()
       },
       scales: {
         x: { ticks: commonAxisTicks(), grid: { display: false } },
@@ -372,7 +416,8 @@ function createVideoLineChart() {
           grid: { color: "rgba(255,255,255,0.08)" }
         }
       }
-    }
+    },
+    plugins: [neonGlowPlugin]
   });
 }
 
@@ -478,14 +523,18 @@ function createRomanceStackedChart() {
         {
           label: "남성 피해자",
           data: incidentData.romanceScam.male,
-          backgroundColor: "#3b82f6",
-          borderRadius: 6
+          backgroundColor: "rgba(59, 130, 246, 0.92)",
+          borderColor: "rgba(147, 197, 253, 0.8)",
+          borderWidth: 1,
+          borderRadius: 8
         },
         {
           label: "여성 피해자",
           data: incidentData.romanceScam.female,
-          backgroundColor: "#ec4899",
-          borderRadius: 6
+          backgroundColor: "rgba(236, 72, 153, 0.92)",
+          borderColor: "rgba(251, 207, 232, 0.8)",
+          borderWidth: 1,
+          borderRadius: 8
         }
       ]
     },
@@ -493,7 +542,8 @@ function createRomanceStackedChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: commonLegendLabels() }
+        legend: { labels: commonLegendLabels() },
+        tooltip: neonTooltip()
       },
       scales: {
         x: {
@@ -514,7 +564,8 @@ function createRomanceStackedChart() {
           grid: { color: "rgba(255,255,255,0.08)" }
         }
       }
-    }
+    },
+    plugins: [neonGlowPlugin]
   });
 }
 
@@ -531,7 +582,10 @@ function createPlatformHorizontalChart() {
         data: incidentData.platformType.values,
         borderWidth: 0,
         borderRadius: 8,
-        backgroundColor: ["#60a5fa", "#22d3ee", "#818cf8", "#a78bfa", "#34d399", "#f472b6"]
+        backgroundColor: neonColors,
+        borderColor: "rgba(255,255,255,0.18)",
+        borderWidth: 1,
+        borderRadius: 10
       }]
     },
     options: {
@@ -539,7 +593,8 @@ function createPlatformHorizontalChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: commonLegendLabels() }
+        legend: { labels: commonLegendLabels() },
+        tooltip: neonTooltip()
       },
       scales: {
         x: {
@@ -549,7 +604,8 @@ function createPlatformHorizontalChart() {
         },
         y: { ticks: commonAxisTicks(), grid: { display: false } }
       }
-    }
+    },
+    plugins: [neonGlowPlugin]
   });
 }
 
